@@ -11,7 +11,7 @@ install:
 
 script:
   - pytest
-  - pylint --disable=invalid-name api
+  - pylint --disable=invalid-name api,too-few-public-methods,import-error
   - coverage erase
   - coverage run ./tests/test_hello_world.py && coverage html
 
