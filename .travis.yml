@@ -12,7 +12,7 @@ install:
 script:
   - pytest
   - pylint --disable=invalid-name,too-few-public-methods,import-error,no-self-use *.py ./tests ./api
-  - py.test
+  - py.test --cov tests/
 
 after_success:
   - coveralls
