@@ -1,5 +1,5 @@
 """Tests"""
-from api.hello import HelloWorld
+from api.root import HelloWorld
 
 
 def test_hello_world():
