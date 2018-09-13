@@ -2,7 +2,7 @@
 from flask_restplus import Api
 from .root import ns as root
 from .user import ns as user
-from .product import ns as purchases
+from .purchases import ns as purchases
 
 
 api = Api(title='Application Server API',
