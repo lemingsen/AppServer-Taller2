@@ -20,7 +20,7 @@ def get_product(product_id):
 
 @api.route('/products/<string:product_id>/buy', methods=['POST'])
 @fresh_jwt_required
-def get_product(product_id):
+def buy_product(product_id):
     """Servicio de compra: Este servicio permite realizar la compra
      de un producto que se encuentra publicado. Devuelve un código
      que identifica la compra de forma única y que permite conocer
