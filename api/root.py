@@ -3,7 +3,6 @@ from flask import jsonify
 from api import api
 
 
-
 @api.route('/ping', methods=['GET'])
 def ping():
     """Servicio de estado: brinda una respuesta rápida que permita ser consultada

@@ -21,4 +21,4 @@ def value_error_handler(error):
 
 
 
-from api import root, user, purchases, products
+from api import root, user, products
