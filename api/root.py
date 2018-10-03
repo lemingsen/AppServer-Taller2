@@ -1,29 +1,18 @@
 """Root"""
-from flask_restplus import Namespace, Resource
-
-ns = Namespace('root', path='/', description='/')
-
-
-@ns.route('/ping')
-class Ping(Resource):
-    """Servicio de estado"""
-    def get(self):
-        """Brinda una respuesta rápida que permita ser consultada
-        para conocer si el servidor se encuentra activo"""
-        return {'ping': 1}
+from flask import jsonify
+from api import api
 
 
-@ns.route('/stats')
-class Stats(Resource):
-    """Servicio de consulta de datos de uso"""
-    def get(self):
-        """Brinda datos acerca del uso del application server."""
-        return {'hello': 'world'}
+
+@api.route('/ping', methods=['GET'])
+def ping():
+    """Servicio de estado: brinda una respuesta rápida que permita ser consultada
+    para conocer si el servidor se encuentra activo"""
+    return jsonify(ping=1)
 
 
-@ns.route('/hello')
-class HelloWorld(Resource):
-    """Hello World"""
-    def get(self):
-        """Devuelve Hello World"""
-        return {'hello': 'world'}
+@api.route('/stats', methods=['GET'])
+def stats():
+    """Servicio de consulta de datos de uso: brinda datos acerca
+     del uso del application server."""
+    return jsonify(message='not implemented yet')

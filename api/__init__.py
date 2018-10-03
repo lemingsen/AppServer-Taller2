@@ -1,13 +1,20 @@
 """api init"""
-from flask_restplus import Api
-from .root import ns as root
-from .user import ns as user
-from .purchases import ns as purchases
+from flask import Blueprint
+from flask import jsonify
+
+api = Blueprint('api', __name__)
 
 
-api = Api(title='Application Server API',
-          version='1.0', description='Comprame Application Server API')
-api.namespaces.clear()
-api.add_namespace(root)
-api.add_namespace(user)
-api.add_namespace(purchases)
+@api.app_errorhandler(404)
+def error_handler_not_found(error):
+    """Error handler para error 404 (Not Found)"""
+    return jsonify(error='404')
+
+
+@api.app_errorhandler(ValueError)
+def value_error_handler(error):
+    """Error handler para la autenticación con firebase"""
+    return jsonify(error='ValueError')
+
+
+from api import root, user, purchases
