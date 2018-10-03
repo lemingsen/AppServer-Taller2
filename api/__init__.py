@@ -1,6 +1,7 @@
 """api init"""
 from flask import Blueprint
 from flask import jsonify
+from firebase_admin.auth import AuthError
 
 api = Blueprint('api', __name__)
 
@@ -12,9 +13,12 @@ def error_handler_not_found(error):
 
 
 @api.app_errorhandler(ValueError)
+@api.app_errorhandler(AuthError)
 def value_error_handler(error):
     """Error handler para la autenticación con firebase"""
     return jsonify(error='ValueError')
 
 
-from api import root, user, purchases
+
+
+from api import root, user, purchases, products

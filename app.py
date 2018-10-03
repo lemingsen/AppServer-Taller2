@@ -15,6 +15,7 @@ app = Flask(__name__)
 app.config.from_object(DevelopmentConfig)
 app.register_blueprint(api)
 client = MongoClient(app.config["DATABASE_URI"])
+db = client[app.config["DATABASE_NAME"]]
 app.config['JWT_SECRET_KEY'] = 'esta es la clave secreta'
 jwt = JWTManager(app)
 

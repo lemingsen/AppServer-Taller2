@@ -1,4 +1,4 @@
-"""Product"""
+"""Endpoints relacionados a compras"""
 import requests
 from api import api
 

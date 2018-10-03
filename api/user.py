@@ -1,4 +1,4 @@
-"""Hello World"""
+"""Endpoints relacionados al usuario"""
 from firebase_admin import auth
 import firebase_admin
 from flask import abort
@@ -29,7 +29,7 @@ def login():
     return jsonify(token=access_token)
 
 
-@api.route('/register', methods=['POST'])
+@api.route('user/register', methods=['POST'])
 def register():
     """Servicio de registro: permite a los usuarios darse de alta en el sistema."""
     pass
