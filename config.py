@@ -7,6 +7,7 @@ class Config():
     TESTING = False
     DATABASE_URI = 'mongodb+srv://appserveruser:taller2@cluste' \
                    'r0-eiqhx.mongodb.net/test?retryWrites=true'
+    DATABASE_NAME = 'comprame'
 
 
 class ProductionConfig(Config):
