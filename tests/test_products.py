@@ -1,0 +1,1 @@
+"""Product endpoints related tests"""

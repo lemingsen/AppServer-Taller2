@@ -1,23 +1,13 @@
 """Endpoints relacionados al usuario"""
-from firebase_admin import auth
-import firebase_admin
-from flask import abort
 from flask import jsonify, request
 from flask_jwt_extended import (
     fresh_jwt_required, create_access_token,
     get_jwt_identity
 )
 import requests
+from api import firebase_auth
 from api import api
-
-
-def firebase_auth(data):
-    """Autentica con firebase"""
-    if 'idToken' not in data:
-        abort(400)
-    decoded_token = auth.verify_id_token(data['idToken'],
-                                         firebase_admin.get_app(), check_revoked=True)
-    return decoded_token
+from models.user import User
 
 
 @api.route('/user/auth', methods=['POST'])
@@ -27,13 +17,15 @@ def login():
     decoded_token = firebase_auth(request.get_json())
     uid = decoded_token['uid']
     access_token = create_access_token(identity=uid, fresh=True, expires_delta=False)
-    return jsonify(token=access_token)
+    return jsonify(token=access_token, uid=uid)
 
 
 @api.route('/user/register', methods=['POST'])
 def register():
     """Servicio de registro: permite a los usuarios darse de alta en el sistema."""
-    pass
+    data = request.get_json()
+    User.insert(data)
+    return jsonify(result='ok')
 
 
 @api.route('/user/profile', methods=['GET'])
@@ -41,6 +33,7 @@ def register():
 def get_profile():
     """Permite consultar el perfil de un usuario"""
     current_user = get_jwt_identity()
+    User.get_one()
     return jsonify(uid=current_user)
 
 
@@ -67,7 +60,7 @@ def my_publications():
 
 @api.route('/user/sales', methods=['GET'])
 @fresh_jwt_required
-def my_ventas():
+def my_sales():
     """Devuelve un listado de las ventas del usuario"""
     pass
 

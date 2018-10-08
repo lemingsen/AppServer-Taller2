@@ -11,3 +11,4 @@ dnspython==1.15.0
 firebase-admin==2.13.0
 PyJWT==1.6.4
 Flask-JWT-Extended==3.13.0
+marshmallow==2.15.6

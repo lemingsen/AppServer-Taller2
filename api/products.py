@@ -7,7 +7,7 @@ from api import api
 @fresh_jwt_required
 def get_products():
     """Servicio de búsqueda de productos: Devuelve un listado
-     de productosla utilizando varios de sus atributos como filtros"""
+     de productos utilizando varios de sus atributos como filtros"""
     pass
 
 
