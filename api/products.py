@@ -1,5 +1,6 @@
 """Endpoints relacionados a productos"""
-from flask_jwt_extended import fresh_jwt_required
+from flask_jwt_extended import fresh_jwt_required, get_jwt_identity
+from flask import jsonify
 from api import api
 
 
@@ -15,7 +16,11 @@ def get_products():
 @fresh_jwt_required
 def get_product(product_id):
     """Devuelve un producto por su id"""
-    pass
+    current_user = get_jwt_identity()
+    return jsonify(id="12312321", name="Articulo", description="Esto es un artículo",
+                   units=12, price=543.32, seller=current_user, location=[25.2084, 55.2719],
+                   payment_methods=["visa", "amex", "bitcoin"], categories=["mesa", "usado", "redonda"],
+                   pictures=["https://www.mesas.com/1.jpg", "https://www.mesas.com/2.jpg","https://www.mesas.com/3.jpg"])
 
 
 @api.route('/products/<string:product_id>/buy', methods=['POST'])

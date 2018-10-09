@@ -6,12 +6,12 @@ class Model:
     collection_name = None
     db_name = 'comprame'
 
-    def __init__(self, **kwargs):
+    def __init__(self, data):
         for key, value in kwargs.items():
             setattr(self, key, value)
 
     @classmethod
-    def get_one(cls, **kwargs):
+    def query(cls, **kwargs):
         document = db[cls.collection_name].find_one(**kwargs)
         return document
 

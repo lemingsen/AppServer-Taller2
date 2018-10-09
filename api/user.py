@@ -8,6 +8,7 @@ import requests
 from api import firebase_auth
 from api import api
 from models.user import User
+import datetime
 
 
 @api.route('/user/auth', methods=['POST'])
@@ -33,8 +34,10 @@ def register():
 def get_profile():
     """Permite consultar el perfil de un usuario"""
     current_user = get_jwt_identity()
-    User.get_one()
-    return jsonify(uid=current_user)
+    return jsonify(uid=current_user, name="Nombre", surname="Apellido", email="nombre@gmail.com",
+                   facebook="123342342342", google="nombre@gmail.com",
+                   photo="https://www.iemoji.com/view/emoji/1336/skin-tones/man-medium-skin-tone",
+                   member_since=datetime.datetime.now(), last_login=datetime.datetime.now())
 
 
 @api.route('/user/profile', methods=['PUT'])
