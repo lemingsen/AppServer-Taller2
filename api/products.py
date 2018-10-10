@@ -1,27 +1,29 @@
 """Endpoints relacionados a productos"""
 from flask_jwt_extended import fresh_jwt_required, get_jwt_identity
-from flask import jsonify, request, abort
+from flask import jsonify, request, abort, json, Response
 from api import api
 from models.product import ProductSchema, Product
-import datetime
+from _datetime import datetime
+
 
 @api.route('/products', methods=['GET'])
 @fresh_jwt_required
 def get_products():
     """Servicio de búsqueda de productos: Devuelve un listado
      de productos utilizando varios de sus atributos como filtros"""
-    pass
+    response = []
+    products = Product.get_many_or_404(request.args.to_dict())
+    for product in products:
+        response.append(product)
+    return jsonify(count=len(response), result=response), 200
 
 
 @api.route('/products/<string:product_id>', methods=['GET'])
 @fresh_jwt_required
 def get_product(product_id):
     """Devuelve un producto por su id"""
-    current_user = get_jwt_identity()
-    return jsonify(id="12312321", name="Articulo", description="Esto es un artículo",
-                   units=12, price=543.32, seller=current_user, location=[25.2084, 55.2719],
-                   payment_methods=["visa", "amex", "bitcoin"], categories=["mesa", "usado", "redonda"],
-                   pictures=["https://www.mesas.com/1.jpg", "https://www.mesas.com/2.jpg","https://www.mesas.com/3.jpg"])
+    product = Product.get_by_id_or_404(product_id)
+    return jsonify(product), 200
 
 
 @api.route('/products/<string:product_id>/buy', methods=['POST'])
@@ -42,7 +44,7 @@ def add_product():
     if not request.is_json:
         abort(400)
     data = request.get_json()
-    data["published"] = str(datetime.datetime.now())
+    data["published"] = str(datetime.now())
     schema = ProductSchema()
     Product.insert(schema.load(data))
     return jsonify(result='success'), 200

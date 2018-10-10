@@ -1,6 +1,7 @@
 from app import db
 from pymongo import ReturnDocument
 from flask import abort
+from bson.objectid import ObjectId
 
 
 class Model:
@@ -20,12 +21,19 @@ class Model:
         return document
 
     @classmethod
+    def get_by_id_or_404(cls, id):
+        document = db[cls.collection_name].find_one({"_id": ObjectId(id)})
+        if document is None:
+            abort(404)
+        return document
+
+    @classmethod
     def get_one(cls, query):
         document = db[cls.collection_name].find_one(query)
         return document
 
     @classmethod
-    def get_many(cls, query):
+    def get_many_or_404(cls, query):
         documents = db[cls.collection_name].find(query)
         if documents is None:
             abort(404)
