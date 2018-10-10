@@ -13,10 +13,15 @@ class Model:
             setattr(self, key, data[key])
 
     @classmethod
-    def get_one(cls, query):
+    def get_one_or_404(cls, query):
         document = db[cls.collection_name].find_one(query)
         if document is None:
             abort(404)
+        return document
+
+    @classmethod
+    def get_one(cls, query):
+        document = db[cls.collection_name].find_one(query)
         return document
 
     @classmethod

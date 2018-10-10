@@ -11,8 +11,8 @@ class UserSchema(Schema):
     facebook = fields.Str()
     google = fields.Str()
     photo = fields.URL()
-    member_since = fields.DateTime(format="rfc")
-    last_login = fields.DateTime(format="rfc")
+    member_since = fields.Str()
+    last_login = fields.Str()
 
 
 class User(Model):

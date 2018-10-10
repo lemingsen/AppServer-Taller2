@@ -20,13 +20,18 @@ def value_error_error_handler(error):
 
 
 @api.app_errorhandler(BadRequest)
-@api.app_errorhandler(ValidationError)
 def bad_request_error_handler(error):
     """Error handler para error 400 (Bad Request)"""
     return jsonify(error=BadRequest.description), 400
 
 
 @api.app_errorhandler(Conflict)
-def bad_request_error_handler(error):
+def conflict_error_handler(error):
     """Error handler para error 409 (Conflict)"""
     return jsonify(error=Conflict.description), 409
+
+
+@api.app_errorhandler(ValidationError)
+def validation_error_handler(error):
+    """Error handler para errores de validación"""
+    return jsonify(error=BadRequest.description, validation_error=error.messages), 400

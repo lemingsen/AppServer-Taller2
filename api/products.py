@@ -1,8 +1,9 @@
 """Endpoints relacionados a productos"""
 from flask_jwt_extended import fresh_jwt_required, get_jwt_identity
-from flask import jsonify
+from flask import jsonify, request, abort
 from api import api
-
+from models.product import ProductSchema, Product
+import datetime
 
 @api.route('/products', methods=['GET'])
 @fresh_jwt_required
@@ -37,7 +38,14 @@ def buy_product(product_id):
 @fresh_jwt_required
 def add_product():
     """Servicio de publicación de articulo para la venta"""
-    pass
+    current_user = get_jwt_identity()
+    if not request.is_json:
+        abort(400)
+    data = request.get_json()
+    data["published"] = str(datetime.datetime.now())
+    schema = ProductSchema()
+    Product.insert(schema.load(data))
+    return jsonify(result='success'), 200
 
 
 @api.route('/products/<string:product_id>/questions', methods=['POST'])

@@ -5,6 +5,7 @@ from flask_jwt_extended import (
     get_jwt_identity
 )
 import requests
+from datetime import datetime
 from api import firebase_auth, api
 from models.user import User, UserSchema
 
@@ -22,10 +23,14 @@ def login():
 @api.route('/user/register', methods=['POST'])
 def register():
     """Servicio de registro: permite a los usuarios darse de alta en el sistema."""
+    if not request.is_json:
+        abort(400)
     data = request.get_json()
     schema = UserSchema()
     if User.get_one({"uid": data["uid"]}) is not None:
         abort(409)
+    data["member_since"] = str(datetime.now())
+    data["last_login"] = str(datetime.now())
     User.insert(schema.load(data))
     return jsonify(result='success'), 200
 
@@ -35,7 +40,7 @@ def register():
 def get_profile():
     """Permite consultar el perfil de un usuario"""
     current_user = get_jwt_identity()
-    user = User.get_one({"uid": current_user})
+    user = User.get_one_or_404({"uid": current_user})
     return jsonify(user), 200
 
 
@@ -43,6 +48,8 @@ def get_profile():
 @fresh_jwt_required
 def modify_profile():
     """Permite a un usuario actualizar su perfil"""
+    if not request.is_json:
+        abort(400)
     data = request.get_json()
     current_user = get_jwt_identity()
     schema = UserSchema()
