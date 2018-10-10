@@ -1,5 +1,6 @@
 from app import db
-from bson.objectid import ObjectId
+from pymongo import ReturnDocument
+from flask import abort
 
 
 class Model:
@@ -7,22 +8,22 @@ class Model:
     db_name = 'comprame'
 
     def __init__(self, data):
-        for key, value in kwargs.items():
-            setattr(self, key, value)
+        self._id = None
+        for key in data:
+            setattr(self, key, data[key])
 
     @classmethod
-    def query(cls, **kwargs):
-        document = db[cls.collection_name].find_one(**kwargs)
+    def get_one(cls, query):
+        document = db[cls.collection_name].find_one(query)
+        if document is None:
+            abort(404)
         return document
 
     @classmethod
-    def get_one(cls, id):
-        document = db[cls.collection_name].find_one(({'_id': ObjectId(id)}))
-        return document
-
-    @classmethod
-    def get_many(cls, **kwargs):
-        documents = db[cls.collection_name].find(**kwargs)
+    def get_many(cls, query):
+        documents = db[cls.collection_name].find(query)
+        if documents is None:
+            abort(404)
         return documents
 
     @classmethod
@@ -30,10 +31,12 @@ class Model:
         result = db[cls.collection_name].insert_one(data)
         return result.inserted_id
 
-    def remove(self):
-        pass
-
-    def save(self):
-        pass
+    @classmethod
+    def modify(cls, filter, data):
+        document = db[cls.collection_name].find_one_and_replace\
+            (filter, data, return_document=ReturnDocument.AFTER)
+        if document is None:
+            abort(404)
+        return document
 
 

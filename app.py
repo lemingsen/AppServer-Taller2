@@ -5,13 +5,14 @@ from pymongo import MongoClient
 import firebase_admin
 from firebase_admin import credentials
 from flask_jwt_extended import JWTManager
-
+from utils.json_encoder import CustomJSONEncoder
 
 
 cred = credentials.Certificate('comprameli-49a1b-firebase-adminsdk-2tc0n-f9160f71dc.json')
 firebase_admin.initialize_app(cred)
 
 app = Flask(__name__)
+app.json_encoder = CustomJSONEncoder
 app.config.from_object(DevelopmentConfig)
 client = MongoClient(app.config["DATABASE_URI"])
 db = client[app.config["DATABASE_NAME"]]
