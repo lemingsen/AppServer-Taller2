@@ -1,13 +1,17 @@
-from models.model import Model
+"""product model"""
 from marshmallow import Schema, fields
+from models.model import Model
+
 
 
 class LocationSchema(Schema):
+    """Location marshmallow schema"""
     x = fields.Float(required=True)
     y = fields.Float(required=True)
 
 
 class ProductSchema(Schema):
+    """Product marshmallow schema"""
     _id = fields.Str()
     name = fields.Str(required=True)
     description = fields.Str(required=True)
@@ -22,4 +26,5 @@ class ProductSchema(Schema):
 
 
 class Product(Model):
+    """product model"""
     collection_name = 'products'

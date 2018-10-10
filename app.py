@@ -1,10 +1,10 @@
 """Main"""
 from flask import Flask
-from config import DevelopmentConfig
 from pymongo import MongoClient
 import firebase_admin
 from firebase_admin import credentials
 from flask_jwt_extended import JWTManager
+from config import DevelopmentConfig
 from utils.json_encoder import CustomJSONEncoder
 
 
@@ -25,7 +25,3 @@ app.register_blueprint(api)
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-
-
-

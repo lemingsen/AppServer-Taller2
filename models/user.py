@@ -1,8 +1,10 @@
-from models.model import Model
+"""User model"""
 from marshmallow import Schema, fields
+from models.model import Model
 
 
 class UserSchema(Schema):
+    """User marshmallow schema"""
     _id = fields.Str()
     name = fields.Str()
     surname = fields.Str()
@@ -16,4 +18,5 @@ class UserSchema(Schema):
 
 
 class User(Model):
+    """User Model"""
     collection_name = 'users'

@@ -1,3 +1,4 @@
+"""Error handlers"""
 from werkzeug.exceptions import BadRequest, Conflict, Unauthorized, NotFound
 from marshmallow import ValidationError
 from flask import jsonify

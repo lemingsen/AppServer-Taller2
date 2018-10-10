@@ -1,11 +1,11 @@
 """Endpoints relacionados al usuario"""
+from datetime import datetime
 from flask import jsonify, request, abort
 from flask_jwt_extended import (
     fresh_jwt_required, create_access_token,
     get_jwt_identity
 )
 import requests
-from datetime import datetime
 from api import firebase_auth, api
 from models.user import User, UserSchema
 

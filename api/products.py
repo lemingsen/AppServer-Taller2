@@ -1,6 +1,6 @@
 """Endpoints relacionados a productos"""
-from flask_jwt_extended import fresh_jwt_required, get_jwt_identity
-from flask import jsonify, request, abort, json, Response
+from flask_jwt_extended import fresh_jwt_required
+from flask import jsonify, request, abort
 from api import api
 from models.product import ProductSchema, Product
 from _datetime import datetime
@@ -40,7 +40,7 @@ def buy_product(product_id):
 @fresh_jwt_required
 def add_product():
     """Servicio de publicación de articulo para la venta"""
-    current_user = get_jwt_identity()
+    # falta comparar usuario con el body
     if not request.is_json:
         abort(400)
     data = request.get_json()
