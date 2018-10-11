@@ -11,7 +11,8 @@ install:
 
 script:
   - pytest
-  - pylint --disable=invalid-name,too-few-public-methods,import-error,no-self-use *.py ./tests ./api
+  - pylint --disable=invalid-name,too-few-public-methods,import-error,no-self-use,
+  unused-argument,cyclic-import,wrong-import-position,ungrouped-imports,method-hidden
   - py.test --cov api/
 
 after_success:
