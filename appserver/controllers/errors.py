@@ -3,7 +3,7 @@ from werkzeug.exceptions import BadRequest, Conflict, Unauthorized, NotFound
 from marshmallow import ValidationError
 from flask import jsonify
 from firebase_admin.auth import AuthError
-from api import api
+from appserver.controllers import api
 
 
 @api.app_errorhandler(NotFound)

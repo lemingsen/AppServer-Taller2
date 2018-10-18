@@ -1,11 +1,11 @@
-"""api init"""
+"""controllers init"""
 from flask import Blueprint
 from firebase_admin import auth
 import firebase_admin
 from flask import abort
 
 
-api = Blueprint('api', __name__)
+api = Blueprint('controllers', __name__)
 
 
 def firebase_auth(data):
@@ -17,4 +17,4 @@ def firebase_auth(data):
     return decoded_token
 
 
-from api import root, user, products, errors
+from appserver.controllers import root, user, products, errors

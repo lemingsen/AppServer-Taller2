@@ -1,6 +1,6 @@
 """Root"""
 from flask import jsonify
-from api import api
+from appserver.controllers import api
 
 
 @api.route('/ping', methods=['GET'])

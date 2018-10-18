@@ -2,14 +2,12 @@
 from pymongo import ReturnDocument
 from flask import abort
 from bson.objectid import ObjectId
-from app import db
-
+from appserver import mongo
 
 
 class Model:
     """Base model class"""
-    collection_name = None
-    db_name = 'comprame'
+    collection = None
 
     def __init__(self, data):
         """Sets attributes from data dictionary"""
@@ -22,7 +20,7 @@ class Model:
         """Devuelve un documento que coincida con los atributos
          pasados en query. Si no hay ningún documento que coincida
          se lanza una excepción NotFound"""
-        document = db[cls.collection_name].find_one(query)
+        document = mongo.db[cls.collection].find_one(query)
         if document is None:
             abort(404)
         return document
@@ -31,7 +29,7 @@ class Model:
     def get_by_id_or_404(cls, oid):
         """Devuelve un documento con ObjectId oid. Si no existe el documento
         se lanza una excepción NotFound"""
-        document = db[cls.collection_name].find_one({"_id": ObjectId(oid)})
+        document = mongo.db[cls.collection].find_one({"_id": ObjectId(oid)})
         if document is None:
             abort(404)
         return document
@@ -41,7 +39,7 @@ class Model:
         """Devuelve un documento que coincida con los atributos
         pasados en query. Si no existe un documento que coincida con
         los parámetro de búsqueda devuelve None"""
-        document = db[cls.collection_name].find_one(query)
+        document = mongo.db[cls.collection].find_one(query)
         return document
 
     @classmethod
@@ -49,7 +47,7 @@ class Model:
         """Devuelve los documentos que coincidan con los parámetros de
         búsqueda pasados en filter. Si no existe ningún documento se lanza
         una excepción NotFound"""
-        documents = db[cls.collection_name].find(query)
+        documents = mongo.db[cls.collection].find(query)
         if documents is None:
             abort(404)
         return documents
@@ -57,14 +55,14 @@ class Model:
     @classmethod
     def insert(cls, data):
         """Inserta un documento. Devuelve el ObjectId del nuevo documento"""
-        result = db[cls.collection_name].insert_one(data)
+        result = mongo.db[cls.collection].insert_one(data)
         return result.inserted_id
 
     @classmethod
     def modify(cls, query, data):
         """Modifica un documento con el nuevo pasado en data. Si no lo encuentra
         lanza una excepción NotFound"""
-        document = db[cls.collection_name].find_one_and_replace\
+        document = mongo.db[cls.collection].find_one_and_replace\
             (query, data, return_document=ReturnDocument.AFTER)
         if document is None:
             abort(404)

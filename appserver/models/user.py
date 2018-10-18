@@ -1,6 +1,6 @@
 """User model"""
 from marshmallow import Schema, fields
-from models.model import Model
+from appserver.models.model import Model
 
 
 class UserSchema(Schema):
@@ -19,4 +19,4 @@ class UserSchema(Schema):
 
 class User(Model):
     """User Model"""
-    collection_name = 'users'
+    collection = 'users'

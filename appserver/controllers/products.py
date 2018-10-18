@@ -1,9 +1,9 @@
 """Endpoints relacionados a productos"""
+from datetime import datetime
 from flask_jwt_extended import fresh_jwt_required
 from flask import jsonify, request, abort
-from api import api
-from models.product import ProductSchema, Product
-from _datetime import datetime
+from appserver.controllers import api
+from appserver.models.product import ProductSchema, Product
 
 
 @api.route('/products', methods=['GET'])

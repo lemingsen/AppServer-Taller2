@@ -1,7 +1,6 @@
 """product model"""
-from marshmallow import Schema, fields
-from models.model import Model
-
+from marshmallow import Schema, fields, post_load
+from appserver.models.model import Model
 
 
 class LocationSchema(Schema):
@@ -24,7 +23,11 @@ class ProductSchema(Schema):
     pictures = fields.List(fields.Url(), required=True)
     published = fields.Str(required=True)
 
+    # @post_load
+    # def make_user(self, data):
+    #     return Product(data)
+
 
 class Product(Model):
     """product model"""
-    collection_name = 'products'
+    collection = 'products'

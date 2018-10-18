@@ -6,8 +6,8 @@ from flask_jwt_extended import (
     get_jwt_identity
 )
 import requests
-from api import firebase_auth, api
-from models.user import User, UserSchema
+from appserver.controllers import firebase_auth, api
+from appserver.models.user import User, UserSchema
 
 
 @api.route('/user/auth', methods=['POST'])
