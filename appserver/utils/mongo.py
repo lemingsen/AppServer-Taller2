@@ -2,6 +2,7 @@
 from flask.json import JSONEncoder
 import bson
 from marshmallow import fields, ValidationError, missing
+# pylint: disable=E0202
 
 
 class MongoJSONEncoder(JSONEncoder):

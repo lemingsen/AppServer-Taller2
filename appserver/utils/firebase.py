@@ -1,5 +1,6 @@
 """Util for connecting and decode firebase tokens"""
 import firebase_admin
+# pylint: disable=R0903
 
 
 class Firebase:

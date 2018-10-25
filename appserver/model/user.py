@@ -1,6 +1,7 @@
 """User Model"""
 from marshmallow import Schema, fields, post_load
 from appserver.utils.mongo import ObjectId
+# pylint: disable=R0903,R0201
 
 
 class User:

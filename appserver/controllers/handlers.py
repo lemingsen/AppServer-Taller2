@@ -5,7 +5,7 @@ from flask import jsonify
 from firebase_admin.auth import AuthError
 from appserver.controllers import api
 from appserver.service.exceptions import UserExistsError, NotFoundError
-
+# pylint: disable=W0613
 
 @api.app_errorhandler(NotFoundError)
 def not_found_error_handler(error):

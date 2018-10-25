@@ -4,7 +4,7 @@ from flask import Flask
 from flask_jwt_extended import JWTManager
 from flask_pymongo import PyMongo
 from appserver.utils.mongo import MongoJSONEncoder
-
+# pylint: disable=C0103
 
 mongo = PyMongo()
 jwt = JWTManager()

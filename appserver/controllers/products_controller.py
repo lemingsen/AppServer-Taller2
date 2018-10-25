@@ -3,7 +3,7 @@ from flask_jwt_extended import fresh_jwt_required
 from flask import jsonify, request, abort
 from appserver.controllers import api
 from appserver.service.products_service import ProductsService
-
+# pylint: disable=W0613
 
 @api.route('/products', methods=['GET'])
 @fresh_jwt_required
