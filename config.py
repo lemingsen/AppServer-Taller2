@@ -1,6 +1,5 @@
 """Config module"""
 
-
 class Config():
     """Config Vars"""
     DEBUG = False

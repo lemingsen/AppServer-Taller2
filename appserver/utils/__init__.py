@@ -1,4 +1,2 @@
 """utils package"""
-from appserver.utils import mongo_encoder
-
-
+from appserver.utils import mongo

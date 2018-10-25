@@ -1,9 +1,8 @@
 """Endpoints relacionados a productos"""
-from datetime import datetime
 from flask_jwt_extended import fresh_jwt_required
 from flask import jsonify, request, abort
 from appserver.controllers import api
-from appserver.models.product import ProductSchema, Product
+from appserver.service.products_service import ProductsService
 
 
 @api.route('/products', methods=['GET'])
@@ -11,18 +10,15 @@ from appserver.models.product import ProductSchema, Product
 def get_products():
     """Servicio de búsqueda de productos: Devuelve un listado
      de productos utilizando varios de sus atributos como filtros"""
-    response = []
-    products = Product.get_many_or_404(request.args.to_dict())
-    for product in products:
-        response.append(product)
-    return jsonify(count=len(response), result=response), 200
+    products = ProductsService.get_products(request.args.to_dict())
+    return jsonify(count=len(products), result=products), 200
 
 
 @api.route('/products/<string:product_id>', methods=['GET'])
 @fresh_jwt_required
 def get_product(product_id):
     """Devuelve un producto por su id"""
-    product = Product.get_by_id_or_404(product_id)
+    product = ProductsService.get_product_by_id(product_id)
     return jsonify(product), 200
 
 
@@ -44,9 +40,8 @@ def add_product():
     if not request.is_json:
         abort(400)
     data = request.get_json()
-    data["published"] = str(datetime.now())
-    schema = ProductSchema()
-    Product.insert(schema.load(data))
+    ProductsService.add_product(data)
+
     return jsonify(result='success'), 200
 
 

@@ -1,4 +1,4 @@
-"""models related tests"""
+"""data related tests"""
 
 
 def test_get_one_or_404_if_document_doesnt_exist_raises_404(client):
@@ -15,5 +15,3 @@ def test_get_many_or_404_if_document_doesnt_exist_raises_404(client):
 
 def test_modify_if_document_doesnt_exist_raises_404(client):
     pass
-
-

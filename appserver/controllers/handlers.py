@@ -4,12 +4,14 @@ from marshmallow import ValidationError
 from flask import jsonify
 from firebase_admin.auth import AuthError
 from appserver.controllers import api
+from appserver.service.exceptions import UserExistsError, NotFoundError
 
 
-@api.app_errorhandler(NotFound)
-def not_found_error_handle(error):
-    """Error handler para error 404 (Not Found)"""
-    return jsonify(error=NotFound.description), 404
+@api.app_errorhandler(NotFoundError)
+def not_found_error_handler(error):
+    """Error handler para recursos no encontrados (Not Found)"""
+    return jsonify(error=NotFound.code, message=error.message,
+                   description=NotFound.description), 404
 
 
 @api.app_errorhandler(ValueError)
@@ -26,10 +28,11 @@ def bad_request_error_handler(error):
     return jsonify(error=BadRequest.description), 400
 
 
-@api.app_errorhandler(Conflict)
+@api.app_errorhandler(UserExistsError)
 def conflict_error_handler(error):
     """Error handler para error 409 (Conflict)"""
-    return jsonify(error=Conflict.description), 409
+    return jsonify(error=Conflict.code, message=error.message,
+                   description=Conflict.description), 409
 
 
 @api.app_errorhandler(ValidationError)

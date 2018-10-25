@@ -1,23 +1,20 @@
 """Endpoints relacionados al usuario"""
-from datetime import datetime
 from flask import jsonify, request, abort
-from flask_jwt_extended import (
-    fresh_jwt_required, create_access_token,
-    get_jwt_identity
-)
+from flask_jwt_extended import fresh_jwt_required, get_jwt_identity
 import requests
-from appserver.controllers import firebase_auth, api
-from appserver.models.user import User, UserSchema
+from appserver.controllers import api
+from appserver.service.users_service import UserService
 
 
 @api.route('/user/auth', methods=['POST'])
 def login():
     """Servicio de autenticación: permite a los usuarios poder ingresar al sistema con
     un token de firebase, obteniendo un token para utilizar con los demás servicios."""
-    decoded_token = firebase_auth(request.get_json())
-    uid = decoded_token['uid']
-    access_token = create_access_token(identity=uid, fresh=True, expires_delta=False)
-    return jsonify(token=access_token, uid=uid), 200
+    if not request.is_json:
+        abort(400)
+    firebase_token = request.get_json()
+    access_token = UserService.login(firebase_token)
+    return jsonify(token=access_token), 200
 
 
 @api.route('/user/register', methods=['POST'])
@@ -26,21 +23,16 @@ def register():
     if not request.is_json:
         abort(400)
     data = request.get_json()
-    schema = UserSchema()
-    if User.get_one({"uid": data["uid"]}) is not None:
-        abort(409)
-    data["member_since"] = str(datetime.now())
-    data["last_login"] = str(datetime.now())
-    User.insert(schema.load(data))
-    return jsonify(result='success'), 200
+    uid = UserService.register(data)
+    return jsonify(result='success', uid=uid), 200
 
 
 @api.route('/user/profile', methods=['GET'])
 @fresh_jwt_required
 def get_profile():
     """Permite consultar el perfil de un usuario"""
-    current_user = get_jwt_identity()
-    user = User.get_one_or_404({"uid": current_user})
+    uid = get_jwt_identity()
+    user = UserService.get_profile(uid)
     return jsonify(user), 200
 
 
@@ -51,10 +43,9 @@ def modify_profile():
     if not request.is_json:
         abort(400)
     data = request.get_json()
-    current_user = get_jwt_identity()
-    schema = UserSchema()
-    ret = User.modify({"uid": current_user}, schema.load(data))
-    return jsonify(ret), 200
+    uid = get_jwt_identity()
+    UserService.modify_profile(uid, data)
+    return jsonify(result='success'), 200
 
 
 @api.route('/user/purchases', methods=['GET'])
