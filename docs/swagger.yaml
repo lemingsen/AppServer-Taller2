@@ -1,0 +1,423 @@
+swagger: '2.0'
+info:
+  description: Comprame App Server
+  version: 1.0.0
+  title: Comprame App Server API
+host: app-server-taller2.herokuapp.com
+basePath: /
+tags:
+  - name: user
+    description: User related operations
+  - name: products
+    description: Product related operations
+schemes:
+  - https
+  - http
+paths:
+  /ping:
+    get:
+      summary: ping
+      description: pings the server
+      operationId: ping
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful operation
+  /user/auth:
+    post:
+      tags:
+        - user
+      summary: User login
+      description: Logs a user into the system
+      operationId: userLogin
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Firebase id token
+          required: true
+          schema:
+            $ref: '#/definitions/Firebase'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Token'
+        '400':
+          description: bad request
+        '401':
+          description: unauthorized
+        '404':
+          description: not found
+  /user/register:
+    post:
+      tags:
+        - user
+      summary: Register user
+      description: Registers a user into the system
+      operationId: register
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: user object
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      responses:
+        '200':
+          description: success
+        '400':
+          description: bad request
+        '409':
+          description: user already exists
+  /user/profile:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - user
+      summary: Get user profile
+      description: Returns the current user profile
+      operationId: getProfile
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/UserWithId'
+        '401':
+          description: unauthorized
+        '404':
+          description: user not found
+        '422':
+          description: invalid token payload
+    put:
+      security:
+        - Bearer: []
+      tags:
+        - user
+      summary: Modify user profile
+      description: Modifies current user profile
+      operationId: modifyProfile
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: user object
+          required: true
+          schema:
+            $ref: '#/definitions/UserWithId'
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: bad request
+        '401':
+          description: unauthorized
+        '404':
+          description: user not found
+        '422':
+          description: invalid token payload
+  /products:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - products
+      summary: Get products
+      description: Returns the matching products
+      operationId: getProducts
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: name
+          type: string
+          description: product name
+        - in: query
+          name: description
+          type: string
+          description: product description
+        - in: query
+          name: seller
+          type: string
+          description: product seller id
+        - in: query
+          name: units
+          type: integer
+          description: product available quantity
+        - in: query
+          name: price
+          type: number
+          format: float
+          description: product category
+        - in: query
+          name: x
+          type: number
+          format: float
+          description: buyer x coordinate location
+        - in: query
+          name: y
+          type: number
+          format: float
+          description: buyer y coordinate location
+        - in: query
+          name: categories
+          type: string
+          description: product category
+        - in: query
+          name: payment_methods
+          type: string
+          description: product available payment method
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/ProductsReturn'
+        '400':
+          description: bad request
+        '401':
+          description: unauthorized
+        '404':
+          description: user not found
+        '422':
+          description: invalid token payload
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - products
+      summary: Add product
+      description: Adds a product for selling
+      operationId: addProduct
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: user object
+          required: true
+          schema:
+            $ref: '#/definitions/Product'
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: bad request
+        '401':
+          description: unauthorized
+        '422':
+          description: invalid token payload
+  /products/{id}:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - products
+      summary: Get product
+      description: Returns the product with the id passed
+      operationId: getProduct
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: product id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/ProductReturn'
+        '400':
+          description: bad request
+        '401':
+          description: unauthorized
+        '404':
+          description: product not found
+        '422':
+          description: invalid token payload
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+definitions:
+  Token:
+    type: object
+    properties:
+      token:
+        type: string
+  Firebase:
+    type: object
+    properties:
+      idToken:
+        type: string
+  User:
+    type: object
+    properties:
+      name:
+        type: string
+      surname:
+        type: string
+      email:
+        type: string
+      google:
+        type: string
+      facebook:
+        type: string
+      uid:
+        type: string
+      photo:
+        type: string
+  UserWithId:
+    type: object
+    properties:
+      _id:
+        type: string
+      name:
+        type: string
+      surname:
+        type: string
+      email:
+        type: string
+      google:
+        type: string
+      facebook:
+        type: string
+      uid:
+        type: string
+      photo:
+        type: string
+  Product:
+    type: object
+    properties:
+      name:
+        type: string
+      description:
+        type: string
+      seller:
+        type: string
+      units:
+        type: integer
+        format: int64
+      price:
+        type: number
+        format: float
+      location:
+        type: object
+        properties:
+          x: 
+            type: number
+            format: float
+          y:
+            type: number
+            format: float
+      categories:
+        type: array
+        items:
+          type: string
+      payment_methods:
+        type: array
+        items:
+          type: string
+      pictures:
+        type: array
+        items:
+          type: string
+  ProductReturn:
+    type: object
+    properties:
+      _id: 
+        type: string
+      categories:
+        type: array
+        items:
+          type: string
+      description:
+        type: string
+      location:
+        type: object
+        properties:
+          x: 
+            type: number
+            format: float
+          y:
+            type: number
+            format: float
+      name:
+        type: string
+      payment_methods:
+        type: array
+        items:
+          type: string
+      pictures:
+        type: array
+        items:
+          type: string
+      price:
+        type: number
+        format: float
+      published:
+        type: string
+      seller:
+        type: string
+      units:
+        type: integer
+        format: int64
+  ProductsReturn:
+    type: object
+    properties:
+      count:
+        type: integer
+      result:
+        type: array
+        items:
+          type: object
+          properties:
+            _id: 
+              type: string
+            categories:
+              type: array
+              items:
+                type: string
+            description:
+              type: string
+            location:
+              type: object
+              properties:
+                x: 
+                  type: number
+                  format: float
+                y:
+                  type: number
+                  format: float
+            name:
+              type: string
+            payment_methods:
+              type: array
+              items:
+                type: string
+            pictures:
+              type: array
+              items:
+                type: string
+            price:
+              type: number
+              format: float
+            published:
+              type: string
+            seller:
+              type: string
+            units:
+              type: integer
+              format: int64
+  
+      

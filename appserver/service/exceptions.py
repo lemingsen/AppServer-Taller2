@@ -1,6 +1,7 @@
 """Service layer exceptions"""
 # pylint: disable=R0401
 
+
 class NotFoundError(Exception):
     """Raised when a resource is not found."""
     def __init__(self, message):

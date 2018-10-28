@@ -7,6 +7,7 @@ from appserver.controllers import api
 from appserver.service.exceptions import UserExistsError, NotFoundError
 # pylint: disable=W0613
 
+
 @api.app_errorhandler(NotFoundError)
 def not_found_error_handler(error):
     """Error handler para recursos no encontrados (Not Found)"""
