@@ -36,3 +36,27 @@ def test_add_product_without_token_returns_401_response(client):
 def test_add_product_if_body_not_json_400_response(client, product_data):
     response = client.post('/products', headers=product_data.valid_token_header())
     assert response.status_code == 400
+
+
+def test_delete_product_without_token_401_response(client):
+    pass
+
+
+def test_delete_product_if_not_found_404_response(client, user_data, product_data):
+    response = client.delete('/products/5bbe37a1e3c00f593839d19e', headers=product_data.valid_token_header())
+    assert response.status_code == 404
+
+
+def test_delete_product_if_invalid_product_id_400_response(client, user_data, product_data):
+    response = client.delete('/products/5bbe37a3c00f593839d19e', headers=product_data.valid_token_header())
+    assert response.status_code == 400
+
+
+def test_delete_product_if_user_does_not_own_product_403_response(client, user_data, product_data):
+    pass
+
+
+def test_delete_product_200_response(client, user_data, product_data):
+    pass
+
+

@@ -1,5 +1,5 @@
 """Endpoints relacionados a productos"""
-from flask_jwt_extended import fresh_jwt_required
+from flask_jwt_extended import fresh_jwt_required, get_jwt_identity
 from flask import jsonify, request, abort
 from appserver.controllers import api_bp
 from appserver.service.products_service import ProductsService
@@ -42,8 +42,17 @@ def add_product():
         abort(400)
     data = request.get_json()
     ProductsService.add_product(data)
-
     return jsonify(result='success'), 200
+
+
+@api_bp.route('/products/<string:product_id>', methods=['DELETE'])
+@fresh_jwt_required
+def delete_product(product_id):
+    """Servicio de eliminación de un artículo"""
+    uid = get_jwt_identity()
+    ProductsService.delete_product(uid, product_id)
+    return jsonify(result='success'), 200
+
 
 
 @api_bp.route('/products/<string:product_id>/questions', methods=['POST'])

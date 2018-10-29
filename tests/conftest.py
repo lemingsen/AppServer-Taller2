@@ -25,7 +25,7 @@ class Data:
 class ProductData(Data):
     def __init__(self):
         Data.__init__(self)
-
+        self.product_id = "5bbe37a1e3c00c493839d19e"
         self.invalid_product = {
             "name": "Mesa",
             "description": "Mesa Cuadrada",

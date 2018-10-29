@@ -12,6 +12,7 @@ tags:
     description: Product related operations
 schemes:
   - https
+  - http
 paths:
   /ping:
     get:
@@ -243,6 +244,33 @@ paths:
           description: product not found
         '422':
           description: invalid token payload
+    delete:
+      security:
+        - Bearer: []
+      tags:
+        - products
+      summary: Delete product
+      description: Deletes the product with the id passed
+      operationId: deleteProduct
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: product id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: not valid product id
+        '401':
+          description: unauthorized
+        '404':
+          description: product not found
+        '422':
+          description: invalid token payload  
 securityDefinitions:
   Bearer:
     type: apiKey

@@ -2,6 +2,8 @@
 from pymongo import ReturnDocument
 from flask import abort
 from bson.objectid import ObjectId
+import bson.objectid
+from marshmallow import ValidationError
 from appserver import mongo
 
 
@@ -15,6 +17,8 @@ class BaseMapper:
         """Devuelve un documento con ObjectId oid. Si no existe el documento
         devuelve None"""
         ret = None
+        if not bson.objectid.ObjectId.is_valid(oid):
+            raise ValidationError("Invalid ObjectId")
         document = mongo.db[cls.collection].find_one({"_id": ObjectId(oid)})
         if document is not None:
             ret = cls.schema.load(document)
@@ -70,3 +74,14 @@ class BaseMapper:
         if document is None:
             abort(404)
         return cls.schema.load(document)
+
+    @classmethod
+    def delete_one_by_id(cls, oid):
+        """Borra un documento por su ObjectId"""
+        ret = False
+        if not bson.objectid.ObjectId.is_valid(oid):
+            raise ValidationError("Invalid ObjectId")
+        result = mongo.db[cls.collection].delete_one({"_id": ObjectId(oid)})
+        if result.deleted_count:
+            ret = True
+        return ret

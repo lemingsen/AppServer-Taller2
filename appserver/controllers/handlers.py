@@ -1,10 +1,10 @@
 """Error handlers"""
-from werkzeug.exceptions import BadRequest, Conflict, Unauthorized, NotFound
+from werkzeug.exceptions import BadRequest, Conflict, Unauthorized, NotFound, Forbidden
 from marshmallow import ValidationError
 from flask import jsonify
 from firebase_admin.auth import AuthError
 from appserver.controllers import api_bp
-from appserver.service.exceptions import UserExistsError, NotFoundError
+from appserver.service.exceptions import UserExistsError, NotFoundError, ForbiddenError
 # pylint: disable=W0613
 
 
@@ -40,3 +40,9 @@ def conflict_error_handler(error):
 def validation_error_handler(error):
     """Error handler para errores de validación"""
     return jsonify(error=BadRequest.description, validation_error=error.messages), 400
+
+
+@api_bp.app_errorhandler(ForbiddenError)
+def forbidden_error_handler(error):
+    """Error handler para operaciones no permitidas"""
+    return jsonify(error=Forbidden.description, message=error.message), 403
