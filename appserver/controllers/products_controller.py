@@ -1,12 +1,12 @@
 """Endpoints relacionados a productos"""
 from flask_jwt_extended import fresh_jwt_required
 from flask import jsonify, request, abort
-from appserver.controllers import api
+from appserver.controllers import api_bp
 from appserver.service.products_service import ProductsService
 # pylint: disable=W0613
 
 
-@api.route('/products', methods=['GET'])
+@api_bp.route('/products', methods=['GET'])
 @fresh_jwt_required
 def get_products():
     """Servicio de búsqueda de productos: Devuelve un listado
@@ -15,7 +15,7 @@ def get_products():
     return jsonify(count=len(products), result=products), 200
 
 
-@api.route('/products/<string:product_id>', methods=['GET'])
+@api_bp.route('/products/<string:product_id>', methods=['GET'])
 @fresh_jwt_required
 def get_product(product_id):
     """Devuelve un producto por su id"""
@@ -23,7 +23,7 @@ def get_product(product_id):
     return jsonify(product), 200
 
 
-@api.route('/products/<string:product_id>/buy', methods=['POST'])
+@api_bp.route('/products/<string:product_id>/buy', methods=['POST'])
 @fresh_jwt_required
 def buy_product(product_id):
     """Servicio de compra: Este servicio permite realizar la compra
@@ -33,7 +33,7 @@ def buy_product(product_id):
     pass
 
 
-@api.route('/products', methods=['POST'])
+@api_bp.route('/products', methods=['POST'])
 @fresh_jwt_required
 def add_product():
     """Servicio de publicación de articulo para la venta"""
@@ -46,7 +46,7 @@ def add_product():
     return jsonify(result='success'), 200
 
 
-@api.route('/products/<string:product_id>/questions', methods=['POST'])
+@api_bp.route('/products/<string:product_id>/questions', methods=['POST'])
 @fresh_jwt_required
 def add_product_question(product_id):
     """Servicio de alta de pregunta: permite realizar una pregunta
@@ -54,7 +54,7 @@ def add_product_question(product_id):
     pass
 
 
-@api.route('/products/<string:product_id>/<string:question_id>/answers', methods=['POST'])
+@api_bp.route('/products/<string:product_id>/<string:question_id>/answers', methods=['POST'])
 @fresh_jwt_required
 def add_product_answer(product_id, question_id):
     """Servicio de alta de respuesta a pregunta:

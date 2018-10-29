@@ -12,7 +12,6 @@ tags:
     description: Product related operations
 schemes:
   - https
-  - http
 paths:
   /ping:
     get:

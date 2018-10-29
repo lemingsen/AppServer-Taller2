@@ -3,11 +3,13 @@ import os
 from flask import Flask
 from flask_jwt_extended import JWTManager
 from flask_pymongo import PyMongo
+from flasgger import Swagger
 from appserver.utils.mongo import MongoJSONEncoder
 # pylint: disable=C0103
 
 mongo = PyMongo()
 jwt = JWTManager()
+swagger = Swagger(template_file=os.environ['SWAGGER_FILE'])
 
 
 def create_app(config):
@@ -19,8 +21,13 @@ def create_app(config):
     mongo.init_app(app)
     app.json_encoder = MongoJSONEncoder
     jwt.init_app(app)
+    app.config['SWAGGER'] = {
+        'title': 'Comprame App Server API',
+        'uiversion': 2
+    }
+    swagger.init_app(app)
 
-    from appserver.controllers import api
-    app.register_blueprint(api)
+    from appserver.controllers import api_bp
+    app.register_blueprint(api_bp)
 
     return app
