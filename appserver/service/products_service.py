@@ -10,8 +10,9 @@ class ProductsService:
     schema = ProductSchema()
 
     @classmethod
-    def add_product(cls, product_json):
+    def add_product(cls, product_json, uid):
         """Add product service:"""
+        product_json['seller'] = uid
         product = cls.schema.load(product_json)
         product.published = str(datetime.now())
         return ProductMapper.insert(product)

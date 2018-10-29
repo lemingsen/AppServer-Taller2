@@ -6,15 +6,15 @@ import appserver.data.product_mapper
 from appserver.service.exceptions import NotFoundError, ForbiddenError
 
 
-def test_add_product_if_wrong_schema_raises_validation_error(product_data):
+def test_add_product_if_wrong_schema_raises_validation_error(product_data, user_data):
     with pytest.raises(ValidationError):
-        ProductsService.add_product(product_data.invalid_product)
+        ProductsService.add_product(product_data.invalid_product, user_data.uid)
 
 
-def test_add_product_if_no_product_sent_raises_validation_error():
+def test_add_product_if_no_product_sent_raises_validation_error(user_data):
     product_json = {}
     with pytest.raises(ValidationError):
-        ProductsService.add_product(product_json)
+        ProductsService.add_product(product_json, user_data.uid)
 
 
 @patch.object(appserver.data.product_mapper.ProductMapper, 'get_by_id')

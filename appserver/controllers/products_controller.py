@@ -38,10 +38,11 @@ def buy_product(product_id):
 def add_product():
     """Servicio de publicación de articulo para la venta"""
     # falta comparar usuario con el body
+    uid = get_jwt_identity()
     if not request.is_json:
         abort(400)
-    data = request.get_json()
-    product_id = ProductsService.add_product(data)
+    product = request.get_json()
+    product_id = ProductsService.add_product(product, uid)
     return jsonify(result='success', _id=product_id), 200
 
 
@@ -52,7 +53,6 @@ def delete_product(product_id):
     uid = get_jwt_identity()
     ProductsService.delete_product(uid, product_id)
     return jsonify(result='success'), 200
-
 
 
 @api_bp.route('/products/<string:product_id>/questions', methods=['POST'])
