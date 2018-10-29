@@ -41,8 +41,8 @@ def add_product():
     if not request.is_json:
         abort(400)
     data = request.get_json()
-    ProductsService.add_product(data)
-    return jsonify(result='success'), 200
+    product_id = ProductsService.add_product(data)
+    return jsonify(result='success', _id=product_id), 200
 
 
 @api_bp.route('/products/<string:product_id>', methods=['DELETE'])
