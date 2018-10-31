@@ -2,7 +2,7 @@
 from flask_jwt_extended import fresh_jwt_required, get_jwt_identity
 from flask import jsonify, request, abort
 from appserver.controllers import api_bp
-from appserver.service.products_service import ProductsService
+from appserver.services.products_service import ProductsService
 # pylint: disable=W0613
 
 
@@ -37,7 +37,6 @@ def buy_product(product_id):
 @fresh_jwt_required
 def add_product():
     """Servicio de publicación de articulo para la venta"""
-    # falta comparar usuario con el body
     uid = get_jwt_identity()
     if not request.is_json:
         abort(400)
@@ -60,7 +59,12 @@ def delete_product(product_id):
 def add_product_question(product_id):
     """Servicio de alta de pregunta: permite realizar una pregunta
      acerca de un artículo que se encuentra publicado para la venta"""
-    pass
+    uid = get_jwt_identity()
+    if not request.is_json:
+        abort(400)
+    question = request.get_json()
+    product = ProductsService.add_question(question, product_id, uid)
+    return jsonify(product), 200
 
 
 @api_bp.route('/products/<string:product_id>/<string:question_id>/answers', methods=['POST'])

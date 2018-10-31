@@ -1,6 +1,6 @@
-"""User model"""
+"""User models"""
 from appserver.data.base_mapper import BaseMapper
-from appserver.model.user import UserSchema
+from appserver.models.user import UserSchema
 
 
 class UserMapper(BaseMapper):

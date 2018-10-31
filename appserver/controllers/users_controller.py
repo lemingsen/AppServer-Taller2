@@ -3,7 +3,7 @@ from flask import jsonify, request, abort
 from flask_jwt_extended import fresh_jwt_required, get_jwt_identity
 import requests
 from appserver.controllers import api_bp
-from appserver.service.users_service import UserService
+from appserver.services.users_service import UserService
 
 
 @api_bp.route('/user/auth', methods=['POST'])

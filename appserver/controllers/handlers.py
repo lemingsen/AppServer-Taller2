@@ -4,7 +4,7 @@ from marshmallow import ValidationError
 from flask import jsonify
 from firebase_admin.auth import AuthError
 from appserver.controllers import api_bp
-from appserver.service.exceptions import UserExistsError, NotFoundError, ForbiddenError
+from appserver.services.exceptions import UserExistsError, NotFoundError, ForbiddenError
 # pylint: disable=W0613
 
 

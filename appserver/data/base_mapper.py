@@ -1,4 +1,4 @@
-"""Base model"""
+"""Base models"""
 from pymongo import ReturnDocument
 from flask import abort
 from bson.objectid import ObjectId
@@ -8,7 +8,7 @@ from appserver import mongo
 
 
 class BaseMapper:
-    """Base model class"""
+    """Base models class"""
     collection = None
     schema = None
 
@@ -69,11 +69,12 @@ class BaseMapper:
     def find_one_and_update(cls, filters, update):
         """Busca un documento que coincida con los parámetros pasados en filters y actualiza
         los campos pasados en update"""
+        ret = None
         document = mongo.db[cls.collection].find_one_and_update\
-            (filters, {'$set': update}, return_document=ReturnDocument.AFTER)
-        if document is None:
-            abort(404)
-        return cls.schema.load(document)
+            (filters, update, return_document=ReturnDocument.AFTER)
+        if document is not None:
+            ret = cls.schema.load(document)
+        return ret
 
     @classmethod
     def delete_one_by_id(cls, oid):

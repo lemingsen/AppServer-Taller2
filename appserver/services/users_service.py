@@ -3,10 +3,10 @@ from datetime import datetime
 import os
 import json
 from flask_jwt_extended import create_access_token
-from appserver.service.exceptions import NotFoundError, UserExistsError
+from appserver.services.exceptions import NotFoundError, UserExistsError
 from appserver.utils.firebase import Firebase
 from appserver.data.user_mapper import UserMapper
-from appserver.model.user import UserSchema
+from appserver.models.user import UserSchema
 
 
 class UserService:
@@ -15,10 +15,11 @@ class UserService:
 
     @classmethod
     def login(cls, firebase_token):
-        """Login service: returns a server access token after authenticating with firebase_token"""
+        """Login services: returns a server access token after authenticating with firebase_token"""
         firebase = Firebase(json.loads(os.environ['FIREBASE_CONFIG']))
         uid = firebase.decode_token(firebase_token)
-        user = UserMapper.find_one_and_update({'uid': uid}, {'last_login': str(datetime.now())})
+        user = UserMapper.find_one_and_update\
+            ({'uid': uid}, {'$set': {'last_login': str(datetime.now())}})
         if user is None:
             raise NotFoundError("User not found.")
         access_token = create_access_token(identity=uid, fresh=True, expires_delta=False)
@@ -26,7 +27,7 @@ class UserService:
 
     @classmethod
     def register(cls, data):
-        """Register service: registers a user with data passed in data dictionary. Returns
+        """Register services: registers a user with data passed in data dictionary. Returns
         the user id of the new user"""
         user = cls.schema.load(data)
         if cls._user_exists(user.uid):
@@ -38,7 +39,7 @@ class UserService:
 
     @classmethod
     def get_profile(cls, uid):
-        """Get profile service: returns user profile of user with user id uid"""
+        """Get profile services: returns user profile of user with user id uid"""
         user = UserMapper.get_one({"uid": uid})
         if user is None:
             raise NotFoundError("User not found.")
@@ -46,7 +47,7 @@ class UserService:
 
     @classmethod
     def modify_profile(cls, uid, user):
-        """Modify profile service: returns"""
+        """Modify profile services: returns"""
         user = UserMapper.modify({"uid": uid}, cls.schema.load(user))
         return cls.schema.dump(user)
 

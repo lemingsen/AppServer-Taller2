@@ -26,11 +26,48 @@ class ProductData(Data):
     def __init__(self):
         Data.__init__(self)
         self.product_id = "5bbe37a1e3c00c493839d19e"
+        self.valid_product = {
+            "_id": "5bd7503ce3c00c227004742b",
+            "categories": [
+                "mesa",
+                "usado",
+                "rectangular"
+            ],
+            "description": "Mesa Cuadrada",
+            "location": {
+                "x": 25.2084,
+                "y": 55.2719
+            },
+            "name": "Mesa",
+            "payment_methods": [
+                "visa",
+                "amex",
+                "bitcoin"
+            ],
+            "pictures": [
+                "https://www.mesas.com/1.jpg",
+                "https://www.mesas.com/2.jpg",
+                "https://www.mesas.com/3.jpg"
+            ],
+            "price": 543.32,
+            "published": "2018-10-29 15:23:56.443754",
+            "seller": "YmjgZM06jVWrbGnOuUfTItMMZx22",
+            "units": 12
+        }
+
         self.invalid_product = {
             "name": "Mesa",
             "description": "Mesa Cuadrada",
             "seller": "YmjgZM06jVWrbGnOuUfTItMMZx22",
             "units": 12
+        }
+
+        self.invalid_question = {
+            "pregunta": "Esta es una pregunta invalida?"
+        }
+
+        self.valid_question = {
+            "question": "Esta es una pregunta valida?"
         }
 
         self.several_valid_products = [

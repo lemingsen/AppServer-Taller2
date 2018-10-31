@@ -201,7 +201,7 @@ paths:
       parameters:
         - in: body
           name: body
-          description: user object
+          description: product
           required: true
           schema:
             $ref: '#/definitions/ProductWithoutSeller'
@@ -270,7 +270,43 @@ paths:
         '404':
           description: product not found
         '422':
-          description: invalid token payload  
+          description: invalid token payload
+  /products/questions/{id}:
+    post:
+        security:
+          - Bearer: []
+        tags:
+          - products
+        summary: Add question about a product
+        description: Adds a a question about product with product id {id}. Returns the updated product.
+        operationId: addQuestion
+        produces:
+          - application/json
+        parameters:
+          - name: id
+            in: path
+            description: product id
+            required: true
+            type: string
+          - in: body
+            name: body
+            description: question object
+            required: true
+            schema:
+              $ref: '#/definitions/Question'
+        responses:
+          '200':
+            description: successful operation
+            schema:
+              $ref: '#/definitions/Product'
+          '400':
+            description: bad request
+          '401':
+            description: unauthorized
+          '404':
+            description: product not found
+          '422':
+            description: invalid token payload
 securityDefinitions:
   Bearer:
     type: apiKey
@@ -351,6 +387,32 @@ definitions:
         type: array
         items:
           type: string
+      questions:
+        type: array
+        items:
+          type: object
+          properties:
+            question_id:
+              type: string
+            datetime:
+              type: string
+            question:
+              type: string
+            uid:
+              type: string
+            answers:
+              type: array
+              items:
+                type: object
+                properties:
+                  answer_id:
+                    type: string
+                  datetime:
+                    type: string
+                  answer:
+                    type: string
+                  uid:
+                    type: string
       payment_methods:
         type: array
         items:
@@ -480,5 +542,8 @@ definitions:
             units:
               type: integer
               format: int64
-  
-      
+  Question:
+    type: object
+    properties:
+      question:
+        type: string
