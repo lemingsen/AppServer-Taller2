@@ -12,10 +12,10 @@ class Answer:
 
 class AnswerSchema(Schema):
     """Marshmallow answer schema"""
-    id = fields.Int()
-    datetime = fields.DateTime
+    answer_id = fields.Str()
+    datetime = fields.Str()
     answer = fields.Str(required=True)
-    uid = fields.Str(requided=True)
+    uid = fields.Str()
 
     @post_load
     def make_answer(self, data):

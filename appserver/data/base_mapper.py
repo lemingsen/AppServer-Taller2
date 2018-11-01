@@ -58,8 +58,10 @@ class BaseMapper:
         """Modifica un documento con el nuevo pasado en object. Si no lo encuentra
         lanza una excepción NotFound"""
         data = cls.schema.dump(model)
-        document = mongo.db[cls.collection].find_one_and_replace\
-            (filters, data, return_document=ReturnDocument.AFTER)
+        document = mongo.db[cls.collection].find_one_and_replace(
+            filters, data,
+            return_document=ReturnDocument.AFTER
+        )
         if document is None:
             abort(404)
         ret = cls.schema.load(document)
@@ -70,8 +72,10 @@ class BaseMapper:
         """Busca un documento que coincida con los parámetros pasados en filters y actualiza
         los campos pasados en update"""
         ret = None
-        document = mongo.db[cls.collection].find_one_and_update\
-            (filters, update, return_document=ReturnDocument.AFTER)
+        document = mongo.db[cls.collection].find_one_and_update(
+            filters, update,
+            return_document=ReturnDocument.AFTER
+        )
         if document is not None:
             ret = cls.schema.load(document)
         return ret

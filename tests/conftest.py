@@ -26,6 +26,7 @@ class ProductData(Data):
     def __init__(self):
         Data.__init__(self)
         self.product_id = "5bbe37a1e3c00c493839d19e"
+        self.question_id = "5bbe37a1e3c00d493439d19e"
         self.valid_product = {
             "_id": "5bd7503ce3c00c227004742b",
             "categories": [
@@ -60,6 +61,14 @@ class ProductData(Data):
             "description": "Mesa Cuadrada",
             "seller": "YmjgZM06jVWrbGnOuUfTItMMZx22",
             "units": 12
+        }
+
+        self.valid_answer = {
+            "answer": "Esta es una respuesta valida"
+        }
+
+        self.invalid_answer = {
+            "respuesta": "Esta es una respuesta invalida"
         }
 
         self.invalid_question = {

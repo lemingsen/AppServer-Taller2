@@ -3,6 +3,7 @@ from datetime import datetime
 import bson
 from appserver.models.product import ProductSchema
 from appserver.models.question import QuestionSchema
+from appserver.models.answer import AnswerSchema
 from appserver.data.product_mapper import ProductMapper
 from appserver.services.exceptions import NotFoundError, ForbiddenError
 
@@ -62,10 +63,18 @@ class ProductsService:
         return cls.schema.dump(product)
 
     @classmethod
-    def add_answer(cls, product_id, question_id):
+    def add_answer(cls, answer_dict, product_id, question_id, uid):
         """Add answer services: adds an answer to question_id question in
          product_id product"""
-        pass
+        answer_schema = AnswerSchema()
+        answer = answer_schema.load(answer_dict)
+        answer.answer_id = bson.ObjectId()
+        answer.uid = uid
+        answer.datetime = str(datetime.now())
+        product = ProductMapper.add_answer(product_id, question_id, answer_schema.dump(answer))
+        if product is None:
+            raise NotFoundError("Product not found.")
+        return cls.schema.dump(product)
 
     @classmethod
     def buy(cls, seller_id, buyer_id, quantity):

@@ -64,6 +64,21 @@ def test_add_question_if_product_not_found_raises_not_found_error(add_question_m
         ProductsService.add_question(product_data.valid_question, product_data.product_id, user_data.uid)
 
 
-def test_add_question_if_not_valid_question_format_raises_validation_error(product_data, user_data):
+def test_add_question_if_not_valid_question_raises_validation_error(product_data, user_data):
     with pytest.raises(ValidationError):
         ProductsService.add_question(product_data.invalid_question, product_data.product_id, user_data.uid)
+
+
+@patch.object(appserver.data.product_mapper.ProductMapper, 'add_answer')
+def test_add_answer_if_product_not_found_raises_not_found_error(add_answer_mock, product_data, user_data):
+    add_answer_mock.return_value = None
+    with pytest.raises(NotFoundError):
+        ProductsService.add_answer(product_data.valid_answer, product_data.product_id,
+                                   product_data.question_id, user_data.uid)
+
+
+def test_add_answer_if_not_valid_answer_raises_validation_error(product_data, user_data):
+    with pytest.raises(ValidationError):
+        ProductsService.add_answer(product_data.invalid_answer, product_data.product_id,
+                                   product_data.question_id, user_data.uid)
+

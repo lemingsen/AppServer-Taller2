@@ -67,9 +67,15 @@ def add_product_question(product_id):
     return jsonify(product), 200
 
 
-@api_bp.route('/products/<string:product_id>/<string:question_id>/answers', methods=['POST'])
+@api_bp.route('/products/<string:product_id>/questions/<string:question_id>/answers',
+              methods=['POST'])
 @fresh_jwt_required
 def add_product_answer(product_id, question_id):
     """Servicio de alta de respuesta a pregunta:
     permite responder una pregunta que fue realizada."""
-    pass
+    uid = get_jwt_identity()
+    if not request.is_json:
+        abort(400)
+    answer = request.get_json()
+    product = ProductsService.add_answer(answer, product_id, question_id, uid)
+    return jsonify(product), 200

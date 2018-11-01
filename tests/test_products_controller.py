@@ -81,4 +81,28 @@ def test_add_question_if_invalid_parameters_in_body_400_response(client, product
     assert response.status_code == 400
 
 
+def test_add_answer_if_product_does_not_exist_404_response(client, product_data):
+    response = client.post('products/5bbe37a1e3c00f593839d19e/questions/5bbe36a1e3c00f593839d19e/answers',
+                           headers=product_data.valid_token_header(),
+                           data=json.dumps(product_data.valid_answer),
+                           content_type='application/json')
+    assert response.status_code == 404
+
+
+def test_add_answer_if_question_does_not_exist_404_response(client, product_data):
+    response = client.post('products/5bbe37a1e3c00f593839d19e/questions/5bbe36a1e3c00f593839d19e/answers',
+                           headers=product_data.valid_token_header(),
+                           data=json.dumps(product_data.valid_answer),
+                           content_type='application/json')
+    assert response.status_code == 404
+
+
+def test_add_answer_if_invalid_parameters_in_body_400_response(client, product_data):
+    response = client.post('products/5bbe37a1e3c00f593839d19e/questions/5bbe36a1e3c00f593839d19e/answers',
+                           headers=product_data.valid_token_header(),
+                           data=json.dumps(product_data.invalid_answer),
+                           content_type='application/json')
+    assert response.status_code == 400
+
+
 
