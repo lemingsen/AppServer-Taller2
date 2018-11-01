@@ -2,7 +2,7 @@
 from flask_jwt_extended import fresh_jwt_required, get_jwt_identity
 from flask import jsonify, request, abort
 from appserver.controllers import api_bp
-from appserver.services.products_service import ProductsService
+from appserver.services.product_services import ProductsService
 # pylint: disable=W0613
 
 

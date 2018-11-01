@@ -1,7 +1,7 @@
 from unittest.mock import patch
 import pytest
 from marshmallow import ValidationError
-from appserver.services.users_service import UserService
+from appserver.services.user_services import UserService
 import appserver.data.user_mapper
 import appserver.utils.firebase
 from appserver.services.exceptions import NotFoundError, UserExistsError
@@ -20,7 +20,7 @@ def test_modify_profile_if_wrong_schema_raises_validation_error():
     pass
 
 
-@patch.object(appserver.services.users_service.UserService, '_user_exists')
+@patch.object(appserver.services.user_services.UserService, '_user_exists')
 def test_register_if_user_exists_raises_user_exists_error(user_exists_mock, user_data):
     user_exists_mock.return_value = True
     with pytest.raises(UserExistsError):

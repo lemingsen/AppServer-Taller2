@@ -1,7 +1,7 @@
 """Product endpoints related tests"""
 from unittest.mock import patch
 import json
-import appserver.services.products_service
+import appserver.services.product_services
 import appserver.data.product_mapper
 
 
@@ -16,7 +16,7 @@ def test_get_products_with_invalid_token_returns_422_response(client, product_da
     assert response.status_code == 422
 
 
-@patch.object(appserver.services.products_service.ProductsService, 'get_products')
+@patch.object(appserver.services.product_services.ProductsService, 'get_products')
 def test_get_products_with_token_returns_200_response(get_products_mock, client, product_data):
 
     get_products_mock.return_value = product_data.get_products_return_value()

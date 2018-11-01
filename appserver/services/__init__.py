@@ -1,2 +1,2 @@
 """Service package"""
-from appserver.services import exceptions, products_service, users_service
+from appserver.services import exceptions, product_services, user_services
