@@ -131,32 +131,29 @@ paths:
       tags:
         - products
       summary: Get products
-      description: Returns the matching products
+      description: Returns the matching products with the parameters sent. If no parameters are sent, it returns all the available products.
       operationId: getProducts
       produces:
         - application/json
       parameters:
         - in: query
-          name: name
+          name: text
           type: string
-          description: product name
-        - in: query
-          name: description
-          type: string
-          description: product description
-        - in: query
-          name: seller
-          type: string
-          description: product seller id
+          description: Text to lookup in name and description of the product. Can have several text parameters.
         - in: query
           name: units
           type: integer
-          description: product available quantity
+          description: Minimum units available to show the product.
         - in: query
-          name: price
+          name: min_price
           type: number
           format: float
-          description: product category
+          description: Minimum price of the product.
+        - in: query
+          name: max_price
+          type: number
+          format: float
+          description: Minimum price of the product.
         - in: query
           name: x
           type: number
@@ -170,11 +167,11 @@ paths:
         - in: query
           name: categories
           type: string
-          description: product category
+          description: Product category. Can have sevetal categories parameters.
         - in: query
           name: payment_methods
           type: string
-          description: product available payment method
+          description: Products payment methods. Can have sevetal payment methods parameters.
       responses:
         '200':
           description: successful operation
@@ -307,7 +304,7 @@ paths:
             description: product not found
           '422':
             description: invalid token payload
-  /products/{product_id}/questions/{question_id}/answers:
+  /products/{id}/questions/{question_id}/answers:
     post:
         security:
           - Bearer: []
@@ -319,7 +316,7 @@ paths:
         produces:
           - application/json
         parameters:
-          - name: product_id
+          - name: id
             in: path
             description: product id
             required: true

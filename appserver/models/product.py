@@ -6,13 +6,29 @@ from appserver.models.question import QuestionSchema
 # pylint: disable=R0903,R0201
 
 
-class Product:
+class Product():
     """Product"""
     def __init__(self, **kwargs):
         self.categories = []
         self.questions = []
         for key, value in kwargs.items():
             setattr(self, key, value)
+
+    # def add_question(self, question):
+    #     self.questions.append(question)
+    #
+    # def add_answer(self, answer):
+    #     ret = False
+    #     for question in self.questions:
+    #         if question.question_id == answer.question_id:
+    #             question.answers.append(answer)
+    #             ret = True
+    #             break
+    #     return ret
+    #
+    # def buy(self, quantity, buyer_id):
+    #     if quantity > self.units:
+    #         return None
 
 
 class ProductSchema(Schema):

@@ -1,6 +1,5 @@
 """Base models"""
 from pymongo import ReturnDocument
-from flask import abort
 from bson.objectid import ObjectId
 import bson.objectid
 from marshmallow import ValidationError
@@ -57,14 +56,14 @@ class BaseMapper:
     def modify(cls, filters, model):
         """Modifica un documento con el nuevo pasado en object. Si no lo encuentra
         lanza una excepción NotFound"""
+        ret = None
         data = cls.schema.dump(model)
         document = mongo.db[cls.collection].find_one_and_replace(
             filters, data,
             return_document=ReturnDocument.AFTER
         )
-        if document is None:
-            abort(404)
-        ret = cls.schema.load(document)
+        if document is not None:
+            ret = cls.schema.load(document)
         return ret
 
     @classmethod

@@ -11,7 +11,19 @@ from appserver.services.product_services import ProductsService
 def get_products():
     """Servicio de búsqueda de productos: Devuelve un listado
      de productos utilizando varios de sus atributos como filtros"""
-    products = ProductsService.get_products(request.args.to_dict())
+
+    # name: multivalued
+    # description: multivalued
+    # units
+    # min_price:
+    # max_price:
+    # x:
+    # y:
+    # categories: multivalued
+    # payment_methods: multivalued
+    # dic = request.args.to_dict(flat=False)
+    # return jsonify(dic), 200
+    products = ProductsService.get_products(request.args.to_dict(flat=False))
     return jsonify(count=len(products), result=products), 200
 
 

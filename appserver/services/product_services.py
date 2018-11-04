@@ -6,6 +6,7 @@ from appserver.models.question import QuestionSchema
 from appserver.models.answer import AnswerSchema
 from appserver.data.product_mapper import ProductMapper
 from appserver.services.exceptions import NotFoundError, ForbiddenError
+from appserver.models.query import ProductsQuerySchema
 
 
 class ProductsService:
@@ -32,8 +33,14 @@ class ProductsService:
     def get_products(cls, filters=None):
         """Get products services: returns all the
          products that match with filters parameters"""
+
+        query = None
+        if filters is not None:
+            products_query_schema = ProductsQuerySchema()
+            query_builder = products_query_schema.load(filters)
+            query = query_builder.get_query()
         ret = []
-        products = ProductMapper.get_many(filters)
+        products = ProductMapper.get_many(query)
         if not products:
             raise NotFoundError("No product matches the query.")
         for product in products:
