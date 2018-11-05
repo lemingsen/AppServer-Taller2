@@ -112,7 +112,7 @@ paths:
           description: user object
           required: true
           schema:
-            $ref: '#/definitions/UserWithId'
+            $ref: '#/definitions/User'
       responses:
         '200':
           description: successful operation
@@ -412,6 +412,33 @@ paths:
           description: product category id
           required: true
           type: string
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: not valid product category id
+        '404':
+          description: product category not found
+    put:
+      tags:
+        - products
+      summary: Modifies a product category
+      description: Modifies the product category with the id sent
+      operationId: modifyCategory
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: product category id
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: category
+          required: true
+          schema:
+            $ref: '#/definitions/CategoryInput'   
       responses:
         '200':
           description: successful operation

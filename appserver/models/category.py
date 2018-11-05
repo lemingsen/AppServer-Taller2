@@ -7,6 +7,7 @@ from appserver.utils.mongo import ObjectId
 class Category:
     """Category"""
     def __init__(self, **kwargs):
+        self._id = None
         for key, value in kwargs.items():
             setattr(self, key, value)
 

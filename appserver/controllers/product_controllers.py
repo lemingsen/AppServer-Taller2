@@ -89,6 +89,16 @@ def add_category():
     return jsonify(result='success'), 200
 
 
+@api_bp.route('/products/categories/<string:category_id>', methods=['PUT'])
+def modify_category(category_id):
+    """Modifica una categoría de producto"""
+    if not request.is_json:
+        abort(400)
+    category = request.get_json()
+    ProductsService.modify_category(category_id, category)
+    return jsonify(result='success'), 200
+
+
 @api_bp.route('/products/categories/<string:category_id>', methods=['DELETE'])
 def delete_category(category_id):
     """Borra la categoría de productos especificada por su id"""

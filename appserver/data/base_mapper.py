@@ -54,8 +54,8 @@ class BaseMapper:
 
     @classmethod
     def modify(cls, filters, model):
-        """Modifica un documento con el nuevo pasado en object. Si no lo encuentra
-        lanza una excepción NotFound"""
+        """Modifica un documento con el nuevo pasado en model. Si no lo encuentra
+        devuelve None"""
         ret = None
         data = cls.schema.dump(model)
         document = mongo.db[cls.collection].find_one_and_replace(
