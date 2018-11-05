@@ -39,6 +39,9 @@ class ProductsQuery:
         if 'payment_methods' in self.params:
             payment_methods_query = {'payment_methods': {'$in': self.params['payment_methods']}}
             query.update(payment_methods_query)
+        if 'seller' in self.params:
+            seller_query = {'seller': self.params['seller']}
+            query.update(seller_query)
         return query
 
 
@@ -52,13 +55,14 @@ class ProductsQuerySchema(Schema):
     y = fields.List(fields.Float())
     categories = fields.List(fields.Str())
     payment_methods = fields.List(fields.Str())
+    seller = fields.List(fields.Str())
 
     @post_load
     def make_products_query(self, data):
         """Returns a ProductsQuery object with the parameters passed in data dictionary"""
         keys = ['text', 'units', 'min_price', 'max_price',
-                'x', 'y', 'categories', 'payment_methods']
-        single_value_keys = ['units', 'min_price', 'max_price', 'x', 'y']
+                'x', 'y', 'categories', 'payment_methods', 'seller']
+        single_value_keys = ['units', 'min_price', 'max_price', 'x', 'y', 'seller']
         params = dict()
         for key in keys:
             if key in data:

@@ -158,12 +158,12 @@ paths:
           name: x
           type: number
           format: float
-          description: buyer x coordinate location
+          description: Buyer x coordinate location
         - in: query
           name: y
           type: number
           format: float
-          description: buyer y coordinate location
+          description: Buyer y coordinate location
         - in: query
           name: categories
           type: string
@@ -172,6 +172,10 @@ paths:
           name: payment_methods
           type: string
           description: Products payment methods. Can have sevetal payment methods parameters.
+        - in: query
+          name: seller
+          type: string
+          description: Seller uid.          
       responses:
         '200':
           description: successful operation
