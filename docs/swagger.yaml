@@ -349,6 +349,76 @@ paths:
             description: product not found
           '422':
             description: invalid token payload
+  /products/categories:
+    post:
+        tags:
+          - products
+        summary: Adds a product category.
+        description: Adds a product category.
+        operationId: addCategory
+        produces:
+          - application/json
+        parameters:
+          - in: body
+            name: body
+            description: category
+            required: true
+            schema:
+              $ref: '#/definitions/CategoryInput'
+        responses:
+          '200':
+            description: successful operation
+            schema:
+              $ref: '#/definitions/Category'
+          '400':
+            description: bad request
+          '404':
+            description: product not found
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - products
+      summary: Get product categories
+      description: Gets all available product categories.
+      operationId: getCategories
+      produces:
+        - application/json
+      responses:
+          '200':
+            description: successful operation
+            schema:
+              $ref: '#/definitions/CategoryArray'
+          '400':
+            description: bad request
+          '401':
+            description: unauthorized
+          '404':
+            description: product not found
+          '422':
+            description: invalid token payload
+  /products/categories/{id}:
+    delete:
+      tags:
+        - products
+      summary: Delete product category
+      description: Deletes the product category with the id sent
+      operationId: deleteCategory
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: product category id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: not valid product category id
+        '404':
+          description: product category not found
 securityDefinitions:
   Bearer:
     type: apiKey
@@ -596,3 +666,31 @@ definitions:
     properties:
       answer:
         type: string
+  CategoryInput:
+    type: object
+    properties:
+      name:
+        type: string
+      image:
+        type: string
+  Category:
+    type: object
+    properties:
+      _id:
+        type: string
+      name:
+        type: string
+      image:
+        type: string
+  CategoryArray:
+    type: array
+    items:
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+        image:
+          type: string
+        

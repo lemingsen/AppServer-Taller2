@@ -4,7 +4,9 @@ import bson
 from appserver.models.product import ProductSchema
 from appserver.models.question import QuestionSchema
 from appserver.models.answer import AnswerSchema
+from appserver.models.category import CategorySchema
 from appserver.data.product_mapper import ProductMapper
+from appserver.data.category_mapper import CategoryMapper
 from appserver.services.exceptions import NotFoundError, ForbiddenError
 from appserver.models.query import ProductsQuerySchema
 
@@ -39,10 +41,10 @@ class ProductsService:
             products_query_schema = ProductsQuerySchema()
             query_builder = products_query_schema.load(filters)
             query = query_builder.get_query()
-        ret = []
         products = ProductMapper.get_many(query)
         if not products:
             raise NotFoundError("No product matches the query.")
+        ret = []
         for product in products:
             ret.append(cls.schema.dump(product))
         return ret
@@ -84,9 +86,27 @@ class ProductsService:
         return cls.schema.dump(product)
 
     @classmethod
-    def buy(cls, seller_id, buyer_id, quantity):
-        """Buy product services:"""
-        pass
+    def get_categories(cls):
+        """Returns available product categories"""
+        category_schema = CategorySchema()
+        categories = CategoryMapper.get_many()
+        ret = []
+        for category in categories:
+            ret.append(category_schema.dump(category))
+        return ret
+
+    @classmethod
+    def add_category(cls, category_dict):
+        """Adds a product category"""
+        category_schema = CategorySchema()
+        category = category_schema.load(category_dict)
+        return CategoryMapper.insert(category_schema.dump(category))
+
+    @classmethod
+    def delete_category(cls, category_id):
+        """Deletes a product category"""
+        if not CategoryMapper.delete_one_by_id(category_id):
+            raise NotFoundError("Category not found.")
 
     @classmethod
     def _product_exists_and_belongs_to_user(cls, uid, product_id):

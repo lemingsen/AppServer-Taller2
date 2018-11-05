@@ -11,18 +11,6 @@ from appserver.services.product_services import ProductsService
 def get_products():
     """Servicio de búsqueda de productos: Devuelve un listado
      de productos utilizando varios de sus atributos como filtros"""
-
-    # name: multivalued
-    # description: multivalued
-    # units
-    # min_price:
-    # max_price:
-    # x:
-    # y:
-    # categories: multivalued
-    # payment_methods: multivalued
-    # dic = request.args.to_dict(flat=False)
-    # return jsonify(dic), 200
     products = ProductsService.get_products(request.args.to_dict(flat=False))
     return jsonify(count=len(products), result=products), 200
 
@@ -33,16 +21,6 @@ def get_product(product_id):
     """Devuelve un producto por su id"""
     product = ProductsService.get_product_by_id(product_id)
     return jsonify(product), 200
-
-
-@api_bp.route('/products/<string:product_id>/buy', methods=['POST'])
-@fresh_jwt_required
-def buy_product(product_id):
-    """Servicio de compra: Este servicio permite realizar la compra
-     de un producto que se encuentra publicado. Devuelve un código
-     que identifica la compra de forma única y que permite conocer
-     el estado de la misma (tracking)"""
-    pass
 
 
 @api_bp.route('/products', methods=['POST'])
@@ -91,3 +69,28 @@ def add_product_answer(product_id, question_id):
     answer = request.get_json()
     product = ProductsService.add_answer(answer, product_id, question_id, uid)
     return jsonify(product), 200
+
+
+@api_bp.route('/products/categories', methods=['GET'])
+@fresh_jwt_required
+def get_categories():
+    """Devuelve las categorías de productos existentes"""
+    categories = ProductsService.get_categories()
+    return jsonify(categories), 200
+
+
+@api_bp.route('/products/categories', methods=['POST'])
+def add_category():
+    """Agrega una categoría de productos"""
+    if not request.is_json:
+        abort(400)
+    category = request.get_json()
+    ProductsService.add_category(category)
+    return jsonify(result='success'), 200
+
+
+@api_bp.route('/products/categories/<string:category_id>', methods=['DELETE'])
+def delete_category(category_id):
+    """Borra la categoría de productos especificada por su id"""
+    ProductsService.delete_category(category_id)
+    return jsonify(result='success'), 200
