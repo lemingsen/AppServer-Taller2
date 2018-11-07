@@ -564,7 +564,7 @@ definitions:
         items:
           type: object
           properties:
-            question_id:
+            _id:
               type: string
             datetime:
               type: string
@@ -577,7 +577,7 @@ definitions:
               items:
                   type: object
                   properties:
-                    answer_id:
+                    _id:
                       type: string
                     datetime:
                       type: string
