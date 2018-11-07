@@ -30,7 +30,7 @@ class UserService:
         """Register services: registers a user with data passed in data dictionary. Returns
         the user id of the new user"""
         user = cls.schema.load(data)
-        if cls._user_exists(user.uid):
+        if UserMapper.exists({'uid': user.uid}):
             raise DataExistsError("User exists.")
         user.member_since = str(datetime.now())
         user.last_login = user.member_since
@@ -51,11 +51,3 @@ class UserService:
         user = UserMapper.modify({"uid": uid}, cls.schema.load(user))
         return cls.schema.dump(user)
 
-    @classmethod
-    def _user_exists(cls, uid):
-        """Verifies if user with user id uid exists.
-        Returns True if exists. Only for internal use."""
-        ret = False
-        if UserMapper.get_one({"uid": uid}) is not None:
-            ret = True
-        return ret

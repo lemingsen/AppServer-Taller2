@@ -21,7 +21,7 @@ def test_modify_profile_if_wrong_schema_raises_validation_error(user_data):
         UserService.modify_profile(user_data.uid, user_data.invalid_user)
 
 
-@patch.object(appserver.services.user_services.UserService, '_user_exists')
+@patch.object(appserver.data.user_mapper.UserMapper, 'exists')
 def test_register_if_user_exists_raises_user_exists_error(user_exists_mock, user_data):
     user_exists_mock.return_value = True
     with pytest.raises(DataExistsError):
