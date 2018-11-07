@@ -90,6 +90,35 @@ class ProductData(Data):
             "units": 12
         }
 
+        self.valid_product_from_other_user_than_valid_token_header = {
+            "_id": "5bd7503ce3c00c227004742b",
+            "categories": [
+                "mesa",
+                "usado",
+                "rectangular"
+            ],
+            "description": "Mesa Cuadrada",
+            "location": {
+                "x": 25.2084,
+                "y": 55.2719
+            },
+            "name": "Mesa",
+            "payment_methods": [
+                "visa",
+                "amex",
+                "bitcoin"
+            ],
+            "pictures": [
+                "https://www.mesas.com/1.jpg",
+                "https://www.mesas.com/2.jpg",
+                "https://www.mesas.com/3.jpg"
+            ],
+            "price": 543.32,
+            "published": "2018-10-29 15:23:56.443754",
+            "seller": "YmjgZM06jVWrbGnOu45fTItMMZx22",
+            "units": 12
+        }
+
         self.product_with_3_units = {
             "_id": "5bd7503ce3c00c227004742b",
             "categories": [
@@ -219,6 +248,10 @@ class ProductData(Data):
     def get_product_with_3_units(self):
         schema = ProductSchema()
         return schema.load(self.product_with_3_units)
+
+    def get_valid_product_from_other_user_than_valid_token_header(self):
+        schema = ProductSchema()
+        return schema.load(self.valid_product_from_other_user_than_valid_token_header)
 
 
 class UserData(Data):

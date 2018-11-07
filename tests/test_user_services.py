@@ -16,8 +16,9 @@ def test_login_if_user_not_found_raises_not_found_error(firebase_mock, um_mock, 
         UserService.login(user_data.valid_token)
 
 
-def test_modify_profile_if_wrong_schema_raises_validation_error():
-    pass
+def test_modify_profile_if_wrong_schema_raises_validation_error(user_data):
+    with pytest.raises(ValidationError):
+        UserService.modify_profile(user_data.uid, user_data.invalid_user)
 
 
 @patch.object(appserver.services.user_services.UserService, '_user_exists')

@@ -43,8 +43,9 @@ def test_add_product_if_body_not_json_400_response(client, product_data):
     assert response.status_code == 400
 
 
-def test_delete_product_without_token_401_response(client):
-    pass
+def test_delete_product_without_token_401_response(client, product_data):
+    response = client.delete('/products/5bbe37a3c00f593839d19e')
+    assert response.status_code == 401
 
 
 @patch.object(appserver.services.product_services.ProductsService, '_product_exists_and_belongs_to_user')
@@ -61,12 +62,12 @@ def test_delete_product_if_invalid_product_id_400_response(client, user_data, pr
     assert response.status_code == 400
 
 
-def test_delete_product_if_user_does_not_own_product_403_response(client, user_data, product_data):
-    pass
-
-
-def test_add_question_200_response(client):
-    pass
+@patch.object(appserver.data.product_mapper.ProductMapper, 'get_by_id')
+def test_delete_product_if_user_does_not_own_product_403_response(get_by_id_mock, client, user_data, product_data):
+    get_by_id_mock.return_value = product_data.get_valid_product_from_other_user_than_valid_token_header()
+    response = client.delete('/products/5bbe37a3c00f593839d19e',
+                             headers=product_data.valid_token_header())
+    assert response.status_code == 403
 
 
 @patch.object(appserver.data.product_mapper.ProductMapper, 'add_question')
