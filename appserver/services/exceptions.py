@@ -23,3 +23,11 @@ class ForbiddenError(Exception):
     def __init__(self, message):
         super(ForbiddenError, self).__init__(message)
         self.message = message
+
+
+class NotEnoughUnitsError(Exception):
+    """Raised when a user tries to buy more
+    units of a product that the ones available"""
+    def __init__(self, message):
+        super(NotEnoughUnitsError, self).__init__(message)
+        self.message = message

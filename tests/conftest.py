@@ -1,6 +1,7 @@
 import pytest
 import appserver
 from config import TestingConfig
+from appserver.models.product import ProductSchema
 
 
 class Data:
@@ -20,6 +21,38 @@ class Data:
 
     def empty_json(self):
         return {}
+
+    def not_json(self):
+        return "hola"
+
+
+class OrderData(Data):
+    def __init__(self):
+        Data.__init__(self)
+
+        self.valid_input_order = {
+            "product_id": "5bd7b28bc9133f00087dd8e8",
+            "units": 3,
+            "payment_method": "visa"
+        }
+
+        self.invalid_input_order = {
+            "productid": "5bd7b28bc9133f00087dd8e8",
+            "units": 3,
+            "payment_method": "visa"
+        }
+
+        self.negative_units_input_order = {
+            "product_id": "5bd7b28bc9133f00087dd8e8",
+            "units": -3,
+            "payment_method": "visa"
+        }
+
+        self.input_order_with_9_units = {
+            "product_id": "5bd7b28bc9133f00087dd8e8",
+            "units": 9,
+            "payment_method": "visa"
+        }
 
 
 class ProductData(Data):
@@ -54,6 +87,35 @@ class ProductData(Data):
             "published": "2018-10-29 15:23:56.443754",
             "seller": "YmjgZM06jVWrbGnOuUfTItMMZx22",
             "units": 12
+        }
+
+        self.product_with_3_units = {
+            "_id": "5bd7503ce3c00c227004742b",
+            "categories": [
+                "mesa",
+                "usado",
+                "rectangular"
+            ],
+            "description": "Mesa Cuadrada",
+            "location": {
+                "x": 25.2084,
+                "y": 55.2719
+            },
+            "name": "Mesa",
+            "payment_methods": [
+                "visa",
+                "amex",
+                "bitcoin"
+            ],
+            "pictures": [
+                "https://www.mesas.com/1.jpg",
+                "https://www.mesas.com/2.jpg",
+                "https://www.mesas.com/3.jpg"
+            ],
+            "price": 543.32,
+            "published": "2018-10-29 15:23:56.443754",
+            "seller": "YmjgZM06jVWrbGnOuUfTItMMZx22",
+            "units": 3
         }
 
         self.invalid_product = {
@@ -141,6 +203,10 @@ class ProductData(Data):
     def get_products_return_value(self):
         return self.several_valid_products
 
+    def get_product_with_3_units(self):
+        schema = ProductSchema()
+        return schema.load(self.product_with_3_units)
+
 
 class UserData(Data):
     def __init__(self):
@@ -165,8 +231,6 @@ class UserData(Data):
         }
 
 
-
-
 @pytest.fixture
 def client():
     app = appserver.create_app(TestingConfig)
@@ -182,3 +246,8 @@ def product_data():
 @pytest.fixture
 def user_data():
     yield UserData()
+
+
+@pytest.fixture
+def order_data():
+    yield OrderData()

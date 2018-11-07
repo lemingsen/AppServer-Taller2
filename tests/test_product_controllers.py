@@ -3,6 +3,7 @@ from unittest.mock import patch
 import json
 import appserver.services.product_services
 import appserver.data.product_mapper
+from appserver.services.exceptions import NotFoundError
 
 
 def test_get_products_without_token_returns_401_response(client):
@@ -45,7 +46,9 @@ def test_delete_product_without_token_401_response(client):
     pass
 
 
-def test_delete_product_if_not_found_404_response(client, user_data, product_data):
+@patch.object(appserver.services.product_services.ProductsService, '_product_exists_and_belongs_to_user')
+def test_delete_product_if_not_found_404_response(_product_exists_and_belongs_to_user_mock, client, user_data, product_data):
+    _product_exists_and_belongs_to_user_mock.side_effect = NotFoundError("Product does not exist.")
     response = client.delete('/products/5bbe37a1e3c00f593839d19e',
                              headers=product_data.valid_token_header())
     assert response.status_code == 404
@@ -65,7 +68,9 @@ def test_add_question_200_response(client):
     pass
 
 
-def test_add_question_if_product_does_not_exist_404_response(client, product_data):
+@patch.object(appserver.data.product_mapper.ProductMapper, 'add_question')
+def test_add_question_if_product_does_not_exist_404_response(add_question_mock, client, product_data):
+    add_question_mock.return_value = None
     response = client.post('products/5bbe37a1e3c00f593839d19e/questions',
                            headers=product_data.valid_token_header(),
                            data=json.dumps(product_data.valid_question),
@@ -81,7 +86,9 @@ def test_add_question_if_invalid_parameters_in_body_400_response(client, product
     assert response.status_code == 400
 
 
-def test_add_answer_if_product_does_not_exist_404_response(client, product_data):
+@patch.object(appserver.data.product_mapper.ProductMapper, 'add_answer')
+def test_add_answer_if_product_does_not_exist_404_response(add_answer_mock, client, product_data):
+    add_answer_mock.return_value = None
     response = client.post('products/5bbe37a1e3c00f593839d19e/questions/5bbe36a1e3c00f593839d19e/answers',
                            headers=product_data.valid_token_header(),
                            data=json.dumps(product_data.valid_answer),
@@ -89,7 +96,9 @@ def test_add_answer_if_product_does_not_exist_404_response(client, product_data)
     assert response.status_code == 404
 
 
-def test_add_answer_if_question_does_not_exist_404_response(client, product_data):
+@patch.object(appserver.data.product_mapper.ProductMapper, 'add_answer')
+def test_add_answer_if_question_does_not_exist_404_response(add_answer_mock, client, product_data):
+    add_answer_mock.return_value = None
     response = client.post('products/5bbe37a1e3c00f593839d19e/questions/5bbe36a1e3c00f593839d19e/answers',
                            headers=product_data.valid_token_header(),
                            data=json.dumps(product_data.valid_answer),

@@ -1,10 +1,12 @@
 """Error handlers"""
-from werkzeug.exceptions import BadRequest, Conflict, Unauthorized, NotFound, Forbidden
+from werkzeug.exceptions import BadRequest, Conflict, Unauthorized,\
+    NotFound, Forbidden, UnprocessableEntity
 from marshmallow import ValidationError
 from flask import jsonify
 from firebase_admin.auth import AuthError
 from appserver.controllers import api_bp
-from appserver.services.exceptions import UserExistsError, NotFoundError, ForbiddenError
+from appserver.services.exceptions import UserExistsError, NotFoundError,\
+    ForbiddenError, NotEnoughUnitsError
 # pylint: disable=W0613
 
 
@@ -46,3 +48,9 @@ def validation_error_handler(error):
 def forbidden_error_handler(error):
     """Error handler para operaciones no permitidas"""
     return jsonify(error=Forbidden.description, message=error.message), 403
+
+
+@api_bp.app_errorhandler(NotEnoughUnitsError)
+def not_enough_units_error_handler(error):
+    """Error handler para compras sin recursos"""
+    return jsonify(error=UnprocessableEntity.description, message=error.message), 422

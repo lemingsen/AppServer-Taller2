@@ -10,6 +10,8 @@ tags:
     description: User related operations
   - name: products
     description: Product related operations
+  - name: orders
+    description: Orders related operations
 schemes:
   - https
   - http
@@ -446,6 +448,35 @@ paths:
           description: not valid product category id
         '404':
           description: product category not found
+  /orders:
+    post:
+        tags:
+          - orders
+        summary: Creates a new order
+        description: Creates a new order buying a product
+        operationId: newOrder
+        produces:
+          - application/json
+        parameters:
+          - in: body
+            name: body
+            description: category
+            required: true
+            schema:
+              $ref: '#/definitions/NewOrderInput'
+        responses:
+          '200':
+            description: successful operation
+            schema:
+              $ref: '#/definitions/NewOrderOutput'
+          '400':
+            description: bad request
+          '401':
+            description: unauthorized
+          '404':
+            description: product not found
+          '422':
+            description: invalid token payload
 securityDefinitions:
   Bearer:
     type: apiKey
@@ -720,4 +751,19 @@ definitions:
           type: string
         image:
           type: string
+  NewOrderInput:
+    type: object
+    properties:
+      product_id:
+        type: string
+      units:
+        type: integer
+      payment_method:
+        type: string
+  NewOrderOutput:
+    type: object
+    properties:
+      order_tracking_number:
+        type: string
+
         

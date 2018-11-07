@@ -1,19 +1,24 @@
 """Product Model"""
-from marshmallow import Schema, fields, post_load
+from marshmallow import Schema, fields, post_load, validates, ValidationError
 from appserver.utils.mongo import ObjectId
 from appserver.models.location import LocationSchema
 from appserver.models.question import QuestionSchema
-# pylint: disable=R0903,R0201
+# pylint: disable=R0903,R0201,C0103
 
 
-class Product():
+class Product:
     """Product"""
     def __init__(self, **kwargs):
+        self._id = None
         self.categories = []
         self.questions = []
         for key, value in kwargs.items():
             setattr(self, key, value)
 
+    @property
+    def id(self):
+        """Product id property"""
+        return self._id
     # def add_question(self, question):
     #     self.questions.append(question)
     #
@@ -45,6 +50,18 @@ class ProductSchema(Schema):
     pictures = fields.List(fields.Url(), required=True)
     published = fields.Str()
     questions = fields.List(fields.Nested(QuestionSchema))
+
+    @validates('units')
+    def validate_units(self, value):
+        """Validates that product units are greater than zero"""
+        if value <= 0:
+            raise ValidationError("Product units must be greater than 0.")
+
+    @validates('price')
+    def validate_price(self, value):
+        """Validates that product price is greater than zero"""
+        if value <= 0:
+            raise ValidationError("Product price must be greater than 0.")
 
     @post_load
     def make_user(self, data):
