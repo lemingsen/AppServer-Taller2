@@ -1,12 +1,14 @@
 """User Model"""
 from marshmallow import Schema, fields, post_load, validate
 from appserver.utils.mongo import ObjectId
+from appserver.models.base import BaseModel
 # pylint: disable=R0903,R0201
 
 
-class User:
+class User(BaseModel):
     """User"""
     def __init__(self, **kwargs):
+        super().__init__()
         for key, value in kwargs.items():
             setattr(self, key, value)
 

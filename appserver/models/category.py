@@ -1,19 +1,16 @@
 """Category Model"""
 from marshmallow import Schema, fields, post_load, validate
 from appserver.utils.mongo import ObjectId
+from appserver.models.base import BaseModel
 # pylint: disable=R0903,R0201
 
 
-class Category:
+class Category(BaseModel):
     """Category"""
     def __init__(self, **kwargs):
-        self._id = None
+        super().__init__()
         for key, value in kwargs.items():
             setattr(self, key, value)
-
-    @property
-    def id(self):
-        return self._id
 
 
 class CategorySchema(Schema):

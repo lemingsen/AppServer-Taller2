@@ -1,5 +1,6 @@
 """Answer models"""
 from marshmallow import Schema, fields, post_load, validate
+from appserver.utils.mongo import ObjectId
 # pylint: disable=R0903,R0201
 
 
@@ -12,7 +13,7 @@ class Answer:
 
 class AnswerSchema(Schema):
     """Marshmallow answer schema"""
-    answer_id = fields.Str()
+    answer_id = ObjectId()
     datetime = fields.Str()
     answer = fields.Str(required=True, validate=validate.Length(
         min=1, error="Answer cannot be empty."))

@@ -50,4 +50,3 @@ class UserService:
         """Modify profile services: returns"""
         user = UserMapper.modify({"uid": uid}, cls.schema.load(user))
         return cls.schema.dump(user)
-

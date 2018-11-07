@@ -1,12 +1,14 @@
 """Order model"""
 from marshmallow import Schema, fields, post_load, validates, ValidationError, validate
 from appserver.utils.mongo import ObjectId
+from appserver.models.base import BaseModel
 # pylint: disable=R0903,R0201
 
 
-class Order:
+class Order(BaseModel):
     """Order"""
     def __init__(self, **kwargs):
+        super().__init__()
         for key, value in kwargs.items():
             setattr(self, key, value)
 

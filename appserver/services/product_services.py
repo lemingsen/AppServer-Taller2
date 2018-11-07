@@ -109,7 +109,9 @@ class ProductsService:
         """Modifies a product category"""
         category_schema = CategorySchema()
         category = category_schema.load(category_dict)
-        if CategoryMapper.exists({'_id': {'$ne': bson.ObjectId(category_id)}, 'name': category.name}):
+        if CategoryMapper.exists(
+                {'_id': {'$ne': bson.ObjectId(category_id)},
+                 'name': category.name}):
             raise DataExistsError("Product category already exists.")
         ret = CategoryMapper.modify({"_id": bson.ObjectId(category_id)}, category)
         if ret is None:

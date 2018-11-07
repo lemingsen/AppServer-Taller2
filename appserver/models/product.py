@@ -3,22 +3,19 @@ from marshmallow import Schema, fields, post_load, validates, ValidationError, v
 from appserver.utils.mongo import ObjectId
 from appserver.models.location import LocationSchema
 from appserver.models.question import QuestionSchema
-# pylint: disable=R0903,R0201,C0103
+from appserver.models.base import BaseModel
+# pylint: disable=R0903,R0201
 
 
-class Product:
+class Product(BaseModel):
     """Product"""
     def __init__(self, **kwargs):
-        self._id = None
+        super().__init__()
         self.categories = []
         self.questions = []
         for key, value in kwargs.items():
             setattr(self, key, value)
 
-    @property
-    def id(self):
-        """Product id property"""
-        return self._id
     # def add_question(self, question):
     #     self.questions.append(question)
     #
