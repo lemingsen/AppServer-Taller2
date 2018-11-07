@@ -24,6 +24,16 @@ class BaseMapper:
         return ret
 
     @classmethod
+    def exists(cls, filters):
+        """Busca un documento con los filtros pasados, si encuentra uno
+        devuelve True, de lo contrario False"""
+        ret = True
+        result = mongo.db[cls.collection].find(filters).limit(1)
+        if result.count() == 0:
+            ret = False
+        return ret
+
+    @classmethod
     def get_one(cls, filters=None):
         """Devuelve un documento que coincida con los atributos
         pasados en filters. Si no existe un documento que coincida con

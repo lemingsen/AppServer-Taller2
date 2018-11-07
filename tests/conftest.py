@@ -60,6 +60,7 @@ class ProductData(Data):
         Data.__init__(self)
         self.product_id = "5bbe37a1e3c00c493839d19e"
         self.question_id = "5bbe37a1e3c00d493439d19e"
+        self.category_id = "5bbe37a1e3c00d493439d19e"
         self.valid_product = {
             "_id": "5bd7503ce3c00c227004742b",
             "categories": [
@@ -199,6 +200,18 @@ class ProductData(Data):
                 "units": 12
             }
         ]
+
+        self.invalid_input_category = {
+            "nombre": "categoria"
+        }
+
+        self.valid_input_category = {
+            "name": "categoria"
+        }
+
+        self.empty_input_category = {
+            "name": ""
+        }
 
     def get_products_return_value(self):
         return self.several_valid_products

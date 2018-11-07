@@ -5,7 +5,7 @@ from marshmallow import ValidationError
 from flask import jsonify
 from firebase_admin.auth import AuthError
 from appserver.controllers import api_bp
-from appserver.services.exceptions import UserExistsError, NotFoundError,\
+from appserver.services.exceptions import DataExistsError, NotFoundError,\
     ForbiddenError, NotEnoughUnitsError
 # pylint: disable=W0613
 
@@ -31,7 +31,7 @@ def bad_request_error_handler(error):
     return jsonify(error=BadRequest.description), 400
 
 
-@api_bp.app_errorhandler(UserExistsError)
+@api_bp.app_errorhandler(DataExistsError)
 def conflict_error_handler(error):
     """Error handler para error 409 (Conflict)"""
     return jsonify(error=Conflict.code, message=error.message,

@@ -3,7 +3,7 @@ from datetime import datetime
 import os
 import json
 from flask_jwt_extended import create_access_token
-from appserver.services.exceptions import NotFoundError, UserExistsError
+from appserver.services.exceptions import NotFoundError, DataExistsError
 from appserver.utils.firebase import Firebase
 from appserver.data.user_mapper import UserMapper
 from appserver.models.user import UserSchema
@@ -31,7 +31,7 @@ class UserService:
         the user id of the new user"""
         user = cls.schema.load(data)
         if cls._user_exists(user.uid):
-            raise UserExistsError()
+            raise DataExistsError("User exists.")
         user.member_since = str(datetime.now())
         user.last_login = user.member_since
         uid = UserMapper.insert(cls.schema.load(data))

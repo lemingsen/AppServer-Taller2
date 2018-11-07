@@ -3,7 +3,8 @@ import pytest
 from marshmallow import ValidationError
 from appserver.services.product_services import ProductsService
 import appserver.data.product_mapper
-from appserver.services.exceptions import NotFoundError, ForbiddenError
+import appserver.data.category_mapper
+from appserver.services.exceptions import NotFoundError, ForbiddenError, DataExistsError
 
 
 def test_add_product_if_wrong_schema_raises_validation_error(product_data, user_data):
@@ -84,3 +85,32 @@ def test_add_answer_if_not_valid_answer_raises_validation_error(product_data, us
         ProductsService.add_answer(product_data.invalid_answer, product_data.product_id,
                                    product_data.question_id, user_data.uid)
 
+
+@patch.object(appserver.data.category_mapper.CategoryMapper, 'exists')
+def test_add_category_if_category_exists_raises_data_exists_error(exists_mock, product_data):
+    exists_mock.return_value = True
+    with pytest.raises(DataExistsError):
+        ProductsService.add_category(product_data.valid_input_category)
+
+
+@patch.object(appserver.data.category_mapper.CategoryMapper, 'exists')
+def test_modify_category_if_category_name_exists_raises_data_exists_error(exists_mock, product_data):
+    exists_mock.return_value = True
+    with pytest.raises(DataExistsError):
+        ProductsService.modify_category(product_data.category_id, product_data.valid_input_category)
+
+
+@patch.object(appserver.data.category_mapper.CategoryMapper, 'exists')
+@patch.object(appserver.data.category_mapper.CategoryMapper, 'modify')
+def test_modify_category_if_category_not_found_raises_not_found_error(modify_mock, exists_mock, product_data):
+    exists_mock.return_value = False
+    modify_mock.return_value = None
+    with pytest.raises(NotFoundError):
+        ProductsService.modify_category(product_data.category_id, product_data.valid_input_category)
+
+
+@patch.object(appserver.data.category_mapper.CategoryMapper, 'delete_one_by_id')
+def test_delete_category_if_category_not_found_raises_not_found_error(exists_mock, product_data):
+    exists_mock.return_value = False
+    with pytest.raises(NotFoundError):
+        ProductsService.delete_category(product_data.category_id)

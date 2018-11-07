@@ -7,7 +7,7 @@ from appserver.models.answer import AnswerSchema
 from appserver.models.category import CategorySchema
 from appserver.data.product_mapper import ProductMapper
 from appserver.data.category_mapper import CategoryMapper
-from appserver.services.exceptions import NotFoundError, ForbiddenError
+from appserver.services.exceptions import NotFoundError, ForbiddenError, DataExistsError
 from appserver.models.query import ProductsQuerySchema
 
 
@@ -100,6 +100,8 @@ class ProductsService:
         """Adds a product category"""
         category_schema = CategorySchema()
         category = category_schema.load(category_dict)
+        if CategoryMapper.exists({'name': category.name}):
+            raise DataExistsError("Product category already exists.")
         return CategoryMapper.insert(category_schema.dump(category))
 
     @classmethod
@@ -107,6 +109,8 @@ class ProductsService:
         """Modifies a product category"""
         category_schema = CategorySchema()
         category = category_schema.load(category_dict)
+        if CategoryMapper.exists({'_id': {'$ne': bson.ObjectId(category_id)}, 'name': category.name}):
+            raise DataExistsError("Product category already exists.")
         ret = CategoryMapper.modify({"_id": bson.ObjectId(category_id)}, category)
         if ret is None:
             raise NotFoundError("Category does not exist.")

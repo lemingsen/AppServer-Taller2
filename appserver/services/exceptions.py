@@ -9,11 +9,10 @@ class NotFoundError(Exception):
         self.message = message
 
 
-class UserExistsError(Exception):
-    """Raised when trying to register an already existent user"""
-    def __init__(self):
-        message = "User already exists."
-        super(UserExistsError, self).__init__(message)
+class DataExistsError(Exception):
+    """Raised when trying trying to add existent data"""
+    def __init__(self, message):
+        super(DataExistsError, self).__init__(message)
         self.message = message
 
 

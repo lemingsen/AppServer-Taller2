@@ -15,7 +15,7 @@ def test_register_if_body_is_not_json_returns_400_status(client, user_data):
 
 @patch.object(appserver.services.user_services.UserService, 'register')
 def test_register_if_user_exists_returns_409_status(register_mock, client, user_data):
-    register_mock.side_effect = appserver.services.exceptions.UserExistsError()
+    register_mock.side_effect = appserver.services.exceptions.DataExistsError("User exists.")
     response = client.post('/user/register', json=user_data.valid_user)
     assert response.status_code == 409
 

@@ -3,6 +3,7 @@ from unittest.mock import patch
 import json
 import appserver.services.product_services
 import appserver.data.product_mapper
+import appserver.data.category_mapper
 from appserver.services.exceptions import NotFoundError
 
 
@@ -112,6 +113,64 @@ def test_add_answer_if_invalid_parameters_in_body_400_response(client, product_d
                            data=json.dumps(product_data.invalid_answer),
                            content_type='application/json')
     assert response.status_code == 400
+
+
+def test_add_category_if_invalid_schema_400_response(client, product_data):
+    response = client.post('products/categories',
+                           headers=product_data.valid_token_header(),
+                           data=json.dumps(product_data.invalid_input_category),
+                           content_type='application/json')
+    assert response.status_code == 400
+
+
+def test_add_category_if_empty_category_400_response(client, product_data):
+    response = client.post('products/categories',
+                           headers=product_data.valid_token_header(),
+                           data=json.dumps(product_data.empty_input_category),
+                           content_type='application/json')
+    assert response.status_code == 400
+
+
+@patch.object(appserver.data.category_mapper.CategoryMapper, 'exists')
+def test_add_category_if_category_exists_409_response(exists_mock, client, product_data):
+    exists_mock.return_value = True
+    response = client.post('products/categories',
+                           headers=product_data.valid_token_header(),
+                           data=json.dumps(product_data.valid_input_category),
+                           content_type='application/json')
+    assert response.status_code == 409
+
+
+@patch.object(appserver.data.category_mapper.CategoryMapper, 'exists')
+def test_modify_category_if_category_exists_409_response(exists_mock, client, product_data):
+    exists_mock.return_value = True
+    response = client.put('products/categories/5be08844e3c00c20b1377151',
+                          headers=product_data.valid_token_header(),
+                          data=json.dumps(product_data.valid_input_category),
+                          content_type='application/json')
+    assert response.status_code == 409
+
+
+def test_modify_category_if_empty_category_400_response(client, product_data):
+    response = client.put('products/categories/5be08844e3c00c20b1377151',
+                          headers=product_data.valid_token_header(),
+                          data=json.dumps(product_data.empty_input_category),
+                          content_type='application/json')
+    assert response.status_code == 400
+
+
+@patch.object(appserver.data.category_mapper.CategoryMapper, 'delete_one_by_id')
+def test_delete_category_if_category_not_found_404_response(delete_one_by_id_mock, client, product_data):
+    delete_one_by_id_mock.return_value = False
+    response = client.delete('products/categories/5be08844e3c00c20b1377151',
+                             headers=product_data.valid_token_header(),
+                             data=json.dumps(product_data.empty_input_category),
+                             content_type='application/json')
+    assert response.status_code == 404
+
+
+
+
 
 
 
