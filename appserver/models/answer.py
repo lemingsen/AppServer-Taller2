@@ -1,5 +1,5 @@
 """Answer models"""
-from marshmallow import Schema, fields, post_load
+from marshmallow import Schema, fields, post_load, validate
 # pylint: disable=R0903,R0201
 
 
@@ -14,7 +14,8 @@ class AnswerSchema(Schema):
     """Marshmallow answer schema"""
     answer_id = fields.Str()
     datetime = fields.Str()
-    answer = fields.Str(required=True)
+    answer = fields.Str(required=True, validate=validate.Length(
+        min=1, error="Answer cannot be empty."))
     uid = fields.Str()
 
     @post_load

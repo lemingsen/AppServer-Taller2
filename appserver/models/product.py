@@ -1,5 +1,5 @@
 """Product Model"""
-from marshmallow import Schema, fields, post_load, validates, ValidationError
+from marshmallow import Schema, fields, post_load, validates, ValidationError, validate
 from appserver.utils.mongo import ObjectId
 from appserver.models.location import LocationSchema
 from appserver.models.question import QuestionSchema
@@ -39,8 +39,10 @@ class Product:
 class ProductSchema(Schema):
     """Product marshmallow schema"""
     _id = ObjectId()
-    name = fields.Str(required=True)
-    description = fields.Str(required=True)
+    name = fields.Str(required=True, validate=validate.Length(
+        min=1, error="Product name cannot be empty."))
+    description = fields.Str(required=True, validate=validate.Length(
+        min=1, error="Product description cannot be empty"))
     seller = fields.Str(required=True)
     units = fields.Int(required=True)
     price = fields.Float(required=True)

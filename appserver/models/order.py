@@ -1,5 +1,5 @@
 """Order model"""
-from marshmallow import Schema, fields, post_load, validates, ValidationError
+from marshmallow import Schema, fields, post_load, validates, ValidationError, validate
 from appserver.utils.mongo import ObjectId
 # pylint: disable=R0903,R0201
 
@@ -15,10 +15,12 @@ class OrderSchema(Schema):
     """marshmallow order schema"""
     _id = ObjectId()
     product_id = ObjectId(required=True)
-    product_name = fields.Str()
+    product_name = fields.Str(validate=validate.Length(
+        min=1, error="Product name cannot be empty"))
     units = fields.Int(required=True)
     unit_price = fields.Float()
-    payment_method = fields.Str(required=True)
+    payment_method = fields.Str(required=True, validate=validate.Length(
+        min=1, error="Payment method cannot be empty."))
     datetime = fields.Str()
     buyer = fields.Str()
     seller = fields.Str()
