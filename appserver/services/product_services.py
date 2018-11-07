@@ -66,7 +66,10 @@ class ProductsService:
         question.id = bson.ObjectId()
         question.uid = uid
         question.datetime = str(datetime.now())
-        product = ProductMapper.add_question(product_id, question_schema.dump(question))
+        product = ProductMapper.find_one_and_update(
+            {'_id': bson.ObjectId(product_id)},
+            {'$push': {'questions': question_schema.dump(question)}}
+        )
         if product is None:
             raise NotFoundError("Product not found.")
         return cls.schema.dump(product)
@@ -80,7 +83,10 @@ class ProductsService:
         answer.id = bson.ObjectId()
         answer.uid = uid
         answer.datetime = str(datetime.now())
-        product = ProductMapper.add_answer(product_id, question_id, answer_schema.dump(answer))
+        product = ProductMapper.find_one_and_update(
+            {'_id': bson.ObjectId(product_id), "questions._id": question_id},
+            {'$push': {"questions.$.answers": answer_schema.dump(answer)}}
+        )
         if product is None:
             raise NotFoundError("Product not found.")
         return cls.schema.dump(product)

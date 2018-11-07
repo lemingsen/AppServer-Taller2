@@ -60,9 +60,9 @@ def test_delete_product(_product_exists_and_belongs_to_user_mock,
     assert ProductsService.delete_product(user_data.uid, product_data.product_id)
 
 
-@patch.object(appserver.data.product_mapper.ProductMapper, 'add_question')
-def test_add_question_if_product_not_found_raises_not_found_error(add_question_mock, product_data, user_data):
-    add_question_mock.return_value = None
+@patch.object(appserver.data.product_mapper.ProductMapper, 'find_one_and_update')
+def test_add_question_if_product_not_found_raises_not_found_error(find_one_and_update_mock, product_data, user_data):
+    find_one_and_update_mock.return_value = None
     with pytest.raises(NotFoundError):
         ProductsService.add_question(product_data.valid_question, product_data.product_id, user_data.uid)
 
@@ -72,9 +72,9 @@ def test_add_question_if_not_valid_question_raises_validation_error(product_data
         ProductsService.add_question(product_data.invalid_question, product_data.product_id, user_data.uid)
 
 
-@patch.object(appserver.data.product_mapper.ProductMapper, 'add_answer')
-def test_add_answer_if_product_not_found_raises_not_found_error(add_answer_mock, product_data, user_data):
-    add_answer_mock.return_value = None
+@patch.object(appserver.data.product_mapper.ProductMapper, 'find_one_and_update')
+def test_add_answer_if_product_not_found_raises_not_found_error(find_one_and_update_mock, product_data, user_data):
+    find_one_and_update_mock.return_value = None
     with pytest.raises(NotFoundError):
         ProductsService.add_answer(product_data.valid_answer, product_data.product_id,
                                    product_data.question_id, user_data.uid)

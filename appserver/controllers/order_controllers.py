@@ -51,6 +51,5 @@ def get_sales():
 def get_purchases():
     """Devuelve las compras realizadas por el usuario"""
     uid = get_jwt_identity()
-    OrderServices.get_purchases(uid)
     purchases = OrderServices.get_purchases(uid)
     return jsonify(purchases), 200

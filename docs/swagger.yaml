@@ -450,6 +450,8 @@ paths:
           description: product category not found
   /orders:
     post:
+        security:
+          - Bearer: []
         tags:
           - orders
         summary: Creates a new order
@@ -475,6 +477,46 @@ paths:
             description: unauthorized
           '404':
             description: product not found
+          '422':
+            description: invalid token payload
+  /orders/sales:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - orders
+      summary: Get user's sales
+      description: Gets all the sales done by the user.
+      operationId: getSales
+      produces:
+        - application/json
+      responses:
+          '200':
+            description: successful operation
+            schema:
+              $ref: '#/definitions/MySalesPurchases'
+          '401':
+            description: unauthorized
+          '422':
+            description: invalid token payload
+  /orders/purchases:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - orders
+      summary: Get user's purchases
+      description: Gets all the purchases done by the user.
+      operationId: getPurchases
+      produces:
+        - application/json
+      responses:
+          '200':
+            description: successful operation
+            schema:
+              $ref: '#/definitions/MySalesPurchases'
+          '401':
+            description: unauthorized
           '422':
             description: invalid token payload
 securityDefinitions:
@@ -765,5 +807,26 @@ definitions:
     properties:
       order_tracking_number:
         type: string
-
+  MySalesPurchases:
+    type: array
+    items:
+      type: object
+      properties:
+        _id:
+          type: string
+        buyer:
+          type: string
+        payment_method:
+          type: string
+        product_id:
+          type: string
+        product_name:
+          type: string
+        seller:
+          type: string
+        total:
+          type: number
+          format: float
+        units:
+          type: integer
         

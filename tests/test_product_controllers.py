@@ -70,9 +70,9 @@ def test_delete_product_if_user_does_not_own_product_403_response(get_by_id_mock
     assert response.status_code == 403
 
 
-@patch.object(appserver.data.product_mapper.ProductMapper, 'add_question')
-def test_add_question_if_product_does_not_exist_404_response(add_question_mock, client, product_data):
-    add_question_mock.return_value = None
+@patch.object(appserver.data.product_mapper.ProductMapper, 'find_one_and_update')
+def test_add_question_if_product_does_not_exist_404_response(find_one_and_update_mock, client, product_data):
+    find_one_and_update_mock.return_value = None
     response = client.post('products/5bbe37a1e3c00f593839d19e/questions',
                            headers=product_data.valid_token_header(),
                            data=json.dumps(product_data.valid_question),
@@ -88,9 +88,9 @@ def test_add_question_if_invalid_parameters_in_body_400_response(client, product
     assert response.status_code == 400
 
 
-@patch.object(appserver.data.product_mapper.ProductMapper, 'add_answer')
-def test_add_answer_if_product_does_not_exist_404_response(add_answer_mock, client, product_data):
-    add_answer_mock.return_value = None
+@patch.object(appserver.data.product_mapper.ProductMapper, 'find_one_and_update')
+def test_add_answer_if_product_does_not_exist_404_response(find_one_and_update_mock, client, product_data):
+    find_one_and_update_mock.return_value = None
     response = client.post('products/5bbe37a1e3c00f593839d19e/questions/5bbe36a1e3c00f593839d19e/answers',
                            headers=product_data.valid_token_header(),
                            data=json.dumps(product_data.valid_answer),
@@ -98,9 +98,9 @@ def test_add_answer_if_product_does_not_exist_404_response(add_answer_mock, clie
     assert response.status_code == 404
 
 
-@patch.object(appserver.data.product_mapper.ProductMapper, 'add_answer')
-def test_add_answer_if_question_does_not_exist_404_response(add_answer_mock, client, product_data):
-    add_answer_mock.return_value = None
+@patch.object(appserver.data.product_mapper.ProductMapper, 'find_one_and_update')
+def test_add_answer_if_question_does_not_exist_404_response(find_one_and_update_mock, client, product_data):
+    find_one_and_update_mock.return_value = None
     response = client.post('products/5bbe37a1e3c00f593839d19e/questions/5bbe36a1e3c00f593839d19e/answers',
                            headers=product_data.valid_token_header(),
                            data=json.dumps(product_data.valid_answer),
