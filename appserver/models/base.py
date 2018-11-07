@@ -13,6 +13,11 @@ class BaseModel:
     def id(self):
         """id property"""
         return self._id
+
+    @id.setter
+    def id(self, value):
+        """id setter"""
+        self._id = value
     # def to_dict(self):
     #     return self.schema.load(self)
     #

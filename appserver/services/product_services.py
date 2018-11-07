@@ -63,7 +63,7 @@ class ProductsService:
         with id product_id. Returns the product with the added question."""
         question_schema = QuestionSchema()
         question = question_schema.load(question_dict)
-        question.question_id = bson.ObjectId()
+        question.id = bson.ObjectId()
         question.uid = uid
         question.datetime = str(datetime.now())
         product = ProductMapper.add_question(product_id, question_schema.dump(question))
@@ -77,7 +77,7 @@ class ProductsService:
          product_id product"""
         answer_schema = AnswerSchema()
         answer = answer_schema.load(answer_dict)
-        answer.answer_id = bson.ObjectId()
+        answer.id = bson.ObjectId()
         answer.uid = uid
         answer.datetime = str(datetime.now())
         product = ProductMapper.add_answer(product_id, question_id, answer_schema.dump(answer))
