@@ -808,25 +808,30 @@ definitions:
       order_tracking_number:
         type: string
   MySalesPurchases:
-    type: array
-    items:
-      type: object
-      properties:
-        _id:
-          type: string
-        buyer:
-          type: string
-        payment_method:
-          type: string
-        product_id:
-          type: string
-        product_name:
-          type: string
-        seller:
-          type: string
-        total:
-          type: number
-          format: float
-        units:
-          type: integer
+    type: object
+    properties:
+      count:
+        type: integer
+      orders:
+        type: array
+        items:
+          type: object
+          properties:
+            _id:
+              type: string
+            buyer:
+              type: string
+            payment_method:
+              type: string
+            product_id:
+              type: string
+            product_name:
+              type: string
+            seller:
+              type: string
+            total:
+              type: number
+              format: float
+            units:
+              type: integer
         

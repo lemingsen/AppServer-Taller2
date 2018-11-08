@@ -3,7 +3,6 @@ from unittest.mock import patch
 import appserver.data.order_mapper
 from appserver.services.order_services import OrderServices
 from appserver.services.exceptions import NotFoundError, NotEnoughUnitsError, ForbiddenError
-import appserver.models.product
 import appserver.models.order
 from marshmallow.exceptions import ValidationError
 import pytest
@@ -42,5 +41,17 @@ def test_new_order_if_user_buys_his_own_product_raises_forbidden_error(product_w
     buyer_with_same_user_as_product_seller = user_data.uid
     with pytest.raises(ForbiddenError):
         OrderServices.new_order(buyer_with_same_user_as_product_seller, order_data.valid_input_order)
+
+
+@patch.object(appserver.data.order_mapper.OrderMapper, 'get_many')
+def test_get_sales_if_no_orders_returns_empty_list(get_many_mock, user_data):
+    get_many_mock.return_value = []
+    assert not OrderServices.get_sales(user_data.uid)
+
+
+@patch.object(appserver.data.order_mapper.OrderMapper, 'get_many')
+def test_get_purchases_if_no_orders_returns_empty_list(get_many_mock, user_data):
+    get_many_mock.return_value = []
+    assert not OrderServices.get_purchases(user_data.uid)
 
 

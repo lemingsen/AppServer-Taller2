@@ -2,6 +2,7 @@
 from unittest.mock import patch
 import appserver.data.order_mapper
 import appserver.models.product
+from flask.wrappers import Response
 import json
 
 
@@ -39,4 +40,20 @@ def test_new_order_if_not_enough_units_422_response(get_by_id_mock, client, orde
                            data=json.dumps(order_with_9_units),
                            content_type='application/json')
     assert response.status_code == 422
+
+
+@patch.object(appserver.data.order_mapper.OrderMapper, 'get_many')
+def test_get_sales_if_no_orders_returns_empty_list(get_many_mock, client, order_data):
+    get_many_mock.return_value = []
+    response = client.get('/orders/sales', headers=order_data.valid_token_header())
+    body = response.get_json()
+    assert body['count'] == 0
+
+
+@patch.object(appserver.data.order_mapper.OrderMapper, 'get_many')
+def test_get_purchases_if_no_orders_returns_empty_list(get_many_mock, client, order_data):
+    get_many_mock.return_value = []
+    response = client.get('/orders/purchases', headers=order_data.valid_token_header())
+    body = response.get_json()
+    assert body['count'] == 0
 

@@ -43,7 +43,7 @@ def get_sales():
     """Devuelve las ventas realizadas por el usuario"""
     uid = get_jwt_identity()
     sales = OrderServices.get_sales(uid)
-    return jsonify(sales), 200
+    return jsonify(count=len(sales), orders=sales), 200
 
 
 @api_bp.route('/orders/purchases', methods=['GET'])
@@ -52,4 +52,4 @@ def get_purchases():
     """Devuelve las compras realizadas por el usuario"""
     uid = get_jwt_identity()
     purchases = OrderServices.get_purchases(uid)
-    return jsonify(purchases), 200
+    return jsonify(count=len(purchases), orders=purchases), 200
