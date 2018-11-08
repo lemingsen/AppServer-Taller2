@@ -12,12 +12,15 @@ tags:
     description: Product related operations
   - name: orders
     description: Orders related operations
+  - name: server
 schemes:
   - https
   - http
 paths:
   /ping:
     get:
+      tags:
+        - server
       summary: ping
       description: pings the server
       operationId: ping
