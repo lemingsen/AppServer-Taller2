@@ -144,7 +144,7 @@ class ProductData(Data):
             ],
             "price": 543.32,
             "published": "2018-10-29 15:23:56.443754",
-            "seller": "YmjgZM06jVWrbGnOuUfTItMMZx22",
+            "seller": "YmjgZM06jVWrbGnOuUfTItMMZx23",
             "units": 3
         }
 
@@ -252,6 +252,10 @@ class ProductData(Data):
     def get_valid_product_from_other_user_than_valid_token_header(self):
         schema = ProductSchema()
         return schema.load(self.valid_product_from_other_user_than_valid_token_header)
+
+    def get_valid_product(self):
+        schema = ProductSchema()
+        return schema.load(self.valid_product)
 
 
 class UserData(Data):

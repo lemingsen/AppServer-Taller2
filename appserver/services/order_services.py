@@ -3,7 +3,7 @@ import bson
 from appserver.models.order import OrderSchema
 from appserver.data.product_mapper import ProductMapper
 from appserver.data.order_mapper import OrderMapper
-from appserver.services.exceptions import NotFoundError, NotEnoughUnitsError
+from appserver.services.exceptions import NotFoundError, NotEnoughUnitsError, ForbiddenError
 
 
 class OrderServices:
@@ -11,13 +11,15 @@ class OrderServices:
     schema = OrderSchema()
 
     @classmethod
-    def new_order(cls, buyer, order_data):
+    def new_order(cls, buyer_uid, order_data):
         """Creates a new purchase order of a product"""
         order = cls.schema.load(order_data)
-        order.buyer = buyer
+        order.buyer = buyer_uid
         product = ProductMapper.get_by_id(order.product_id)
         if product is None:
             raise NotFoundError("Product not found.")
+        if order.buyer == product.seller:
+            raise ForbiddenError("User cannot buy his own products.")
         order.seller = product.seller
         order.total = product.price * order.units
         order.product_name = product.name
