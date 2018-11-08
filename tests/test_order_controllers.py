@@ -2,7 +2,6 @@
 from unittest.mock import patch
 import appserver.data.order_mapper
 import appserver.models.product
-from flask.wrappers import Response
 import json
 
 
