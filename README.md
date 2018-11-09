@@ -1,4 +1,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/lucashemmingsen/AppServer-Taller2/badge.svg?branch=master)](https://coveralls.io/github/lucashemmingsen/AppServer-Taller2?branch=master)[![Build Status](https://travis-ci.com/lucashemmingsen/AppServer-Taller2.svg?branch=master)](https://travis-ci.com/lucashemmingsen/AppServer-Taller2)
+
+Swagger: https://app-server-taller2.herokuapp.com/apidocs/
+
 # Application Server - Taller 2
 
 Se trata de una aplicación por consola destinada a mantenerse en ejecución por períodos prolongados de tiempo.
