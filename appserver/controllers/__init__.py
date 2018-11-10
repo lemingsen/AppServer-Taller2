@@ -4,4 +4,4 @@ from flask import Blueprint
 
 api_bp = Blueprint('controllers', __name__)
 from appserver.controllers import root_controllers, user_controllers,\
-    product_controllers, order_controllers, handlers
+    product_controllers, order_controllers, handlers, payment_method_controllers
