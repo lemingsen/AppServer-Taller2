@@ -12,7 +12,11 @@ tags:
     description: Product related operations
   - name: orders
     description: Orders related operations
+  - name: payments
+    description: Payment methods related operations
   - name: server
+
+  
 schemes:
   - https
   - http
@@ -522,6 +526,118 @@ paths:
             description: unauthorized
           '422':
             description: invalid token payload
+  /payments:
+    post:
+      tags:
+        - payments
+      summary: Creates a new payment method
+      description: Creates a new payment method
+      operationId: newPaymentMethod
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: category
+          required: true
+          schema:
+            $ref: '#/definitions/NewPaymentMethod'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/PaymentMethodId'
+        '400':
+          description: bad request
+        '409':
+          description: payment method already exists
+    get:
+      tags:
+        - payments
+      summary: Get payment methods
+      description: Gets all available payment methods.
+      operationId: getPaymentMethods
+      produces:
+        - application/json
+      responses:
+          '200':
+            description: successful operation
+            schema:
+              $ref: '#/definitions/PaymentMethods'
+  /payments/{id}:
+    get:
+      tags:
+        - payments
+      summary: Get payment method
+      description: Returns the payment method with the id specified
+      operationId: getPaymentMethod
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: payment method id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/PaymentMethod'
+        '400':
+          description: bad request
+        '404':
+          description: product not found
+    delete:
+      tags:
+        - payments
+      summary: Delete payment method
+      description: Deletes the payment method with the id specified
+      operationId: deletePaymentMethod
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: payment method id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: not valid payment method id
+        '404':
+          description: payment method not found
+    put:
+      tags:
+        - payments
+      summary: Modifies a payment method
+      description: Modifies the payment method with the id specified
+      operationId: modifyPaymentMethod
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: payment method id
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: category
+          required: true
+          schema:
+            $ref: '#/definitions/NewPaymentMethod'   
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: not valid payment method id
+        '404':
+          description: payment method not found
+        '409':
+          description: payment method already exists (with another id)
 securityDefinitions:
   Bearer:
     type: apiKey
@@ -837,4 +953,41 @@ definitions:
               format: float
             units:
               type: integer
-        
+  NewPaymentMethod:
+    type: object
+    properties:
+      name:
+        type: string
+      type:
+        type: integer
+      image:
+        type: string
+  PaymentMethodId:
+    type: object
+    properties:
+      _id:
+        type: string
+  PaymentMethods:
+    type: array
+    items:
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+        type:
+          type: integer
+        image:
+          type: string
+  PaymentMethod:
+    type: object
+    properties:
+      _id:
+        type: string
+      name:
+        type: string
+      type:
+        type: integer
+      image:
+        type: string

@@ -14,7 +14,7 @@ def add_payment_method():
     return jsonify(payment_method), 200
 
 
-@api_bp.route('/payments/<string:id>', methods=['PUT'])
+@api_bp.route('/payments/<string:payment_id>', methods=['PUT'])
 def modify_payment_method(payment_id):
     """Modifica un metodo de pago"""
     if not request.is_json:
