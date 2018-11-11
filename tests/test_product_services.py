@@ -33,7 +33,7 @@ def test_get_products_if_none_found_raises_not_found_error(pm_mock):
 
 
 @patch.object(appserver.data.product_mapper.ProductMapper, 'delete_one_by_id')
-@patch.object(appserver.services.product_services.ProductsService, '_product_exists_and_belongs_to_user')
+@patch.object(appserver.services.product_services.ProductsService, '_check_product_exists_and_belongs_to_user')
 def test_delete_product_if_product_not_found_raises_not_found_error(
         _product_exists_and_belongs_to_user_mock,
         delete_one_by_id_mock, user_data, product_data):
@@ -43,7 +43,7 @@ def test_delete_product_if_product_not_found_raises_not_found_error(
         ProductsService.delete_product(user_data.uid, product_data.product_id)
 
 
-@patch.object(appserver.services.product_services.ProductsService, '_product_exists_and_belongs_to_user')
+@patch.object(appserver.services.product_services.ProductsService, '_check_product_exists_and_belongs_to_user')
 def test_delete_product_if_user_doesnt_own_product_raises_forbidden_error\
                 (_product_exists_and_belongs_to_user_mock, user_data, product_data):
     _product_exists_and_belongs_to_user_mock.side_effect = ForbiddenError("forbidden")
@@ -52,7 +52,7 @@ def test_delete_product_if_user_doesnt_own_product_raises_forbidden_error\
 
 
 @patch.object(appserver.data.product_mapper.ProductMapper, 'delete_one_by_id')
-@patch.object(appserver.services.product_services.ProductsService, '_product_exists_and_belongs_to_user')
+@patch.object(appserver.services.product_services.ProductsService, '_check_product_exists_and_belongs_to_user')
 def test_delete_product(_product_exists_and_belongs_to_user_mock,
                         delete_one_by_id_mock, user_data, product_data):
     _product_exists_and_belongs_to_user_mock.return_value = True
@@ -114,3 +114,12 @@ def test_delete_category_if_category_not_found_raises_not_found_error(exists_moc
     exists_mock.return_value = False
     with pytest.raises(NotFoundError):
         ProductsService.delete_category(product_data.category_id)
+
+
+def test_add_answer_if_user_who_answers_question_is_not_product_owner_raises_forbidden_error():
+    pass
+
+
+def test_add_answer_if_trying_to_add_more_than_one_answer_raises_forbidden_error():
+    pass
+

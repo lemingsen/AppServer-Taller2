@@ -48,7 +48,7 @@ def test_delete_product_without_token_401_response(client, product_data):
     assert response.status_code == 401
 
 
-@patch.object(appserver.services.product_services.ProductsService, '_product_exists_and_belongs_to_user')
+@patch.object(appserver.services.product_services.ProductsService, '_check_product_exists_and_belongs_to_user')
 def test_delete_product_if_not_found_404_response(_product_exists_and_belongs_to_user_mock, client, user_data, product_data):
     _product_exists_and_belongs_to_user_mock.side_effect = NotFoundError("Product does not exist.")
     response = client.delete('/products/5bbe37a1e3c00f593839d19e',

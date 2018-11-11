@@ -52,9 +52,9 @@ class ProductsService:
     @classmethod
     def delete_product(cls, uid, product_id):
         """Delete product services: deletes product product_id from user uid."""
-        if cls._product_exists_and_belongs_to_user(uid, product_id):
-            if not ProductMapper.delete_one_by_id(product_id):
-                raise NotFoundError("Product not found.")
+        cls._check_product_exists_and_belongs_to_user(uid, product_id)
+        if not ProductMapper.delete_one_by_id(product_id):
+            raise NotFoundError("Product not found.")
         return True
 
     @classmethod
@@ -80,12 +80,13 @@ class ProductsService:
          product_id product"""
         answer_schema = AnswerSchema()
         answer = answer_schema.load(answer_dict)
+        cls._check_product_exists_and_belongs_to_user(uid, product_id)
         answer.id = bson.ObjectId()
         answer.uid = uid
         answer.datetime = str(datetime.now())
         product = ProductMapper.find_one_and_update(
             {'_id': bson.ObjectId(product_id), "questions._id": question_id},
-            {'$push': {"questions.$.answers": answer_schema.dump(answer)}}
+            {'$set': {"questions.$.answer": answer_schema.dump(answer)}}
         )
         if product is None:
             raise NotFoundError("Product not found.")
@@ -131,7 +132,7 @@ class ProductsService:
             raise NotFoundError("Category not found.")
 
     @classmethod
-    def _product_exists_and_belongs_to_user(cls, uid, product_id):
+    def _check_product_exists_and_belongs_to_user(cls, uid, product_id):
         """Checks if product exists and belongs to user."""
         product = ProductMapper.get_by_id(product_id)
         if product is None:

@@ -10,7 +10,6 @@ class Question(BaseModel):
     """Question"""
     def __init__(self, **kwargs):
         super().__init__()
-        self.answers = []
         for key, value in kwargs.items():
             setattr(self, key, value)
 
@@ -22,7 +21,7 @@ class QuestionSchema(Schema):
     question = fields.Str(required=True, validate=validate.Length(
         min=1, error="Question cannot be empty."))
     uid = fields.Str()
-    answers = fields.List(fields.Nested(AnswerSchema))
+    answer = fields.Nested(AnswerSchema)
 
     @post_load
     def make_question(self, data):
