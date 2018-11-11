@@ -88,9 +88,9 @@ def test_add_question_if_invalid_parameters_in_body_400_response(client, product
     assert response.status_code == 400
 
 
-@patch.object(appserver.data.product_mapper.ProductMapper, 'find_one_and_update')
-def test_add_answer_if_product_does_not_exist_404_response(find_one_and_update_mock, client, product_data):
-    find_one_and_update_mock.return_value = None
+@patch.object(appserver.data.product_mapper.ProductMapper, 'get_by_id')
+def test_add_answer_if_product_does_not_exist_404_response(get_by_id_mock, client, product_data):
+    get_by_id_mock.return_value = None
     response = client.post('products/5bbe37a1e3c00f593839d19e/questions/5bbe36a1e3c00f593839d19e/answers',
                            headers=product_data.valid_token_header(),
                            data=json.dumps(product_data.valid_answer),
@@ -99,7 +99,10 @@ def test_add_answer_if_product_does_not_exist_404_response(find_one_and_update_m
 
 
 @patch.object(appserver.data.product_mapper.ProductMapper, 'find_one_and_update')
-def test_add_answer_if_question_does_not_exist_404_response(find_one_and_update_mock, client, product_data):
+@patch.object(appserver.services.product_services.ProductsService, '_check_product_exists_and_belongs_to_user')
+def test_add_answer_if_question_does_not_exist_404_response(_check_product_exists_and_belongs_to_user_mock,
+                                                            find_one_and_update_mock, client, product_data):
+    _check_product_exists_and_belongs_to_user_mock.return_value = True
     find_one_and_update_mock.return_value = None
     response = client.post('products/5bbe37a1e3c00f593839d19e/questions/5bbe36a1e3c00f593839d19e/answers',
                            headers=product_data.valid_token_header(),
