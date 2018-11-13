@@ -21,7 +21,7 @@ class UserSchema(Schema):
     surname = fields.Str(validate=validate.Length(
         min=1, error="User surname cannot be empty."))
     uid = fields.Str(required=True)
-    email = fields.Email()
+    email = fields.Email(required=True)
     facebook = fields.Str()
     google = fields.Str()
     photo = fields.URL()
