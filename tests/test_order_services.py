@@ -25,11 +25,13 @@ def test_new_order_if_order_units_are_negative_raises_validation_error(order_dat
         OrderServices.new_order(user_data.valid_user, order_data.negative_units_input_order)
 
 
+@patch.object(appserver.data.payment_method_mapper.PaymentMethodMapper, 'get_one')
 @patch.object(appserver.data.product_mapper.ProductMapper, 'get_by_id')
 def test_new_order_if_order_units_greater_than_product_units_raises_not_enough_units_error(
-        get_by_id_mock, order_data, user_data, product_data):
+        get_by_id_mock, get_one_mock, order_data, user_data, product_data, payment_method_data):
     product_with_3_units = product_data.get_product_with_3_units()
     get_by_id_mock.return_value = product_with_3_units
+    get_one_mock.return_value = payment_method_data.get_valid_payment_method()
     with pytest.raises(NotEnoughUnitsError):
         OrderServices.new_order(user_data.valid_user, order_data.input_order_with_9_units)
 

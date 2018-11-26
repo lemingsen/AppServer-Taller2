@@ -3,7 +3,7 @@ from pymongo import ReturnDocument
 from bson.objectid import ObjectId
 import bson.objectid
 from marshmallow import ValidationError
-from appserver import mongo
+from appserver.app import mongo
 
 
 class BaseMapper:

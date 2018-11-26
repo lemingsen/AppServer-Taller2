@@ -1,0 +1,21 @@
+version: '3'
+services:
+  web:
+    build: .
+    ports:
+     - "5000:5000"
+    volumes:
+      - ./appserver:/appserver
+    depends_on:
+      - mongodb
+  mongodb:
+    image: mongo:latest
+    container_name: "mongodb"
+    environment:
+      - MONGO_DATA_DIR=/db
+      - MONGO_LOG_DIR=/dev/null
+    volumes:
+      - ./db:/db
+    ports:
+        - 27017
+    command: mongod --smallfiles --logpath=/dev/null # --quiet

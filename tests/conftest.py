@@ -1,7 +1,8 @@
 import pytest
 import appserver
-from config import TestingConfig
+from appserver.config import TestingConfig
 from appserver.models.product import ProductSchema
+from appserver.models.payment_method import PaymentMethodSchema
 
 
 class Data:
@@ -33,25 +34,49 @@ class OrderData(Data):
         self.valid_input_order = {
             "product_id": "5bd7b28bc9133f00087dd8e8",
             "units": 3,
-            "payment_method": "visa"
+            "payment_info": {
+                "payment_method": "visa",
+                "cardholder_name": "Pepe Grillo",
+                "card_number": "1234-1234-1234-1234",
+                "expiration_date": "11/22",
+                "security_code": "123"
+            }
         }
 
         self.invalid_input_order = {
             "productid": "5bd7b28bc9133f00087dd8e8",
             "units": 3,
-            "payment_method": "visa"
+            "payment_info": {
+                "payment_method": "visa",
+                "cardholder_name": "Pepe Grillo",
+                "card_number": "1234-1234-1234-1234",
+                "expiration_date": "11/22",
+                "security_code": "123"
+            }
         }
 
         self.negative_units_input_order = {
             "product_id": "5bd7b28bc9133f00087dd8e8",
             "units": -3,
-            "payment_method": "visa"
+            "payment_info": {
+                "payment_method": "visa",
+                "cardholder_name": "Pepe Grillo",
+                "card_number": "1234-1234-1234-1234",
+                "expiration_date": "11/22",
+                "security_code": "123"
+            }
         }
 
         self.input_order_with_9_units = {
             "product_id": "5bd7b28bc9133f00087dd8e8",
             "units": 9,
-            "payment_method": "visa"
+            "payment_info": {
+                "payment_method": "visa",
+                "cardholder_name": "Pepe Grillo",
+                "card_number": "1234-1234-1234-1234",
+                "expiration_date": "11/22",
+                "security_code": "123"
+            }
         }
 
 
@@ -75,9 +100,16 @@ class ProductData(Data):
             },
             "name": "Mesa",
             "payment_methods": [
-                "visa",
-                "amex",
-                "bitcoin"
+                {
+                    "name": "visa",
+                    "type": 1,
+                    "image": "http://visa.com.ar/image.jpg"
+                },
+                {
+                    "name": "amex",
+                    "type": 1,
+                    "image": "http://amex.com.ar/image.jpg"
+                }
             ],
             "pictures": [
                 "https://www.mesas.com/1.jpg",
@@ -104,9 +136,16 @@ class ProductData(Data):
             },
             "name": "Mesa",
             "payment_methods": [
-                "visa",
-                "amex",
-                "bitcoin"
+                {
+                    "name": "visa",
+                    "type": 1,
+                    "image": "http://visa.com.ar/image.jpg"
+                },
+                {
+                    "name": "amex",
+                    "type": 1,
+                    "image": "http://amex.com.ar/image.jpg"
+                }
             ],
             "pictures": [
                 "https://www.mesas.com/1.jpg",
@@ -133,9 +172,16 @@ class ProductData(Data):
             },
             "name": "Mesa",
             "payment_methods": [
-                "visa",
-                "amex",
-                "bitcoin"
+                {
+                    "name": "visa",
+                    "type": 1,
+                    "image": "http://visa.com.ar/image.jpg"
+                },
+                {
+                    "name": "amex",
+                    "type": 1,
+                    "image": "http://amex.com.ar/image.jpg"
+                }
             ],
             "pictures": [
                 "https://www.mesas.com/1.jpg",
@@ -186,9 +232,16 @@ class ProductData(Data):
                 },
                 "name": "Mesa",
                 "payment_methods": [
-                    "visa",
-                    "amex",
-                    "bitcoin"
+                    {
+                        "name": "visa",
+                        "type": 1,
+                        "image": "http://visa.com.ar/image.jpg"
+                    },
+                    {
+                        "name": "amex",
+                        "type": 1,
+                        "image": "http://amex.com.ar/image.jpg"
+                    }
                 ],
                 "pictures": [
                     "https://www.mesas.com/1.jpg",
@@ -214,9 +267,16 @@ class ProductData(Data):
                 },
                 "name": "Mesa",
                 "payment_methods": [
-                    "visa",
-                    "amex",
-                    "bitcoin"
+                    {
+                        "name": "visa",
+                        "type": 1,
+                        "image": "http://visa.com.ar/image.jpg"
+                    },
+                    {
+                        "name": "amex",
+                        "type": 1,
+                        "image": "http://amex.com.ar/image.jpg"
+                    }
                 ],
                 "pictures": [
                     "https://www.mesas.com/1.jpg",
@@ -258,6 +318,20 @@ class ProductData(Data):
         return schema.load(self.valid_product)
 
 
+class PaymentMethodData(Data):
+    def __init__(self):
+        Data.__init__(self)
+        self.valid_payment_method = {
+            "_id": "5be75661e3c00c4c725e85b2",
+            "name": "visa",
+            "type": 1
+        }
+
+    def get_valid_payment_method(self):
+        schema = PaymentMethodSchema()
+        return schema.load(self.valid_payment_method)
+
+
 class UserData(Data):
     def __init__(self):
         Data.__init__(self)
@@ -283,7 +357,7 @@ class UserData(Data):
 
 @pytest.fixture
 def client():
-    app = appserver.create_app(TestingConfig)
+    app = appserver.app.create_app(TestingConfig)
     test_client = app.test_client()
     yield test_client
 
@@ -301,3 +375,7 @@ def user_data():
 @pytest.fixture
 def order_data():
     yield OrderData()
+
+@pytest.fixture
+def payment_method_data():
+    yield PaymentMethodData()

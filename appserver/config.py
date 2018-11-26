@@ -1,4 +1,6 @@
 """Config module"""
+# pylint: disable=R0903
+
 
 class Config():
     """Config Vars"""

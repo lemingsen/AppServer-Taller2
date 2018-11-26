@@ -10,7 +10,7 @@ requests==2.20.0
 firebase-admin==2.13.0
 PyJWT==1.6.4
 Flask-JWT-Extended==3.13.0
-marshmallow==3.0.0b16
+marshmallow==3.0.0b20
 Werkzeug==0.14.1
 Flask-PyMongo==2.1.0
 flasgger==0.9.1

@@ -5,6 +5,32 @@ from appserver.models.base import BaseModel
 # pylint: disable=R0903,R0201
 
 
+class PaymentInfo:
+    """Represents the order payment information"""
+    def __init__(self, **kwargs):
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+
+class PaymentInfoSchema(Schema):
+    """PaymentInfo schema"""
+    payment_method = fields.Str(required=True, validate=validate.Length(
+        min=1, error="Product name cannot be empty"))
+    cardholder_name = fields.Str(validate=validate.Length(
+        min=1, error="Cardholder name field cannot be empty"))
+    card_number = fields.Str(validate=validate.Length(
+        min=1, error="Card number field cannot be empty"))
+    expiration_date = fields.Str(validate=validate.Length(
+        min=1, error="Expiration date field cannot be empty"))
+    security_code = fields.Str(validate=validate.Length(
+        min=1, error="Security code field cannot be empty"))
+
+    @post_load
+    def make_payment_info(self, data):
+        """creates a order object from data dictionary"""
+        return PaymentInfo(**data)
+
+
 class Order(BaseModel):
     """Order"""
     def __init__(self, **kwargs):
@@ -21,8 +47,7 @@ class OrderSchema(Schema):
         min=1, error="Product name cannot be empty"))
     units = fields.Int(required=True)
     unit_price = fields.Float()
-    payment_method = fields.Str(required=True, validate=validate.Length(
-        min=1, error="Payment method cannot be empty."))
+    payment_info = fields.Nested(PaymentInfoSchema, required=True)
     datetime = fields.Str()
     buyer = fields.Str()
     seller = fields.Str()

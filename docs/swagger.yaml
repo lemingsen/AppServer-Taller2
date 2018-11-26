@@ -811,9 +811,18 @@ definitions:
       name:
         type: string
       payment_methods:
-        type: array
-        items:
-          type: string
+              type: array
+              items:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                  name:
+                    type: string
+                  type:
+                    type: integer
+                  image: 
+                    type: string
       pictures:
         type: array
         items:
@@ -860,7 +869,16 @@ definitions:
             payment_methods:
               type: array
               items:
-                type: string
+                type: object
+                properties:
+                  _id:
+                    type: string
+                  name:
+                    type: string
+                  type:
+                    type: integer
+                  image: 
+                    type: string
             pictures:
               type: array
               items:
@@ -914,13 +932,29 @@ definitions:
           type: string
   NewOrderInput:
     type: object
+    required:
+    - product_id
+    - units
     properties:
       product_id:
         type: string
       units:
         type: integer
-      payment_method:
-        type: string
+      payment_info:
+        type: object
+        required:
+        - payment_method
+        properties:
+          payment_method:
+            type: string
+          cardholder_name:
+            type: string
+          card_number:
+            type: string
+          expiration_date:
+            type: string
+          security_code:
+            type: string
   NewOrderOutput:
     type: object
     properties:
