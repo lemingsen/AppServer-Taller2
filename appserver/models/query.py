@@ -37,7 +37,7 @@ class ProductsQuery:
             categories_query = {'categories': {'$in': self.params['categories']}}
             query.update(categories_query)
         if 'payment_methods' in self.params:
-            payment_methods_query = {'payment_methods': {'$in': self.params['payment_methods']}}
+            payment_methods_query = {'payment_methods.name': {'$in': self.params['payment_methods']}}
             query.update(payment_methods_query)
         if 'seller' in self.params:
             seller_query = {'seller': self.params['seller']}
