@@ -10,16 +10,17 @@ from appserver.data.product_mapper import ProductMapper
 from appserver.data.category_mapper import CategoryMapper
 from appserver.data.payment_method_mapper import PaymentMethodMapper
 from appserver.services.exceptions import NotFoundError, ForbiddenError, DataExistsError
-from appserver.models.query import ProductsQuerySchema
+from appserver.models.product_query_filters import ProductsQueryFiltersSchema
 
 
 class ProductsService:
     """Product Services"""
+
     schema = ProductSchema()
 
     @classmethod
     def add_product(cls, product_json, uid):
-        """Add product services:"""
+        """Add product service"""
         product_json['seller'] = uid
         add_product_schema = AddProductSchema()
         product = add_product_schema.load(product_json)
@@ -35,33 +36,28 @@ class ProductsService:
 
     @classmethod
     def get_product_by_id(cls, product_id):
-        """Get product by id services:"""
+        """Get product by id service"""
         product = ProductMapper.get_by_id(product_id)
         if product is None:
             raise NotFoundError("Product not found.")
         return cls.schema.dump(product)
 
     @classmethod
-    def get_products(cls, filters=None):
+    def get_products(cls, filters):
         """Get products services: returns all the
          products that match with filters parameters"""
-
-        query = None
-        if filters is not None:
-            products_query_schema = ProductsQuerySchema()
-            query_builder = products_query_schema.load(filters)
-            query = query_builder.get_query()
-        products = ProductMapper.get_many(query)
+        filters_schema = ProductsQueryFiltersSchema()
+        products = ProductMapper.query(filters_schema.load(filters))
         if not products:
             raise NotFoundError("No product matches the query.")
-        ret = []
+        products_dict_list = []
         for product in products:
-            ret.append(cls.schema.dump(product))
-        return ret
+            products_dict_list.append(cls.schema.dump(product))
+        return products_dict_list
 
     @classmethod
     def delete_product(cls, uid, product_id):
-        """Delete product services: deletes product product_id from user uid."""
+        """Delete product service: deletes product product_id from user uid."""
         cls._check_product_exists_and_belongs_to_user(uid, product_id)
         if not ProductMapper.delete_one_by_id(product_id):
             raise NotFoundError("Product not found.")
@@ -86,8 +82,8 @@ class ProductsService:
 
     @classmethod
     def add_answer(cls, answer_dict, product_id, question_id, uid):
-        """Add answer services: adds an answer to question_id question in
-         product_id product"""
+        """Add answer services: adds an answer to
+        question_id question in product_id product"""
         answer_schema = AnswerSchema()
         answer = answer_schema.load(answer_dict)
         cls._check_product_exists_and_belongs_to_user(uid, product_id)

@@ -12,8 +12,8 @@ class Location:
 
 class LocationSchema(Schema):
     """Location marshmallow schema"""
-    x = fields.Float(required=True)
-    y = fields.Float(required=True)
+    longitude = fields.Float(required=True)
+    latitude = fields.Float(required=True)
 
     @post_load
     def make_location(self, data):

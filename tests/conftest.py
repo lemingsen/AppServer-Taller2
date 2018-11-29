@@ -95,8 +95,8 @@ class ProductData(Data):
             ],
             "description": "Mesa Cuadrada",
             "location": {
-                "x": 25.2084,
-                "y": 55.2719
+                "longitude": 25.2084,
+                "latitude": 55.2719
             },
             "name": "Mesa",
             "payment_methods": [
@@ -131,8 +131,8 @@ class ProductData(Data):
             ],
             "description": "Mesa Cuadrada",
             "location": {
-                "x": 25.2084,
-                "y": 55.2719
+                "longitude": 25.2084,
+                "latitude": 55.2719
             },
             "name": "Mesa",
             "payment_methods": [
@@ -167,8 +167,8 @@ class ProductData(Data):
             ],
             "description": "Mesa Cuadrada",
             "location": {
-                "x": 25.2084,
-                "y": 55.2719
+                "longitude": 25.2084,
+                "latitude": 55.2719
             },
             "name": "Mesa",
             "payment_methods": [
@@ -227,8 +227,8 @@ class ProductData(Data):
                 ],
                 "description": "Mesa rectangular",
                 "location": {
-                    "x": 25.2084,
-                    "y": 55.2719
+                    "longitude": 25.2084,
+                    "latitude": 55.2719
                 },
                 "name": "Mesa",
                 "payment_methods": [
@@ -262,8 +262,8 @@ class ProductData(Data):
                 ],
                 "description": "Mesa Cuadrada",
                 "location": {
-                    "x": 25.2084,
-                    "y": 55.2719
+                    "longitude": 25.2084,
+                    "latitude": 55.2719
                 },
                 "name": "Mesa",
                 "payment_methods": [

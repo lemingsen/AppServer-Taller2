@@ -25,11 +25,12 @@ def test_get_product_by_id_if_none_found_raises_not_found_error(pm_mock):
         ProductsService.get_product_by_id(15)
 
 
-@patch.object(appserver.data.product_mapper.ProductMapper, 'get_many')
+@patch.object(appserver.data.product_mapper.ProductMapper, 'query')
 def test_get_products_if_none_found_raises_not_found_error(pm_mock):
+    filters = dict()
     pm_mock.return_value = []
     with pytest.raises(NotFoundError):
-        ProductsService.get_products()
+        ProductsService.get_products(filters)
 
 
 @patch.object(appserver.data.product_mapper.ProductMapper, 'delete_one_by_id')

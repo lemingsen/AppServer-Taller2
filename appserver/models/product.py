@@ -33,6 +33,7 @@ class ProductSchema(Schema):
     pictures = fields.List(fields.Url(), required=True)
     published = fields.Str()
     questions = fields.List(fields.Nested(QuestionSchema))
+    distance = fields.Integer()
 
     @validates('units')
     def validate_units(self, value):

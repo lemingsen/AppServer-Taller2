@@ -11,7 +11,21 @@ from appserver.services.product_services import ProductsService
 def get_products():
     """Servicio de búsqueda de productos: Devuelve un listado
      de productos utilizando varios de sus atributos como filtros"""
-    products = ProductsService.get_products(request.args.to_dict(flat=False))
+
+    keys = ['text', 'units', 'min_price', 'max_price', 'longitude', 'latitude',
+            'min_distance', 'max_distance', 'categories', 'payment_methods', 'seller']
+    single_value_keys = ['units', 'min_price', 'max_price', 'longitude', 'latitude', 'seller',
+                         'latitude', 'longitude', 'min_distance', 'max_distance']
+
+    params = request.args.to_dict(flat=False)
+    filters = dict()
+    for key in keys:
+        if key in params:
+            if key in single_value_keys:
+                filters[key] = params[key][0]
+            else:
+                filters[key] = params[key]
+    products = ProductsService.get_products(filters)
     return jsonify(count=len(products), result=products), 200
 
 

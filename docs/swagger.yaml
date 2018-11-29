@@ -140,7 +140,7 @@ paths:
       tags:
         - products
       summary: Get products
-      description: Returns the matching products with the parameters sent. If no parameters are sent, it returns all the available products.
+      description: Returns the matching products with the filters sent. If no filters are sent, it returns all the available products.
       operationId: getProducts
       produces:
         - application/json
@@ -164,15 +164,25 @@ paths:
           format: float
           description: Minimum price of the product.
         - in: query
-          name: x
+          name: longitude
           type: number
           format: float
-          description: Buyer x coordinate location
+          description: Buyer longitude.
         - in: query
-          name: y
+          name: latitude
           type: number
           format: float
-          description: Buyer y coordinate location
+          description: Buyer latitude.
+        - in: query
+          name: min_distance
+          type: number
+          format: float
+          description: Minimum distance in meters from buyer.
+        - in: query
+          name: max_distance
+          type: number
+          format: float
+          description: Maximum distance in meters from buyer.
         - in: query
           name: categories
           type: string
@@ -710,10 +720,10 @@ definitions:
       location:
         type: object
         properties:
-          x: 
+          longitude: 
             type: number
             format: float
-          y:
+          latitude:
             type: number
             format: float
       categories:
@@ -770,10 +780,10 @@ definitions:
       location:
         type: object
         properties:
-          x: 
+          longitude: 
             type: number
             format: float
-          y:
+          latitude:
             type: number
             format: float
       categories:
@@ -802,10 +812,10 @@ definitions:
       location:
         type: object
         properties:
-          x: 
+          longitude: 
             type: number
             format: float
-          y:
+          latitude:
             type: number
             format: float
       name:
@@ -858,10 +868,10 @@ definitions:
             location:
               type: object
               properties:
-                x: 
+                longitude: 
                   type: number
                   format: float
-                y:
+                latitude:
                   type: number
                   format: float
             name:
@@ -893,6 +903,8 @@ definitions:
             units:
               type: integer
               format: int64
+            distance:
+              type: integer
   Question:
     type: object
     properties:
