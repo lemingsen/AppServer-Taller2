@@ -30,7 +30,7 @@ def track_order(tracking_number):
     return jsonify(order), 200
 
 
-@api_bp.route('/orders/shipping/estimate/<int:tracking_number>', methods=['POST'])
+@api_bp.route('/orders/shipping/estimate/<int:tracking_number>', methods=['GET'])
 @fresh_jwt_required
 def estimate_order_shipping_cost(tracking_number):
     """Permite saber, con un margen de error, el costo de un

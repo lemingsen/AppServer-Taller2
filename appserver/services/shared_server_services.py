@@ -186,7 +186,7 @@ class SharedServer:
             "user": {
                 "email": buyer.email,
                 "points": buyer.points,
-                "deliveries": buyer.deliveries
+                "deliveries": buyer.purchases
             }
         }
         response = requests.post(url, headers=header, json=payload)
