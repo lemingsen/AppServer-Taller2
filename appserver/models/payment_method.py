@@ -1,13 +1,12 @@
 """Payment model"""
-from marshmallow import Schema, fields, post_load, validate, validates, ValidationError
+from marshmallow import Schema, fields, post_load, validate
 from appserver.models.base import BaseModel
 # pylint: disable=R0903,R0201
 
 
-class PaymentMethod(BaseModel):
+class PaymentMethod:
     """Payment"""
     def __init__(self, **kwargs):
-        super().__init__()
         for key, value in kwargs.items():
             setattr(self, key, value)
 
@@ -24,8 +23,3 @@ class PaymentMethodSchema(Schema):
         """creates a Payment object from data dictionary"""
         return PaymentMethod(**data)
 
-    @validates('type')
-    def validate_type(self, value):
-        """Validates that type is 0 or 1"""
-        if value < 0 or value > 1:
-            raise ValidationError("Product units must be greater than 0.")

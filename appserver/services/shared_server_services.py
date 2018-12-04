@@ -8,6 +8,7 @@ import requests
 from marshmallow import Schema, fields, post_load
 from appserver.models.order import TrackingInfoSchema
 from appserver.services.exceptions import ExpiredTokenError
+from appserver.models.payment_method import PaymentMethodSchema
 # pylint: disable=R0903,R0201
 
 
@@ -208,7 +209,10 @@ class SharedServer:
         if response.status_code == 401:
             raise ExpiredTokenError()
         if response.status_code == 200:
-            payment_methods = response.json()
+            payment_methods = []
+            payment_methods_dict = response.json()
+            for payment_method in payment_methods_dict:
+                payment_methods.append(PaymentMethodSchema().load(payment_method))
         else:
             raise BadGateway()
         return payment_methods
