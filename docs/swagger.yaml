@@ -12,11 +12,9 @@ tags:
     description: Product related operations
   - name: orders
     description: Orders related operations
-  - name: payments
+  - name: payment methods
     description: Payment methods related operations
   - name: server
-
-  
 schemes:
   - https
   - http
@@ -75,7 +73,7 @@ paths:
           description: user object
           required: true
           schema:
-            $ref: '#/definitions/User'
+            $ref: '#/definitions/UserRegisterInput'
       responses:
         '200':
           description: success
@@ -98,7 +96,7 @@ paths:
         '200':
           description: successful operation
           schema:
-            $ref: '#/definitions/UserWithId'
+            $ref: '#/definitions/User'
         '401':
           description: unauthorized
         '404':
@@ -121,7 +119,7 @@ paths:
           description: user object
           required: true
           schema:
-            $ref: '#/definitions/User'
+            $ref: '#/definitions/UserRegisterInput'
       responses:
         '200':
           description: successful operation
@@ -199,7 +197,7 @@ paths:
         '200':
           description: successful operation
           schema:
-            $ref: '#/definitions/ProductsReturn'
+            $ref: '#/definitions/ProductsQueryOutput'
         '400':
           description: bad request
         '401':
@@ -224,7 +222,7 @@ paths:
           description: product
           required: true
           schema:
-            $ref: '#/definitions/ProductWithoutSeller'
+            $ref: '#/definitions/ProductInput'
       responses:
         '200':
           description: successful operation
@@ -255,7 +253,7 @@ paths:
         '200':
           description: successful operation
           schema:
-            $ref: '#/definitions/ProductReturn'
+            $ref: '#/definitions/Product'
         '400':
           description: bad request
         '401':
@@ -313,7 +311,7 @@ paths:
             description: question object
             required: true
             schema:
-              $ref: '#/definitions/Question'
+              $ref: '#/definitions/QuestionInput'
         responses:
           '200':
             description: successful operation
@@ -354,7 +352,7 @@ paths:
             description: answer object
             required: true
             schema:
-              $ref: '#/definitions/Answer'
+              $ref: '#/definitions/AnswerInput'
         responses:
           '200':
             description: successful operation
@@ -482,7 +480,7 @@ paths:
             description: category
             required: true
             schema:
-              $ref: '#/definitions/NewOrderInput'
+              $ref: '#/definitions/OrderInput'
         responses:
           '200':
             description: successful operation
@@ -537,33 +535,9 @@ paths:
           '422':
             description: invalid token payload
   /payments:
-    post:
-      tags:
-        - payments
-      summary: Creates a new payment method
-      description: Creates a new payment method
-      operationId: newPaymentMethod
-      produces:
-        - application/json
-      parameters:
-        - in: body
-          name: body
-          description: category
-          required: true
-          schema:
-            $ref: '#/definitions/NewPaymentMethod'
-      responses:
-        '200':
-          description: successful operation
-          schema:
-            $ref: '#/definitions/PaymentMethodId'
-        '400':
-          description: bad request
-        '409':
-          description: payment method already exists
     get:
       tags:
-        - payments
+        - payment methods
       summary: Get payment methods
       description: Gets all available payment methods.
       operationId: getPaymentMethods
@@ -574,80 +548,7 @@ paths:
             description: successful operation
             schema:
               $ref: '#/definitions/PaymentMethods'
-  /payments/{id}:
-    get:
-      tags:
-        - payments
-      summary: Get payment method
-      description: Returns the payment method with the id specified
-      operationId: getPaymentMethod
-      produces:
-        - application/json
-      parameters:
-        - name: id
-          in: path
-          description: payment method id
-          required: true
-          type: string
-      responses:
-        '200':
-          description: successful operation
-          schema:
-            $ref: '#/definitions/PaymentMethod'
-        '400':
-          description: bad request
-        '404':
-          description: product not found
-    delete:
-      tags:
-        - payments
-      summary: Delete payment method
-      description: Deletes the payment method with the id specified
-      operationId: deletePaymentMethod
-      produces:
-        - application/json
-      parameters:
-        - name: id
-          in: path
-          description: payment method id
-          required: true
-          type: string
-      responses:
-        '200':
-          description: successful operation
-        '400':
-          description: not valid payment method id
-        '404':
-          description: payment method not found
-    put:
-      tags:
-        - payments
-      summary: Modifies a payment method
-      description: Modifies the payment method with the id specified
-      operationId: modifyPaymentMethod
-      produces:
-        - application/json
-      parameters:
-        - name: id
-          in: path
-          description: payment method id
-          required: true
-          type: string
-        - in: body
-          name: body
-          description: category
-          required: true
-          schema:
-            $ref: '#/definitions/NewPaymentMethod'   
-      responses:
-        '200':
-          description: successful operation
-        '400':
-          description: not valid payment method id
-        '404':
-          description: payment method not found
-        '409':
-          description: payment method already exists (with another id)
+  
 securityDefinitions:
   Bearer:
     type: apiKey
@@ -664,7 +565,7 @@ definitions:
     properties:
       idToken:
         type: string
-  User:
+  UserRegisterInput:
     type: object
     properties:
       name:
@@ -681,25 +582,30 @@ definitions:
         type: string
       photo:
         type: string
-  UserWithId:
+      location:
+        $ref: '#/definitions/Location'
+  User:
+    allOf:
+      - $ref: '#/definitions/UserRegisterInput'
     type: object
     properties:
       _id:
         type: string
-      name:
+      last_login:
         type: string
-      surname:
-        type: string
-      email:
-        type: string
-      google:
-        type: string
-      facebook:
-        type: string
-      uid:
-        type: string
-      photo:
-        type: string
+      points:
+        type: integer
+      purchases:
+        type: integer
+  Location:
+    type: object
+    properties:
+      longitude: 
+        type: number
+        format: float
+      latitude:
+        type: number
+        format: float
   Product:
     type: object
     properties:
@@ -718,53 +624,18 @@ definitions:
         type: number
         format: float
       location:
-        type: object
-        properties:
-          longitude: 
-            type: number
-            format: float
-          latitude:
-            type: number
-            format: float
+        $ref: '#/definitions/Location'
       categories:
-        type: array
-        items:
-          type: string
+        $ref: '#/definitions/CategoryArray'
       questions:
-        type: array
-        items:
-          type: object
-          properties:
-            _id:
-              type: string
-            datetime:
-              type: string
-            question:
-              type: string
-            uid:
-              type: string
-            answers:
-              type: array
-              items:
-                  type: object
-                  properties:
-                    _id:
-                      type: string
-                    datetime:
-                      type: string
-                    answer:
-                      type: string
-                    uid:
-                      type: string
+        $ref: '#/definitions/ArrayOfQuestionsWithAnswers'
       payment_methods:
-        type: array
-        items:
-          type: string
+        $ref: '#/definitions/PaymentMethods'
       pictures:
         type: array
         items:
           type: string
-  ProductWithoutSeller:
+  ProductInput:
     type: object
     properties:
       name:
@@ -798,56 +669,7 @@ definitions:
         type: array
         items:
           type: string
-  ProductReturn:
-    type: object
-    properties:
-      _id: 
-        type: string
-      categories:
-        type: array
-        items:
-          type: string
-      description:
-        type: string
-      location:
-        type: object
-        properties:
-          longitude: 
-            type: number
-            format: float
-          latitude:
-            type: number
-            format: float
-      name:
-        type: string
-      payment_methods:
-              type: array
-              items:
-                type: object
-                properties:
-                  _id:
-                    type: string
-                  name:
-                    type: string
-                  type:
-                    type: integer
-                  image: 
-                    type: string
-      pictures:
-        type: array
-        items:
-          type: string
-      price:
-        type: number
-        format: float
-      published:
-        type: string
-      seller:
-        type: string
-      units:
-        type: integer
-        format: int64
-  ProductsReturn:
+  ProductsQueryOutput:
     type: object
     properties:
       count:
@@ -855,66 +677,50 @@ definitions:
       result:
         type: array
         items:
-          type: object
-          properties:
-            _id: 
-              type: string
-            categories:
-              type: array
-              items:
-                type: string
-            description:
-              type: string
-            location:
-              type: object
-              properties:
-                longitude: 
-                  type: number
-                  format: float
-                latitude:
-                  type: number
-                  format: float
-            name:
-              type: string
-            payment_methods:
-              type: array
-              items:
-                type: object
-                properties:
-                  _id:
-                    type: string
-                  name:
-                    type: string
-                  type:
-                    type: integer
-                  image: 
-                    type: string
-            pictures:
-              type: array
-              items:
-                type: string
-            price:
-              type: number
-              format: float
-            published:
-              type: string
-            seller:
-              type: string
-            units:
-              type: integer
-              format: int64
-            distance:
-              type: integer
-  Question:
+          $ref: '#/definitions/Product'
+  QuestionInput:
     type: object
     properties:
       question:
         type: string
-  Answer:
+  AnswerInput:
     type: object
     properties:
       answer:
         type: string
+  Question:
+    allOf:
+      - $ref: '#/definitions/QuestionInput'
+    type: object
+    properties:
+      datetime:
+        type: string
+      _id:
+        type: string
+      uid:
+        type: string
+  Answer:
+    allOf:
+      - $ref: '#/definitions/AnswerInput'
+    type: object
+    properties:
+      datetime:
+        type: string
+      _id:
+        type: string
+      uid:
+        type: string
+  QuestionWithAnswer:
+    allOf:
+      - $ref: '#/definitions/Question'
+    type: object
+    properties:
+      answer:
+        $ref: '#/definitions/Answer'
+  ArrayOfQuestionsWithAnswers:
+    type: array
+    items:
+      $ref: '#/definitions/QuestionWithAnswer'
   CategoryInput:
     type: object
     properties:
@@ -923,26 +729,17 @@ definitions:
       image:
         type: string
   Category:
+    allOf:
+      - $ref: '#/definitions/CategoryInput'
     type: object
     properties:
       _id:
         type: string
-      name:
-        type: string
-      image:
-        type: string
   CategoryArray:
     type: array
     items:
-      type: object
-      properties:
-        _id:
-          type: string
-        name:
-          type: string
-        image:
-          type: string
-  NewOrderInput:
+      $ref: '#/definitions/Category'
+  OrderInput:
     type: object
     required:
     - product_id
@@ -953,20 +750,46 @@ definitions:
       units:
         type: integer
       payment_info:
-        type: object
-        required:
-        - payment_method
-        properties:
-          payment_method:
-            type: string
-          cardholder_name:
-            type: string
-          card_number:
-            type: string
-          expiration_date:
-            type: string
-          security_code:
-            type: string
+        $ref: '#/definitions/PaymentInfo'
+  Order:
+    allOf:
+      - $ref: '#/definitions/OrderInput'
+    type: object
+    properties:
+      _id:
+        type: string
+      seller:
+        type: string
+      buyer:
+        type: string
+      status:
+        type: string
+      tracking_number:
+        type: integer
+      total:
+        type: number
+        format: float
+      product_name:
+        type: string
+      buyer_location:
+        $ref: '#/definitions/Location'
+      seller_location:
+        $ref: '#/definitions/Location'
+  PaymentInfo:
+    type: object
+    required:
+    - payment_method
+    properties:
+      payment_method:
+        type: string
+      cardholder_name:
+        type: string
+      card_number:
+        type: string
+      expiration_date:
+        type: string
+      security_code:
+        type: string  
   NewOrderOutput:
     type: object
     properties:
@@ -980,26 +803,8 @@ definitions:
       orders:
         type: array
         items:
-          type: object
-          properties:
-            _id:
-              type: string
-            buyer:
-              type: string
-            payment_method:
-              type: string
-            product_id:
-              type: string
-            product_name:
-              type: string
-            seller:
-              type: string
-            total:
-              type: number
-              format: float
-            units:
-              type: integer
-  NewPaymentMethod:
+          $ref: '#/definitions/Order'
+  PaymentMethod:
     type: object
     properties:
       name:
@@ -1007,33 +812,10 @@ definitions:
       type:
         type: integer
       image:
-        type: string
-  PaymentMethodId:
-    type: object
-    properties:
-      _id:
         type: string
   PaymentMethods:
     type: array
     items:
-      type: object
-      properties:
-        _id:
-          type: string
-        name:
-          type: string
-        type:
-          type: integer
-        image:
-          type: string
-  PaymentMethod:
-    type: object
-    properties:
-      _id:
-        type: string
-      name:
-        type: string
-      type:
-        type: integer
-      image:
-        type: string
+      $ref: '#/definitions/PaymentMethod'
+      
+          
