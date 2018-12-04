@@ -10,6 +10,3 @@ def get_payment_methods():
     shared_server = SharedServer()
     payment_methods = shared_server.get_payment_methods()
     return jsonify(payment_methods), 200
-
-
-
