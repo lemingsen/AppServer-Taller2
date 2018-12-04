@@ -35,12 +35,6 @@ class ProductSchema(Schema):
     questions = fields.List(fields.Nested(QuestionSchema))
     distance = fields.Integer()
 
-    @validates('units')
-    def validate_units(self, value):
-        """Validates that product units are greater than zero"""
-        if value <= 0:
-            raise ValidationError("Product units must be greater than 0.")
-
     @post_load
     def make_user(self, data):
         """Deserializes data into a Product object"""

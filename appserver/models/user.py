@@ -2,6 +2,7 @@
 from marshmallow import Schema, fields, post_load, validate
 from appserver.utils.mongo import ObjectId
 from appserver.models.base import BaseModel
+from appserver.models.location import LocationSchema
 # pylint: disable=R0903,R0201
 
 
@@ -21,12 +22,15 @@ class UserSchema(Schema):
     surname = fields.Str(validate=validate.Length(
         min=1, error="User surname cannot be empty."))
     uid = fields.Str(required=True)
+    location = fields.Nested(LocationSchema, required=True)
     email = fields.Email(required=True)
     facebook = fields.Str()
     google = fields.Str()
     photo = fields.URL()
     member_since = fields.Str()
     last_login = fields.Str()
+    points = fields.Int()
+    purchases = fields.Int()
 
     @post_load
     def make_user(self, data):

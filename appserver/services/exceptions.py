@@ -30,3 +30,8 @@ class NotEnoughUnitsError(Exception):
     def __init__(self, message):
         super(NotEnoughUnitsError, self).__init__(message)
         self.message = message
+
+
+class ExpiredTokenError(Exception):
+    """Expired token exception"""
+    pass

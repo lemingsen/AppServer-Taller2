@@ -1,7 +1,6 @@
 """Endpoints relacionados al usuario"""
 from flask import jsonify, request, abort
 from flask_jwt_extended import fresh_jwt_required, get_jwt_identity
-import requests
 from appserver.controllers import api_bp
 from appserver.services.user_services import UserService
 
@@ -67,11 +66,3 @@ def my_publications():
 def my_sales():
     """Devuelve un listado de las ventas del usuario"""
     pass
-
-
-@api_bp.route('/user/purchases/<string:track_id>', methods=['GET'])
-def track(track_id):
-    """Servicio de tracking: permite conocer el estado de una
-     compra a través del código de tracking"""
-    req = requests.get('https://shared-server-tallerii.herokuapp.com/envios/' + str(track_id))
-    return req.json()

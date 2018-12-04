@@ -2,6 +2,7 @@
 from flask import jsonify, request, abort
 from appserver.controllers import api_bp
 from appserver.services.payment_method_services import PaymentsService
+from appserver.services.shared_server_services import SharedServer
 
 
 @api_bp.route('/payments', methods=['POST'])
@@ -27,7 +28,8 @@ def modify_payment_method(payment_id):
 @api_bp.route('/payments', methods=['GET'])
 def get_payment_methods():
     """Obtiene todos los métodos de pago disponibles"""
-    payment_methods = PaymentsService.get_payment_methods()
+    shared_server = SharedServer()
+    payment_methods = shared_server.get_payment_methods()
     return jsonify(payment_methods), 200
 
 

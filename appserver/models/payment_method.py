@@ -1,6 +1,5 @@
 """Payment model"""
 from marshmallow import Schema, fields, post_load, validate, validates, ValidationError
-from appserver.utils.mongo import ObjectId
 from appserver.models.base import BaseModel
 # pylint: disable=R0903,R0201
 
@@ -15,7 +14,6 @@ class PaymentMethod(BaseModel):
 
 class PaymentMethodSchema(Schema):
     """marshmallow payment schema"""
-    _id = ObjectId()
     name = fields.Str(required=True, validate=validate.Length(
         min=1, error="Payment name cannot be empty"))
     type = fields.Int(required=True)

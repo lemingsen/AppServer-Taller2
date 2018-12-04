@@ -20,21 +20,24 @@ def new_order():
     return jsonify(order_tracking_number=purchase_id), 200
 
 
-@api_bp.route('/orders/tracking/<string:order_id>', methods=['GET'])
+@api_bp.route('/orders/tracking/<int:tracking_number>', methods=['GET'])
 @fresh_jwt_required
-def track_order():
+def track_order(tracking_number):
     """Este servicio permitirá conocer el estado de
     una compra a través del código de tracking."""
-    pass
+    uid = get_jwt_identity()
+    order = OrderServices.track_order(uid, tracking_number)
+    return jsonify(order), 200
 
 
-@api_bp.route('/orders/shipping/<string:order_id>', methods=['POST'])
+@api_bp.route('/orders/shipping/estimate/<int:tracking_number>', methods=['POST'])
 @fresh_jwt_required
-def calculate_order_shipping_cost():
+def estimate_order_shipping_cost(tracking_number):
     """Permite saber, con un margen de error, el costo de un
      envío antes de realizarlo. Este servicio será una
       fachada de uno proporcionado por el Shared Server."""
-    pass
+    cost = OrderServices.estimate_shipping_cost(tracking_number)
+    return jsonify(estimated_cost=cost), 200
 
 
 @api_bp.route('/orders/sales', methods=['GET'])

@@ -68,16 +68,17 @@ class OrderData(Data):
         }
 
         self.input_order_with_9_units = {
-            "product_id": "5bd7b28bc9133f00087dd8e8",
-            "units": 9,
             "payment_info": {
-                "payment_method": "visa",
-                "cardholder_name": "Pepe Grillo",
-                "card_number": "1234-1234-1234-1234",
-                "expiration_date": "11/22",
-                "security_code": "123"
-            }
+                "payment_method": "Mastercard",
+                "security_code": "125",
+                "card_number": "1234-1322-1223-1223",
+                "cardholder_name": "Pepe Gutierrez",
+                "expiration_date": "01/22"
+            },
+            "units": 9,
+            "product_id": "5bd7b28bc9133f00087dd8e8"
         }
+
 
 
 class ProductData(Data):
@@ -87,39 +88,45 @@ class ProductData(Data):
         self.question_id = "5bbe37a1e3c00d493439d19e"
         self.category_id = "5bbe37a1e3c00d493439d19e"
         self.valid_product = {
-            "_id": "5bd7503ce3c00c227004742b",
-            "categories": [
-                "mesa",
-                "usado",
-                "rectangular"
+            "_id": "5bd7b28bc9133f00087dd8e8",
+            "name": "Placa de video ATI 5750",
+            "published": "2018-10-30 01:23:23.152590",
+            "pictures": [
+                "https://www.amd.com/PublishingImages/photography/product/360px/ATI-Radeon-HD-5750.png"
             ],
-            "description": "Mesa Cuadrada",
-            "location": {
-                "longitude": 25.2084,
-                "latitude": 55.2719
-            },
-            "name": "Mesa",
+            "price": 30000,
             "payment_methods": [
                 {
-                    "name": "visa",
-                    "type": 1,
-                    "image": "http://visa.com.ar/image.jpg"
+                    "type": 0,
+                    "name": "Efectivo",
+                    "image": "http://soloefectivo.com.ar/image.jpg"
                 },
                 {
-                    "name": "amex",
                     "type": 1,
-                    "image": "http://amex.com.ar/image.jpg"
+                    "name": "Visa",
+                    "image": "https://firebasestorage.googleapis.com/v0/b/comprameli-49a1b.appspot.com/o/images%2Fpayments%2Fvisa.png?alt=media&token=fed5389f-a966-4f22-82e9-0181784667a7"
+                },
+                {
+                    "type": 1,
+                    "name": "American Express",
+                    "image": "https://firebasestorage.googleapis.com/v0/b/comprameli-49a1b.appspot.com/o/images%2Fpayments%2Famex.png?alt=media&token=70c950b6-a60e-4bc3-85ee-fb8cb5d4b82b"
+                },
+                {
+                    "type": 1,
+                    "name": "Mastercard",
+                    "image": "https://firebasestorage.googleapis.com/v0/b/comprameli-49a1b.appspot.com/o/images%2Fpayments%2Fmastercard.png?alt=media&token=0deb3fdc-db7b-464a-9f0a-f7c4126808f6"
                 }
             ],
-            "pictures": [
-                "https://www.mesas.com/1.jpg",
-                "https://www.mesas.com/2.jpg",
-                "https://www.mesas.com/3.jpg"
-            ],
-            "price": 543.32,
-            "published": "2018-10-29 15:23:56.443754",
             "seller": "YmjgZM06jVWrbGnOuUfTItMMZx22",
-            "units": 12
+            "categories": [
+                "tecnologia"
+            ],
+            "description": "Placa de video para gamers",
+            "location": {
+                "longitude": -58.466767,
+                "latitude": -34.558499
+            },
+            "units": 3
         }
 
         self.valid_product_from_other_user_than_valid_token_header = {
@@ -159,38 +166,44 @@ class ProductData(Data):
         }
 
         self.product_with_3_units = {
-            "_id": "5bd7503ce3c00c227004742b",
-            "categories": [
-                "mesa",
-                "usado",
-                "rectangular"
+            "_id": "5bd7b28bc9133f00087dd8e8",
+            "name": "Placa de video ATI 5750",
+            "published": "2018-10-30 01:23:23.152590",
+            "pictures": [
+                "https://www.amd.com/PublishingImages/photography/product/360px/ATI-Radeon-HD-5750.png"
             ],
-            "description": "Mesa Cuadrada",
-            "location": {
-                "longitude": 25.2084,
-                "latitude": 55.2719
-            },
-            "name": "Mesa",
+            "price": 30000,
             "payment_methods": [
                 {
-                    "name": "visa",
-                    "type": 1,
-                    "image": "http://visa.com.ar/image.jpg"
+                    "type": 0,
+                    "name": "Efectivo",
+                    "image": "http://soloefectivo.com.ar/image.jpg"
                 },
                 {
-                    "name": "amex",
                     "type": 1,
-                    "image": "http://amex.com.ar/image.jpg"
+                    "name": "Visa",
+                    "image": "https://firebasestorage.googleapis.com/v0/b/comprameli-49a1b.appspot.com/o/images%2Fpayments%2Fvisa.png?alt=media&token=fed5389f-a966-4f22-82e9-0181784667a7"
+                },
+                {
+                    "type": 1,
+                    "name": "American Express",
+                    "image": "https://firebasestorage.googleapis.com/v0/b/comprameli-49a1b.appspot.com/o/images%2Fpayments%2Famex.png?alt=media&token=70c950b6-a60e-4bc3-85ee-fb8cb5d4b82b"
+                },
+                {
+                    "type": 1,
+                    "name": "Mastercard",
+                    "image": "https://firebasestorage.googleapis.com/v0/b/comprameli-49a1b.appspot.com/o/images%2Fpayments%2Fmastercard.png?alt=media&token=0deb3fdc-db7b-464a-9f0a-f7c4126808f6"
                 }
             ],
-            "pictures": [
-                "https://www.mesas.com/1.jpg",
-                "https://www.mesas.com/2.jpg",
-                "https://www.mesas.com/3.jpg"
-            ],
-            "price": 543.32,
-            "published": "2018-10-29 15:23:56.443754",
             "seller": "YmjgZM06jVWrbGnOuUfTItMMZx23",
+            "categories": [
+                "tecnologia"
+            ],
+            "description": "Placa de video para gamers",
+            "location": {
+                "longitude": -58.466767,
+                "latitude": -34.558499
+            },
             "units": 3
         }
 
@@ -322,9 +335,9 @@ class PaymentMethodData(Data):
     def __init__(self):
         Data.__init__(self)
         self.valid_payment_method = {
-            "_id": "5be75661e3c00c4c725e85b2",
             "name": "visa",
-            "type": 1
+            "type": 1,
+            "image": "http://visa.com.ar/logo.jpg"
         }
 
     def get_valid_payment_method(self):
@@ -337,13 +350,22 @@ class UserData(Data):
         Data.__init__(self)
         self.uid = 'YmjgZM06jVWrbGnOuUfTItMMZx22'
         self.valid_user = {
-            "email": "nombre@gmail.com",
-            "facebook": "123342342342",
-            "google": "nombre@gmail.com",
-            "name": "Nombre",
+            "_id": "5bca2c83e3c00c74104dd7c2",
             "photo": "https://www.iemoji.com/view/emoji/1336/skin-tones/man-medium-skin-tone",
+            "member_since": "2018-10-19 16:12:03.159657",
+            "google": "nombre@gmail.com",
+            "facebook": "123342342342",
+            "email": "nombre@gmail.com",
+            "uid": "YmjgZM06jVWrbGnOuUfTIo9MZx22",
+            "last_login": "2018-10-19 16:12:03.159685",
             "surname": "Apellido",
-            "uid": "YmjgZM06yVWrbGnOuUfTIo9MZx22"
+            "name": "Nombre",
+            "location": {
+                "longitude": -58.482608,
+                "latitude": -34.5831
+            },
+            "points": 106,
+            "purchases": 15
         }
         self.invalid_user = {
             "email": "nombre@gmail.com",

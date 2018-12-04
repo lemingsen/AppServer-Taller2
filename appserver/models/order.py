@@ -2,7 +2,28 @@
 from marshmallow import Schema, fields, post_load, validates, ValidationError, validate
 from appserver.utils.mongo import ObjectId
 from appserver.models.base import BaseModel
-# pylint: disable=R0903,R0201
+from appserver.models.location import LocationSchema
+# pylint: disable=R0903,R0201,C0103
+
+
+class TrackingInfo:
+    """TrackingInfo"""
+    def __init__(self, tracking_id, status, update_at):
+        self.id = tracking_id
+        self.status = status
+        self.updateat = update_at
+
+
+class TrackingInfoSchema(Schema):
+    """TackingInfo Schema"""
+    id = fields.Int(required=True)
+    status = fields.Str(required=True)
+    updateat = fields.DateTime(required=True)
+
+    @post_load
+    def make_product_tracking_code(self, data):
+        """Creates a TrackingInfo from data dictionary"""
+        return TrackingInfo(data['id'], data['status'], data['updateat'])
 
 
 class PaymentInfo:
@@ -51,7 +72,12 @@ class OrderSchema(Schema):
     datetime = fields.Str()
     buyer = fields.Str()
     seller = fields.Str()
+    buyer_location = fields.Nested(LocationSchema)
+    product_location = fields.Nested(LocationSchema)
     total = fields.Float()
+    tracking_number = fields.Int()
+    status = fields.Str()
+    last_status_update = fields.DateTime()
 
     @validates('units')
     def validate_units(self, value):
