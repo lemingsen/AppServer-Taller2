@@ -38,6 +38,8 @@ paths:
       summary: User login
       description: Logs a user into the system
       operationId: userLogin
+      consumes:
+        - application/json
       produces:
         - application/json
       parameters:
@@ -65,6 +67,8 @@ paths:
       summary: Register user
       description: Registers a user into the system
       operationId: register
+      consumes:
+        - application/json
       produces:
         - application/json
       parameters:
@@ -111,6 +115,8 @@ paths:
       summary: Modify user profile
       description: Modifies current user profile
       operationId: modifyProfile
+      consumes:
+        - application/json
       produces:
         - application/json
       parameters:
@@ -214,6 +220,8 @@ paths:
       summary: Add product
       description: Adds a product for selling
       operationId: addProduct
+      consumes:
+        - application/json
       produces:
         - application/json
       parameters:
@@ -298,6 +306,8 @@ paths:
         summary: Add question about a product
         description: Adds a a question about product with product id {id}. Returns the updated product.
         operationId: addQuestion
+        consumes:
+          - application/json
         produces:
           - application/json
         parameters:
@@ -334,6 +344,8 @@ paths:
         summary: Adds an answer to a question about a product
         description: Adds an answer to a question with id {question_id} about a product with product id {product_id}. Returns the updated product.
         operationId: addAnswer
+        consumes:
+          - application/json
         produces:
           - application/json
         parameters:
@@ -373,6 +385,8 @@ paths:
         summary: Adds a product category.
         description: Adds a product category.
         operationId: addCategory
+        consumes:
+          - application/json
         produces:
           - application/json
         parameters:
@@ -442,6 +456,8 @@ paths:
       summary: Modifies a product category
       description: Modifies the product category with the id sent
       operationId: modifyCategory
+      consumes:
+        - application/json
       produces:
         - application/json
       parameters:
@@ -472,6 +488,8 @@ paths:
         summary: Creates a new order
         description: Creates a new order buying a product
         operationId: newOrder
+        consumes:
+          - application/json
         produces:
           - application/json
         parameters:
@@ -562,7 +580,7 @@ paths:
             description: order not found.
           '422':
             description: invalid token payload
-  /orders/shipping/estimate/<int:tracking_number>:
+  /orders/shipping/estimate/{tracking_number}:
     get:
       security:
         - Bearer: []
@@ -588,6 +606,44 @@ paths:
             description: unauthorized
           '404':
             description: order not found.
+          '422':
+            description: invalid token payload
+  /orders/reviews/{tracking_number}:
+    post:
+        security:
+          - Bearer: []
+        tags:
+          - orders
+        summary: Reviews the purchase
+        description: Reviews the purchase after product has been delivered
+        operationId: reviewOrder
+        consumes:
+          - application/json
+        produces:
+          - application/json
+        parameters:
+          - name: tracking_number
+            in: path
+            description: order tracking_number
+            required: true
+            type: integer
+          - in: body
+            name: body
+            description: review
+            required: true
+            schema:
+              $ref: '#/definitions/ReviewInput'
+        responses:
+          '200':
+            description: successful operation
+            schema:
+              $ref: '#/definitions/NewOrderOutput'
+          '400':
+            description: bad request
+          '401':
+            description: unauthorized
+          '404':
+            description: product not found
           '422':
             description: invalid token payload
   /payments:
@@ -879,5 +935,10 @@ definitions:
       estimated_cost:
         type: number
         format: float
+  ReviewInput:
+    type: object
+    properties:
+      review:
+        type: string
       
           

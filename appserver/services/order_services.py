@@ -1,5 +1,6 @@
 """Order Services"""
 import bson
+from marshmallow.exceptions import ValidationError
 from appserver.models.order import OrderSchema
 from appserver.data.product_mapper import ProductMapper
 from appserver.data.order_mapper import OrderMapper
@@ -69,6 +70,18 @@ class OrderServices:
         for order in orders:
             purchases.append(cls.schema.dump(order))
         return purchases
+
+    @classmethod
+    def review_purchase(cls, uid, tracking_number, review_dict):
+        order = cls._get_order(tracking_number)
+        if order.buyer != uid:
+            raise ForbiddenError("You can review your own purchases.")
+        if order.status != "ENVIO REALIZADO":
+            raise ForbiddenError("Cannot review purchase until order is delivered.")
+        if review_dict.get('review') is None:
+            raise ValidationError("No review sent")
+        OrderMapper.find_one_and_update({'tracking_number': tracking_number},
+                                        {'$set': {'review': review_dict.get('review')}})
 
     @classmethod
     def _update_tracking_status(cls, order):
@@ -154,3 +167,4 @@ class OrderServices:
         if buyer is None:
             raise NotFoundError("User not found.")
         return buyer
+

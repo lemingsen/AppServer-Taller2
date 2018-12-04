@@ -78,6 +78,7 @@ class OrderSchema(Schema):
     tracking_number = fields.Int()
     status = fields.Str()
     last_status_update = fields.DateTime()
+    review = fields.Str()
 
     @validates('units')
     def validate_units(self, value):
