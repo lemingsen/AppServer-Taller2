@@ -73,6 +73,7 @@ class OrderServices:
 
     @classmethod
     def review_purchase(cls, uid, tracking_number, review_dict):
+        """Reviews a purchase"""
         order = cls._get_order(tracking_number)
         if order.buyer != uid:
             raise ForbiddenError("You can review your own purchases.")
@@ -167,4 +168,3 @@ class OrderServices:
         if buyer is None:
             raise NotFoundError("User not found.")
         return buyer
-
