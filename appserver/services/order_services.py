@@ -93,17 +93,30 @@ class OrderServices:
         if order.buyer == product.seller:
             raise ForbiddenError("User cannot buy his own products.")
         cls._validate_product_has_payment_method(
-            order.payment_info.payment_method, product.payment_methods)
+            order.payment_info, product.payment_methods)
 
     @classmethod
-    def _validate_product_has_payment_method(cls, payment_method, product_payment_methods):
+    def _validate_product_has_payment_method(cls, payment_info, product_payment_methods):
         found = False
         for product_payment_method in product_payment_methods:
-            if payment_method == product_payment_method.name:
+            if payment_info.payment_method == product_payment_method.name:
                 found = True
+                if product_payment_method.type == 1:
+                    cls._validate_credit_card_info(payment_info)
                 break
         if not found:
             raise ForbiddenError("Invalid payment method.")
+
+    @classmethod
+    def _validate_credit_card_info(cls, payment_info):
+        try:
+            is_valid_card = payment_info.cardholder_name \
+                         and payment_info.card_number \
+                         and payment_info.expiration_date \
+                         and payment_info.security_code
+        except AttributeError:
+            raise ForbiddenError("Missing credit card payment information")
+        return is_valid_card
 
     @classmethod
     def _update_product(cls, order, product):

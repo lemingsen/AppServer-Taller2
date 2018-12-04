@@ -6,10 +6,8 @@ from appserver.models.question import QuestionSchema
 from appserver.models.answer import AnswerSchema
 from appserver.models.category import CategorySchema
 from appserver.models.product import AddProductSchema
-from appserver.models.payment_method import PaymentMethodSchema
 from appserver.data.product_mapper import ProductMapper
 from appserver.data.category_mapper import CategoryMapper
-from appserver.data.payment_method_mapper import PaymentMethodMapper
 from appserver.services.exceptions import NotFoundError, ForbiddenError, DataExistsError
 from appserver.models.product_query_filters import ProductsQueryFiltersSchema
 from appserver.services.shared_server_services import SharedServer
@@ -36,7 +34,8 @@ class ProductsService:
                     payment_method_found = True
                     break
             if not payment_method_found:
-                raise NotFoundError(product_payment_method_name + " payment method is not available.")
+                raise NotFoundError(product_payment_method_name +
+                                    " payment method is not available.")
         product.payment_methods = aux
         product.published = str(datetime.now())
         return ProductMapper.insert(product)

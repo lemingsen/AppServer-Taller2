@@ -1,6 +1,5 @@
 """Payment model"""
 from marshmallow import Schema, fields, post_load, validate
-from appserver.models.base import BaseModel
 # pylint: disable=R0903,R0201
 
 
@@ -22,4 +21,3 @@ class PaymentMethodSchema(Schema):
     def make_payment_method(self, data):
         """creates a Payment object from data dictionary"""
         return PaymentMethod(**data)
-
