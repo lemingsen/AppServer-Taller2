@@ -534,6 +534,62 @@ paths:
             description: unauthorized
           '422':
             description: invalid token payload
+  /orders/tracking/{tracking_number}:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - orders
+      summary: Gets the order status identified by the tracking number
+      description: Gets the order status
+      operationId: getTracking
+      produces:
+        - application/json
+      parameters:
+        - name: tracking_number
+          in: path
+          description: order tracking_number
+          required: true
+          type: integer
+      responses:
+          '200':
+            description: successful operation
+            schema:
+              $ref: '#/definitions/Order'
+          '401':
+            description: unauthorized
+          '404':
+            description: order not found.
+          '422':
+            description: invalid token payload
+  /orders/shipping/estimate/<int:tracking_number>:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - orders
+      summary: Gets an estimated shipping cost
+      description: Gets an estimated shipping cost for the order
+      operationId: getShippingEstimate
+      produces:
+        - application/json
+      parameters:
+        - name: tracking_number
+          in: path
+          description: order tracking_number
+          required: true
+          type: integer
+      responses:
+          '200':
+            description: successful operation
+            schema:
+              $ref: '#/definitions/ShippingEstimateCostOutput'
+          '401':
+            description: unauthorized
+          '404':
+            description: order not found.
+          '422':
+            description: invalid token payload
   /payments:
     get:
       tags:
@@ -817,5 +873,11 @@ definitions:
     type: array
     items:
       $ref: '#/definitions/PaymentMethod'
+  ShippingEstimateCostOutput:
+    type: object
+    properties:
+      estimated_cost:
+        type: number
+        format: float
       
           
