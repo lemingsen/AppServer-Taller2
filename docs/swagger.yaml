@@ -882,6 +882,8 @@ definitions:
         $ref: '#/definitions/Location'
       seller_location:
         $ref: '#/definitions/Location'
+      rate:
+        type: string
   PaymentInfo:
     type: object
     required:
