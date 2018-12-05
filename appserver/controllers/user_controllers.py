@@ -45,24 +45,3 @@ def modify_profile():
     uid = get_jwt_identity()
     UserService.modify_profile(uid, data)
     return jsonify(result='success'), 200
-
-
-@api_bp.route('/user/purchases', methods=['GET'])
-@fresh_jwt_required
-def my_purchases():
-    """Devuelve un listado de las compras del usuario"""
-    return jsonify(message="ok"), 200
-
-
-@api_bp.route('/user/publications', methods=['GET'])
-@fresh_jwt_required
-def my_publications():
-    """Devuelve un listado de las publicaciones del usuario"""
-    pass
-
-
-@api_bp.route('/user/sales', methods=['GET'])
-@fresh_jwt_required
-def my_sales():
-    """Devuelve un listado de las ventas del usuario"""
-    pass
