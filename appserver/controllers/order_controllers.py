@@ -58,13 +58,13 @@ def get_purchases():
     return jsonify(count=len(purchases), orders=purchases), 200
 
 
-@api_bp.route('/orders/reviews/<int:tracking_number>', methods=['POST'])
+@api_bp.route('/orders/ratings/<int:tracking_number>', methods=['POST'])
 @fresh_jwt_required
-def review_purchase(tracking_number):
+def rate_purchase(tracking_number):
     """Permite calificar una compra"""
     uid = get_jwt_identity()
     if not request.is_json:
         abort(400)
-    review = request.get_json()
-    OrderServices.review_purchase(uid, tracking_number, review)
+    payload = request.get_json()
+    OrderServices.rate_purchase(uid, tracking_number, payload)
     return jsonify(result='success'), 200

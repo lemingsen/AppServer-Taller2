@@ -72,17 +72,21 @@ class OrderServices:
         return purchases
 
     @classmethod
-    def review_purchase(cls, uid, tracking_number, review_dict):
+    def rate_purchase(cls, uid, tracking_number, review_dict):
         """Reviews a purchase"""
+        ratings = ['POSITIVE', 'NEUTRAL', 'NEGATIVE']
         order = cls._get_order(tracking_number)
         if order.buyer != uid:
-            raise ForbiddenError("You can review your own purchases.")
-        if order.status != "ENVIO REALIZADO":
-            raise ForbiddenError("Cannot review purchase until order is delivered.")
-        if review_dict.get('review') is None:
-            raise ValidationError("No review sent")
+            raise ForbiddenError("You can only rate your own purchases.")
+        if order.status != 'ENVIO REALIZADO':
+            raise ForbiddenError("Cannot rate purchase until order is delivered.")
+        review = review_dict.get('review')
+        if review is None:
+            raise ValidationError("Purchase not rated")
+        if review not in ratings:
+            raise ValidationError("rate must be POSITIVE, NEUTRAL or NEGATIVE")
         OrderMapper.find_one_and_update({'tracking_number': tracking_number},
-                                        {'$set': {'review': review_dict.get('review')}})
+                                        {'$set': {'rate': review_dict.get('review')}})
 
     @classmethod
     def _update_tracking_status(cls, order):

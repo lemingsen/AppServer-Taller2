@@ -608,15 +608,15 @@ paths:
             description: order not found.
           '422':
             description: invalid token payload
-  /orders/reviews/{tracking_number}:
+  /orders/ratings/{tracking_number}:
     post:
         security:
           - Bearer: []
         tags:
           - orders
-        summary: Reviews the purchase
-        description: Reviews the purchase after product has been delivered
-        operationId: reviewOrder
+        summary: Rates the purchase
+        description: Rates the purchase after product has been delivered.
+        operationId: rateOrder
         consumes:
           - application/json
         produces:
@@ -628,22 +628,20 @@ paths:
             required: true
             type: integer
           - in: body
-            name: body
-            description: review
+            name: rate
+            description: must be 'POSITIVE', 'NEGATIVE' or 'NEUTRAL'
             required: true
             schema:
-              $ref: '#/definitions/ReviewInput'
+              $ref: '#/definitions/RatingInput'
         responses:
           '200':
             description: successful operation
-            schema:
-              $ref: '#/definitions/NewOrderOutput'
           '400':
             description: bad request
           '401':
             description: unauthorized
-          '404':
-            description: product not found
+          '403':
+            description: forbidden operation
           '422':
             description: invalid token payload
   /payments:
@@ -658,9 +656,6 @@ paths:
       responses:
           '200':
             description: successful operation
-            schema:
-              $ref: '#/definitions/PaymentMethods'
-  
 securityDefinitions:
   Bearer:
     type: apiKey
@@ -935,10 +930,10 @@ definitions:
       estimated_cost:
         type: number
         format: float
-  ReviewInput:
+  RatingInput:
     type: object
     properties:
-      review:
+      rate:
         type: string
       
           
