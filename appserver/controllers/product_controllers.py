@@ -94,6 +94,7 @@ def get_categories():
 
 
 @api_bp.route('/products/categories', methods=['POST'])
+@fresh_jwt_required
 def add_category():
     """Agrega una categoría de productos"""
     if not request.is_json:
@@ -104,6 +105,7 @@ def add_category():
 
 
 @api_bp.route('/products/categories/<string:category_id>', methods=['PUT'])
+@fresh_jwt_required
 def modify_category(category_id):
     """Modifica una categoría de producto"""
     if not request.is_json:
@@ -114,6 +116,7 @@ def modify_category(category_id):
 
 
 @api_bp.route('/products/categories/<string:category_id>', methods=['DELETE'])
+@fresh_jwt_required
 def delete_category(category_id):
     """Borra la categoría de productos especificada por su id"""
     ProductsService.delete_category(category_id)
