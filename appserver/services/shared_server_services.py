@@ -63,7 +63,7 @@ class SharedServer:
         url = os.environ['SHARED_SERVER_URI'] + '/servers'
         payload = {
             'createdBy': 'App Server',
-            'name': 'App Server'
+            'name': 'app-server-taller2.herokuapp.com'
         }
         response = requests.post(url, json=payload)
         if response.status_code == 201:

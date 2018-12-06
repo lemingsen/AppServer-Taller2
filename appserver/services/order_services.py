@@ -93,7 +93,7 @@ class OrderServices:
 
     @classmethod
     def _update_tracking_status(cls, order):
-        missing_payment = ['COMPRA_REALIZADA', 'PAGO PENDIENTE DE PROCESO', 'PAGO RECHAZADO']
+        missing_payment = ['COMPRA REALIZADA', 'PAGO PENDIENTE DE PROCESO', 'PAGO RECHAZADO']
         missing_delivery = ['PAGO ACEPTADO', 'ENVIO EN PROGRESO',
                             'PENDIENTE DE ENVIO', 'ENVIO CANCELADO']
         shared_server = SharedServer()
