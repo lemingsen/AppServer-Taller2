@@ -14,7 +14,7 @@
 **[Acceso al servidor](http://app-server-taller2.herokuapp.com/)**
 
 ## Instalación
-Para poder instalar el servidor, primero debemos instalar Python 3 si no está instalado.
+Para poder instalar el servidor, primero debemos instalar Python 3.6 si no está instalado.
 Una vez instalado Python debemos crear un virtualenv. Para hacerlo, escribimos el siguiente comando:
 
 ```
