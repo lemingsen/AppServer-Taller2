@@ -9,7 +9,7 @@
 
 **[Definición de la API](https://app-server-taller2.herokuapp.com/apidocs/)**
 
-**[Definición de arquitectura / Diseño de la aplicación](https://github.com/DamiCassinotti/SharedServer-Taller2/blob/master/api/documentacion.yaml)**
+**[Definición de arquitectura / Diseño de la aplicación]()**
 
 **[Acceso al servidor](http://app-server-taller2.herokuapp.com/)**
 
