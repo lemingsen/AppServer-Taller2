@@ -76,13 +76,13 @@ class OrderServices:
             raise ForbiddenError("You can only rate your own purchases.")
         if order.status != 'ENVIO REALIZADO':
             raise ForbiddenError("Cannot rate purchase until order is delivered.")
-        review = review_dict.get('review')
-        if review is None:
+        rating = review_dict.get('rate')
+        if rating is None:
             raise ValidationError("Purchase not rated")
-        if review not in ratings:
+        if rating not in ratings:
             raise ValidationError("rate must be POSITIVE, NEUTRAL or NEGATIVE")
-        OrderMapper.find_one_and_update({'tracking_number': tracking_number},
-                                        {'$set': {'rate': review_dict.get('review')}})
+        OrderMapper.rate_purchase(tracking_number, rating)
+        UserScoring(uid).new_rating(rating)
 
     @classmethod
     def _update_tracking_status(cls, order):
