@@ -23,8 +23,8 @@ class OrderServices:
         seller = cls._get_user(product.seller)
         order.buyer = buyer.uid
         order.seller = seller.uid
-        order.buyer = OrderUserInfo(buyer.username, buyer.email)
-        order.seller = OrderUserInfo(seller.username, seller.email)
+        order.buyer_info = OrderUserInfo(buyer.username, buyer.email)
+        order.seller_info = OrderUserInfo(seller.username, seller.email)
         order.total = product.price * order.units
         order.buyer_location = buyer.location
         order.product_location = product.location
