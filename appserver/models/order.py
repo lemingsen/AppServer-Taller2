@@ -83,6 +83,8 @@ class OrderSchema(Schema):
     unit_price = fields.Float()
     payment_info = fields.Nested(PaymentInfoSchema, required=True)
     datetime = fields.Str()
+    buyer = fields.Str()
+    seller = fields.Str()
     buyer_info = fields.Nested(OrderUserInfoSchema)
     seller_info = fields.Nested(OrderUserInfoSchema)
     buyer_location = fields.Nested(LocationSchema)
