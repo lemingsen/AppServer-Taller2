@@ -4,7 +4,7 @@ from marshmallow import Schema, fields, post_load, validate
 from appserver.utils.mongo import ObjectId
 from appserver.models.base import BaseModel
 from appserver.models.location import LocationSchema
-# pylint: disable=R0903,R0201,E1101
+# pylint: disable=R0903,R0201,E1101,W0201
 
 
 class UserMetadata:
@@ -50,6 +50,7 @@ class User(BaseModel):
         return self.name + " " + self.surname
 
     def register_init(self):
+        """Sets variables for registering user"""
         self.member_since = str(datetime.now())
         self.last_login = self.member_since
         self.points = 0

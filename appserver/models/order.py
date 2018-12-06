@@ -7,14 +7,16 @@ from appserver.models.location import LocationSchema
 
 
 class OrderUserInfo:
+    """OrderUSerInfo"""
     def __init__(self, username, email):
         self.username = username
         self.email = email
 
 
 class OrderUserInfoSchema(Schema):
-        username = fields.Str(required=True)
-        email = fields.Email(required=True)
+    """OrderUserInfo schema"""
+    username = fields.Str(required=True)
+    email = fields.Email(required=True)
 
 
 class TrackingInfo:
