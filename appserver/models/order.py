@@ -6,6 +6,17 @@ from appserver.models.location import LocationSchema
 # pylint: disable=R0903,R0201,C0103
 
 
+class OrderUserInfo:
+    def __init__(self, username, email):
+        self.username = username
+        self.email = email
+
+
+class OrderUserInfoSchema(Schema):
+        username = fields.Str(required=True)
+        email = fields.Email(required=True)
+
+
 class TrackingInfo:
     """TrackingInfo"""
     def __init__(self, tracking_id, status, update_at):
@@ -70,8 +81,8 @@ class OrderSchema(Schema):
     unit_price = fields.Float()
     payment_info = fields.Nested(PaymentInfoSchema, required=True)
     datetime = fields.Str()
-    buyer = fields.Str()
-    seller = fields.Str()
+    buyer_info = fields.Nested(OrderUserInfoSchema)
+    seller_info = fields.Nested(OrderUserInfoSchema)
     buyer_location = fields.Nested(LocationSchema)
     product_location = fields.Nested(LocationSchema)
     total = fields.Float()

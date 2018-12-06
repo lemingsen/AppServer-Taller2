@@ -4,7 +4,6 @@
 
 class BaseModel:
     """Base model class"""
-    # schema = None
 
     def __init__(self):
         self._id = None
@@ -18,9 +17,3 @@ class BaseModel:
     def id(self, value):
         """id setter"""
         self._id = value
-    # def to_dict(self):
-    #     return self.schema.load(self)
-    #
-    # def from_dict(self, data):
-    #     for key, value in kwargs.items():
-    #         setattr(self, key, value)

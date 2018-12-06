@@ -704,6 +704,8 @@ definitions:
         type: integer
       purchases:
         type: integer
+      metadata:
+        $ref: '#/definitions/UserMetadata'
   Location:
     type: object
     properties:
@@ -878,6 +880,10 @@ definitions:
         format: float
       product_name:
         type: string
+      buyer_info:
+        $ref: '#/definitions/OrderUserInfo'
+      seller_info:
+        $ref: '#/definitions/OrderUserInfo'
       buyer_location:
         $ref: '#/definitions/Location'
       seller_location:
@@ -937,5 +943,32 @@ definitions:
     properties:
       rate:
         type: string
+  OrderUserInfo:
+    type: object
+    properties:
+      username:
+        type: string
+      email:
+        type: string
+  UserMetadata:
+    type: object
+    properties:
+      publications:
+        type: integer
+      purchases:
+        type: integer
+      sales:
+        type: integer
+      positive_ratings:
+        type: integer
+      neutral_ratings:
+        type: integer
+      negative_ratings:
+        type: integer
+      points_log:
+        type: array
+        items:
+          type: string
+
       
           

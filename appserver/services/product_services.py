@@ -19,24 +19,11 @@ class ProductsService:
     schema = ProductSchema()
 
     @classmethod
-    def add_product(cls, product_json, uid):
+    def add_product(cls, product_dict, uid):
         """Add product service"""
-        product_json['seller'] = uid
-        add_product_schema = AddProductSchema()
-        product = add_product_schema.load(product_json)
-        aux = []
-        payment_methods = SharedServer().get_payment_methods()
-        for product_payment_method_name in product.payment_methods:
-            payment_method_found = False
-            for payment_method in payment_methods:
-                if product_payment_method_name == payment_method.name:
-                    aux.append(payment_method)
-                    payment_method_found = True
-                    break
-            if not payment_method_found:
-                raise NotFoundError(product_payment_method_name +
-                                    " payment method is not available.")
-        product.payment_methods = aux
+        product = AddProductSchema().load(product_dict)
+        product.seller = uid
+        product.payment_methods = cls._add_payment_methods(product)
         product.published = str(datetime.now())
         return ProductMapper.insert(product)
 
@@ -152,3 +139,19 @@ class ProductsService:
         if product.seller != uid:
             raise ForbiddenError("User can only delete his own products")
         return True
+
+    @classmethod
+    def _add_payment_methods(cls, product):
+        aux = []
+        payment_methods = SharedServer().get_payment_methods()
+        for product_payment_method_name in product.payment_methods:
+            payment_method_found = False
+            for payment_method in payment_methods:
+                if product_payment_method_name == payment_method.name:
+                    aux.append(payment_method)
+                    payment_method_found = True
+                    break
+            if not payment_method_found:
+                raise NotFoundError(product_payment_method_name +
+                                    " payment method is not available.")
+        return aux

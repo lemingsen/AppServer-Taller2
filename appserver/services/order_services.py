@@ -6,6 +6,7 @@ from appserver.data.product_mapper import ProductMapper
 from appserver.data.order_mapper import OrderMapper
 from appserver.services.exceptions import NotFoundError, NotEnoughUnitsError, ForbiddenError
 from appserver.services.shared_server_services import SharedServer
+from appserver.models.order import OrderUserInfo
 from appserver.data.user_mapper import UserMapper
 
 
@@ -18,9 +19,12 @@ class OrderServices:
         """Creates a new purchase order of a product"""
         order = cls.schema.load(order_data)
         product = cls._get_product(order.product_id)
-        buyer = cls._get_buyer(buyer_uid)
-        order.buyer = buyer_uid
-        order.seller = product.seller
+        buyer = cls._get_user(buyer_uid)
+        seller = cls._get_user(product.seller)
+        order.buyer = buyer.uid
+        order.seller = seller.uid
+        order.buyer = OrderUserInfo(buyer.username, buyer.email)
+        order.seller = OrderUserInfo(seller.username, seller.email)
         order.total = product.price * order.units
         order.buyer_location = buyer.location
         order.product_location = product.location
@@ -48,9 +52,8 @@ class OrderServices:
     def estimate_shipping_cost(cls, tracking_number):
         """Estimates order shipping cost"""
         order = cls._get_order(tracking_number)
-        buyer = cls._get_buyer(order.buyer)
-        shared_server = SharedServer()
-        shipping_cost = shared_server.get_delivery_estimate(order, buyer)
+        buyer = cls._get_user(order.buyer)
+        shipping_cost = SharedServer().get_delivery_estimate(order, buyer)
         return shipping_cost
 
     @classmethod
@@ -167,8 +170,8 @@ class OrderServices:
         return product
 
     @classmethod
-    def _get_buyer(cls, buyer_uid):
-        buyer = UserMapper.get_one({'uid': buyer_uid})
+    def _get_user(cls, user_uid):
+        buyer = UserMapper.get_one({'uid': user_uid})
         if buyer is None:
             raise NotFoundError("User not found.")
         return buyer

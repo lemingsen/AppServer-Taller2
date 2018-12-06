@@ -32,9 +32,8 @@ class UserService:
         user = cls.schema.load(data)
         if UserMapper.exists({'uid': user.uid}):
             raise DataExistsError("User exists.")
-        user.member_since = str(datetime.now())
-        user.last_login = user.member_since
-        uid = UserMapper.insert(cls.schema.load(data))
+        user.register_init()
+        uid = UserMapper.insert(user)
         return uid
 
     @classmethod

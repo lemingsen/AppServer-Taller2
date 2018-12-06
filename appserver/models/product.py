@@ -47,7 +47,7 @@ class AddProductSchema(Schema):
         min=1, error="Product name cannot be empty."))
     description = fields.Str(required=True, validate=validate.Length(
         min=1, error="Product description cannot be empty"))
-    seller = fields.Str(required=True)
+    seller = fields.Str()
     units = fields.Int(required=True)
     price = fields.Float(required=True)
     location = fields.Nested(LocationSchema, required=True)
