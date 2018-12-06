@@ -1,10 +1,9 @@
 # App Server - Taller de programación II
-[![Coverage Status](https://fiverr-res.cloudinary.com/images/t_main1,q_auto,f_auto/gigs/46941709/original/d5ace87ba59d0d4e5151668e60e8eaf673153ff7/build-api-in-python-flask.jpg)[![Build Status](https://g.foolcdn.com/art/companylogos/square/MDB.png)
+[![Coverage Status](https://coveralls.io/repos/github/lucashemmingsen/AppServer-Taller2/badge.svg?branch=master)](https://coveralls.io/github/lucashemmingsen/AppServer-Taller2?branch=master)[![Build Status](https://travis-ci.com/lucashemmingsen/AppServer-Taller2.svg?branch=master)](https://travis-ci.com/lucashemmingsen/AppServer-Taller2)
 
 
 ![](https://sourcedexter.com/wp-content/uploads/2017/09/flask-python.png)
-![](https://logosvector.net/wp-content/uploads/2015/10/mongodb-logo-vector-download.jpg)
-
+![](https://g.foolcdn.com/art/companylogos/square/MDB.png)
 
 ## Documentación
 
