@@ -11,6 +11,7 @@ class OrderMapper(BaseMapper):
 
     @classmethod
     def rate_purchase(cls, tracking_number, rating):
+        """Rates a purchase after checking that it has not been rated before."""
         if OrderMapper.get_one({'tracking_number': tracking_number, 'rate': {'$exists': True}}):
             raise ForbiddenError('Order has already been rated')
         OrderMapper.find_one_and_update({'tracking_number': tracking_number},
