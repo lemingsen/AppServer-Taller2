@@ -11,6 +11,7 @@ from appserver.data.category_mapper import CategoryMapper
 from appserver.services.exceptions import NotFoundError, ForbiddenError, DataExistsError
 from appserver.models.product_query_filters import ProductsQueryFiltersSchema
 from appserver.services.shared_server_services import SharedServer
+from appserver.services.user_scoring import UserScoring
 
 
 class ProductsService:
@@ -25,7 +26,9 @@ class ProductsService:
         product.seller = uid
         product.payment_methods = cls._add_payment_methods(product)
         product.published = str(datetime.now())
-        return ProductMapper.insert(product)
+        product_id = ProductMapper.insert(product)
+        UserScoring(uid).new_product()
+        return product_id
 
     @classmethod
     def get_product_by_id(cls, product_id):
