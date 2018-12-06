@@ -14,4 +14,3 @@ marshmallow==3.0.0b20
 Werkzeug==0.14.1
 Flask-PyMongo==2.1.0
 flasgger==0.9.1
-Sphinx==1.8.2
