@@ -3,7 +3,7 @@ from marshmallow import Schema, fields, post_load, validates, ValidationError, v
 from appserver.utils.mongo import ObjectId
 from appserver.models.base import BaseModel
 from appserver.models.location import LocationSchema
-# pylint: disable=R0903,R0201,C0103
+# pylint: disable=R0903,R0201,C0103,R0902
 
 
 class OrderUserInfo:
@@ -68,9 +68,31 @@ class PaymentInfoSchema(Schema):
 class Order(BaseModel):
     """Order"""
     def __init__(self, **kwargs):
+        self.buyer = None
+        self.seller = None
+        self.buyer_info = None
+        self.seller_info = None
+        self.total = None
+        self.buyer_location = None
+        self.product_location = None
+        self.product_name = None
+        self.units = None
+        self.status = None
         super().__init__()
         for key, value in kwargs.items():
             setattr(self, key, value)
+
+    def prepare(self, product, buyer, seller):
+        """Prepares an order from product, buyer and seller info"""
+        self.buyer = buyer.uid
+        self.seller = seller.uid
+        self.buyer_info = OrderUserInfo(buyer.username, buyer.email)
+        self.seller_info = OrderUserInfo(seller.username, seller.email)
+        self.total = product.price * self.units
+        self.buyer_location = buyer.location
+        self.product_location = product.location
+        self.product_name = product.name
+        self.status = 'COMPRA REALIZADA'
 
 
 class OrderSchema(Schema):

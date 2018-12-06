@@ -39,7 +39,13 @@ class UserMetadataSchema(Schema):
 
 class User(BaseModel):
     """User"""
+
     def __init__(self, **kwargs):
+        self.member_since = None
+        self.last_login = None
+        self.member_since = None
+        self.points = 0
+        self.metadata = None
         super().__init__()
         for key, value in kwargs.items():
             setattr(self, key, value)

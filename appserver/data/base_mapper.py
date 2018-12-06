@@ -56,6 +56,12 @@ class BaseMapper:
         return ret
 
     @classmethod
+    def update_many(cls, filters, update):
+        """Updates the filtered documents"""
+        result = mongo.db[cls.collection].update_many(filters, update)
+        return result.modified_count
+
+    @classmethod
     def insert(cls, model):
         """Inserta un documento. Devuelve el ObjectId del nuevo documento"""
         data = cls.schema.dump(model)

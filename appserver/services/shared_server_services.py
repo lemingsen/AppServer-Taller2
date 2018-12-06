@@ -6,10 +6,11 @@ from functools import wraps
 from werkzeug.exceptions import BadGateway
 import requests
 from marshmallow import Schema, fields, post_load
-from appserver.models.order import TrackingInfoSchema
+
 from appserver.services.exceptions import ExpiredTokenError
 from appserver.models.payment_method import PaymentMethodSchema
 from appserver.models.order import PaymentInfoSchema
+from appserver.models.order import TrackingInfoSchema
 # pylint: disable=R0903,R0201
 
 

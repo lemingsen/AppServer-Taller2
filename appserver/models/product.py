@@ -34,6 +34,7 @@ class ProductSchema(Schema):
     published = fields.Str()
     questions = fields.List(fields.Nested(QuestionSchema))
     distance = fields.Integer()
+    points = fields.Integer()
 
     @post_load
     def make_user(self, data):

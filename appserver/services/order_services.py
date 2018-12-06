@@ -6,8 +6,8 @@ from appserver.data.product_mapper import ProductMapper
 from appserver.data.order_mapper import OrderMapper
 from appserver.services.exceptions import NotFoundError, NotEnoughUnitsError, ForbiddenError
 from appserver.services.shared_server_services import SharedServer
-from appserver.models.order import OrderUserInfo
 from appserver.data.user_mapper import UserMapper
+from appserver.services.user_scoring import UserScoring
 
 
 class OrderServices:
@@ -21,21 +21,14 @@ class OrderServices:
         product = cls._get_product(order.product_id)
         buyer = cls._get_user(buyer_uid)
         seller = cls._get_user(product.seller)
-        order.buyer = buyer.uid
-        order.seller = seller.uid
-        order.buyer_info = OrderUserInfo(buyer.username, buyer.email)
-        order.seller_info = OrderUserInfo(seller.username, seller.email)
-        order.total = product.price * order.units
-        order.buyer_location = buyer.location
-        order.product_location = product.location
-        order.product_name = product.name
+        order.prepare(product, buyer, seller)
         cls._validate_order(order, product)
         cls._update_product(order, product)
-        shared_server = SharedServer()
-        order.tracking_number = shared_server.new_tracking()
-        shared_server.create_payment(order)
-        order.status = 'COMPRA REALIZADA'
+        order.tracking_number = SharedServer().new_tracking()
+        SharedServer().create_payment(order)
         OrderMapper.insert(order)
+        UserScoring(buyer.uid).new_purchase()
+        UserScoring(seller.uid).new_sale()
         return order.tracking_number
 
     @classmethod

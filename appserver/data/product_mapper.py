@@ -18,6 +18,11 @@ class ProductMapper(BaseMapper):
         documents = mongo.db[cls.collection].aggregate(query)
         return documents
 
+    @classmethod
+    def update_points(cls, uid, points):
+        """Updates all seller's products points"""
+        cls.update_many({'seller': uid}, {'$set': {'points': points}})
+
 
 class ProductsQueryBuilder:
     """Class for building product queries from the filters passed"""
@@ -106,4 +111,8 @@ class ProductsQueryBuilder:
             match_aggregate = dict()
             match_aggregate['$match'] = self.query_pipe
             pipeline.append(match_aggregate)
+
+        sort_aggregate = dict()
+        sort_aggregate['$sort'] = {'points': -1}
+        pipeline.append(sort_aggregate)
         return pipeline
