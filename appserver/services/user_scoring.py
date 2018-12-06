@@ -37,8 +37,5 @@ class UserScoring:
         self._update_points(points)
 
     def _update_points(self, points):
-        print(self.uid)
-        print(points)
         user = UserMapper.add_points(self.uid, points)
-        print(user.points)
         ProductMapper.update_points(self.uid, user.points)
