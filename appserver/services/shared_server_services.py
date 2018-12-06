@@ -9,6 +9,7 @@ from marshmallow import Schema, fields, post_load
 from appserver.models.order import TrackingInfoSchema
 from appserver.services.exceptions import ExpiredTokenError
 from appserver.models.payment_method import PaymentMethodSchema
+from appserver.models.order import PaymentInfoSchema
 # pylint: disable=R0903,R0201
 
 
@@ -113,13 +114,7 @@ class SharedServer:
             "transaction_id": order.tracking_number,
             "currency": "Pesos",
             "value": order.total,
-            "paymentMethod": {
-                "expiration_date": order.payment_info.expiration_date,
-                "payment_method": order.payment_info.payment_method,
-                "card_number": order.payment_info.card_number,
-                "security_code": order.payment_info.security_code,
-                "cardholder_name": order.payment_info.cardholder_name
-            }
+            "paymentMethod": PaymentInfoSchema().dump(order.payment_info)
         }
         response = requests.post(url, headers=header, json=payload)
         if response.status_code == 401:
