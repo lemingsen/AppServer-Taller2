@@ -1,163 +1,130 @@
+# App Server - Taller de programación II
 [![Coverage Status](https://coveralls.io/repos/github/lucashemmingsen/AppServer-Taller2/badge.svg?branch=master)](https://coveralls.io/github/lucashemmingsen/AppServer-Taller2?branch=master)[![Build Status](https://travis-ci.com/lucashemmingsen/AppServer-Taller2.svg?branch=master)](https://travis-ci.com/lucashemmingsen/AppServer-Taller2)
 
-[Especificación de API REST (Swagger)](https://app-server-taller2.herokuapp.com/apidocs/)
 
-# Application Server - Taller 2
+![](https://sourcedexter.com/wp-content/uploads/2017/09/flask-python.png)
+![](https://logosvector.net/wp-content/uploads/2015/10/mongodb-logo-vector-download.jpg)
 
-Se trata de una aplicación por consola destinada a mantenerse en ejecución por períodos prolongados de tiempo.
 
-Esta aplicación debe brindar una interfaz REST [1] para la comunicación de los diferentes usuarios.
+## Documentación
 
-Este servidor se comunicará con el _Shared server_ (explicado a continuación) a traves de la interfaz REST común definida para el mismo. En el caso que la _aplicación Android_ (explicada a continuación) necesitará de algún servicio del _Shared Server_, **el _Application server_ deberá de actuar de fachada.**.
+**[Definición de la API](https://app-server-taller2.herokuapp.com/apidocs/)**
 
-#### Servicio de autenticación (login)
-Este servicio permitirá a los usuarios poder ingresar al sistema, obteniendo un token que deberá ser utilizado por los demás servicios.
+**[Definición de arquitectura / Diseño de la aplicación](https://github.com/DamiCassinotti/SharedServer-Taller2/blob/master/api/documentacion.yaml)**
 
-#### Servicio de registro
-Este servicio permitirá a los usuarios darse de alta en el sistema.
+**[Acceso al servidor](http://app-server-taller2.herokuapp.com/)**
 
-#### Servicio de consulta de perfil
-Este servicio permitirá consultar el perfil de un usuario. El mismo está compuesto por :
-* Datos personales (Nombre, Apellido, EMail)
-* Foto de perfil
-* Actividades: resumen de la actividad del usuario dentro del sistema.
+## Instalación
+Para poder instalar el servidor, primero debemos instalar Python 3 si no está instalado.
+Una vez instalado Python debemos crear un virtualenv. Para hacerlo, escribimos el siguiente comando:
 
-#### Servicio de modificación de perfil
-Este servicio permite a un usuario actualizar su perfil, debe permitir modificar y actualizar los siguientes datos:
-* Datos personales (Nombre, Apellido, EMail, Cuenta de Facebook, GMail, etc)
-* Foto de perfil
+```
+$ virtualenv venv --python=python3
+```
 
-#### Servicio chat comprador-vendedor
-Después que un usuario haya realizado una compra, se habilitará un chat entre el usuario y el vendedor del artículo.
+Una vez creado, debemos activarlo, para esto vamos a la carpeta donde lo creamos y escribimos:
 
-#### Servicio de publicación de articulo para la venta
-Este servicio deberá disponibilizar el artículo para la venta. El artículo deberá contener al menos los siguientes datos:
-* Nombre 
-* Descripción
-* Unidades disponibles
-* Precio por unidad
-* Fotos: 1 o más fotos
-* Usuario que publica el producto.
-* Ubicación geográfica del usuario
-* Métodos de pago aceptados
-* Categoría del artículo: electrodoméstico, mueble, muebles de exterior, usado, nuevo, etc.
+```
+$ source bin/activate
+(venv)$
+```
 
-Como respuesta de la publicación este servicio deberá generar un código QR que contendrá los datos necesarios del producto en cuestión.    
+Luego debemos ir a la carpeta principal de la aplicación y ejececutar el comando
 
-#### Servicio de alta de pregunta
-Este servicio permitirá realizar una pregunta acerca de un artículo que se encuentra publicado para la venta.
+```
+$ python3 setup.py install
+```
 
-#### Servicio de alta de respuesta a pregunta
-Este servicio permitirá responder una pregunta que fue realizada.
+Seguido a esto ejecutamos el comando
 
-#### Servicio de compra
-Este servicio permitirá realizar la compra de un producto que se encuentra publicado. Ester servicio deberá devolver un código que identifica la compra de forma única y que permita conocer el estado de la misma (tracking). Se debe indicar el método de pago por el cual se abonará la compra. El pago es procesado por un sistema externo que no se encontrará disponible, de manera que el procesamiento del pago se realizará de forma manual desde la **Interfaz WEB** del sistema a través de un administrador del sistema. Por este motivo es necesario consultar al _Shared Server_ acerca del estado de la compra.
+```
+$ pip3 install -r requirements.txt
+```
 
-#### Servicio de tracking
-Este servicio permitirá conocer el estado de una compra a través del código de tracking. Los estados posibles son:
-* Compra realizada
-* Pago pendiente de proceso
-* Pago rechazado
-* Pago aceptado
-* Envío en progreso
-* Pendiente de envío
-* Envío realizado.
+El próximo paso será configurar todas las variables de ambiente necesarias para que la aplicación pueda ejecutarse.
 
-El envío es procesado por un sistema externo que no se encontrará disponible, de manera que la carga del estado del envío se realizará de forma manual desde la **Interfaz WEB** del sistema a través de un administrador del sistema. Por este motivo es necesario consultar al _Shared Server_ acerca del estado de la compra.
 
-Una vez que el artículo se encuenrtre en eastado "Envío realizado" el sistema debe permitir calificar la compra realizada por el usuario.
+## Base de datos
+Podemos iniciar la aplicación con una instalación local de mongodb y luego ejecutar un script para crear los índices necesarios.
 
-#### Servicio de búsqueda de producto 
-Este servicio debe permitir la búsqueda de un producto utilizando varios de sus atributos. Un ejemplo de estos:
-* Búsqueda por cercanía (ubicacióren geográfica)
-* Búsqueda por nombre
-* Búsqueda por descripción
 
-Este servicio de búsqueda devolverá cero, uno o más resultados coincidentes con la búsqueda realizada y ponderados por el sistema de puntuación que conformorá el orden de los resultados devueltos.
+## Inicilización
+Para inicializar el servidor de forma local se debe utilizar el siguiente comando:
 
-#### Servicio de cotización de viaje
-Permite saber, con un margen de error, el costo de un envío antes de realizarlo. Este servicio será una fachada de uno proporcionado por el Shared Server.
+```
+$ gunicorn -b 127.0.0.1: 5000 "appserver.app:create_app()"
+```
 
-#### Servicio de estado
-Este servició tiene como objetivo brindar una respuesta rápida que permita ser consultada para conocer si el servidor se encuentra activo.
-Este servicio debé ser consultado a traves de la URI /ping
+## Docker
+No se pudo terminar de dockerizar la aplicación.
 
-#### Servicio de consulta de datos de uso
-Este servicio deberá brindar datos acerca del uso del application server. Deberá ser consultado a traves de la URI /stats.
 
-#### Sistema de puntuación
-El sistema debe poseer una lógica que administre el puntaje del usuario dentro del sistema. Este puntaje es importante a la hora de publicar articulos a la venta ya que brindará mayor visibilidad a los artículos de los usuarios con mayor puntaje.
+## Configuración
+La mayor parte de la configuración se encuentra en variables de entorno.
+```
+MONGO_URI: ruta a la base de datos
+FIREBASE_CONFIG: token necesario para autenticarse con firebase
+JWT_SECRET_KEY: clave utilizada para la generación de tokens jwt
+SWAGGER_FILE: ruta donde se encuentra el archivo de la especificación de api.
+SHARED_SERVER_URI: url del shared server
+SHARED_SERVER_FILE: nombre de archivo donde guarda el id del app server al registrarse. 
+                    También se guarda aquí el token para acceder al mismo.
+```
 
-La lógica de la acumulación de puntos debe ser definida por el grupo. Un ejemplo de este puede ser:
-* Suma de puntos por cada publicación realizada
-* Suma de puntos por cada compra realizada
-* Suma de puntos por pago por X método de pago
-* Suma de puntos por primera compra/venta realizada
-* Suma de puntos por reputación de usuario
+## Organización de directorios
 
-### Tecnologias
+```
+/tests: tests
+/docs: documentación
+/appserver: directorio de la aplicación
+  config.py: contiene la configuración de la aplicación, para ejecutarse en modo de desarrollo o de producción.
+  app.py: main file
+  /controllers: es el punto de acceso a la api, se encarga de recibir las peticiones y preparar las respuestas
+  /data: capa de datos, encargada de interactuar entre la capa de servicios y la base de datos
+  /models: entidades del modelo de negocio
+  /services: capa de servicios, provee la lógica para el modelo de negocio
+  /utils: utilidades
+  /api: Contiene las clases necesarias para el funcionamiento de la aplicación
+    /controllers: contiene las clases responsables de comsumir el modelo de datos
+    /routes: contiene las clases que contiene las rutas de la aplicación (routing)
+	/services: contiene las clases que consumen la base de datos
+  /test: contiene los tests de la aplicación.
+```
+
+## Autenticación
+Para la autenticación se utilizó [firebase](http://firebase.google.com/) y [flask-jwt-extended](https://github.com/vimalloc/flask-jwt-extended)
+
+## Test
+Para el desarrollo de los test unitarios se utilizan las siguientes herramientas:
+ * [pytest](https://github.com/pytest-dev/pytest/): herramienta para realizar tests en python
+ * [unittest.mock](https://github.com/python/cpython/blob/3.7/Lib/unittest/mock.py):librería para mocks en python
+
+Para ejecutar los test:
+```
+$ pytest
+```
+
+## Tecnologias
 
 * Lenguaje: [Python 3](https://www.python.org/) (`3.6.4`)
 * Web Framework: [Flask](http://flask.pocoo.org/)
 * WSGI HTTP Server: [Gunicorn](http://gunicorn.org/)
 * Database: [MongoDB](https://www.mongodb.com/)  
+* Database Cloud Service: [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
 
 
 ### Empaquetamiento
 
-Cada uno de los desarrollos solicitados debe empaquetarse según el estandar de la plataforma, es decir:
 
 * _Application Server_: Python Setuptools (`setup.py` y `requeriments.txt`)
 
 
-Además, ambos servidores deberán traer un `Dockerfile` que permita correrlos sin necesidad de tener instalado los respectivos lenguajes.
-
 ### Despliegue en la Nube
 
-Ambos servidores, tanto el _Application server_ como el _Shared Server_, se deberán disponibilizar en la nube utilizando una plataforma como servicio (_PAAS_). Se recomienda usar [Heroku](https://www.heroku.com/) ya que cuenta con todos los requerimientos tecnológicos pedidos anteriormente.
+Plataforma: [Heroku](https://www.heroku.com//)
 
-### Log
-
-Los servidores deben contar con un sistema de log en donde se registren los eventos que se generen durante la ejecución. El sistema de log debe permitir configurar el nivel de los eventos que desean registrar. Estos niveles son:
-
-| Nivel | Condiciones |
-| ----- | ----------- |
-| Error | Condición de falla catastrófica, el sistema no puede funcionar. (criterio de las 2 a.m.) Condición que haga que la aplicación no pueda ejecutar una funcionalidad. Ejemplo: No es posible conectarse con la base de datos |
-| Warn | Cualquier condición anómala que afecte el funcionamiento del sistema, pero no impida la funcionalidad básica Ejemplos: Uso de APIs deprecadas, Mal uso de APIs |
-| Info | Cualquier acción correspondiente a un caso de uso iniciada por el usuario o el sistema. Información que permita trazar el historial de las entidades. Ejemplos: Conexión a la base de datos exitosa, Conexión de nuevo cliente |
-| Debug | Información de contexto que permita resolver un problema técnico. Debe ser útil incluso sin el código fuente Ejemplo:  Datos de login para la DB |
-
-Es necesario recalcar que para que un log sea útil, debe poder ser accedido.
-
-### Pruebas y Métricas
-
-El desarrollo de la aplicación se deberá adaptar a los estándares de calidad utilizados por AppMaker©. Dentro de estos estándares se encuentran:
-
-* Pruebas unitarias [2]
-* Métricas: code coverage debe ser mayor a 75% [3]
-* Respetar estándar para estilo de codificación: Lint [4]
-* Pruebas de integración utilizando python como lenguaje de scripting.
-* Todas aquellas que se consideren convenientes para garantizar la calidad de las aplicaciones desarrolladas.
-
-**Nota:** Esta sección hace solo referencía al _Application server_ y al _Shared server_. No se toma como requerimiento el realizar pruebas sobre el cliente Android.
 
 ### Integración continua / Despligue continuo
 
-Las pruebas y métricas anteriormente mencionadas deberan correr bajo una plataforma de integración continua. Se sugiere el uso de [TravisCI](https://travis-ci.org/), pero se podrá utilizar otro previa justificación.
-
-El resultado del _code coverage_ debe ser desplegado automáticamente a una plataforma que permita visualizarlas, entre muchas posibilidades se encuentran:
-
-* [Coveralls](https://coveralls.io/)
-* [Codecov](https://codecov.io/)
-* Usar _Github Pages_ para generar una web para visualizarlo
-
-Finalmente, el despliegue al servidor de _PAAS_ elegido deberá ser automático. Este deberá tener en cuenta como la actualización de la base de datos (cambios en las tablas, etc). El mecanismo utilizado para disparar dicho despliegue (utilizar el branch _master_ como productivo, utilizar un tags con nombre especial) será definido por los desarrolladores y deberá ser detallado en la documentación.
-
-### Documentación
-
-Se deberá entregar la siguiente documentación:
-
-* Manual de administrador: Instalación y configuración
-* Definición de Arquitectura / Diseño de la aplicación (**Debe incluir especificación de Api REST: [OpenAPI 2.0](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md)**)
-
-Se espera que dicha documentación se elabore de manera incremental y que cada entrega parcial tenga parte de la misma.
+Plataforma de integración continua: [TravisCI](https://travis-ci.org/)
+Code coverage: [Coveralls](https://coveralls.io/)
