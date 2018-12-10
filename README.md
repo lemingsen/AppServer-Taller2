@@ -116,7 +116,7 @@ $ pytest
 ### Empaquetamiento
 
 
-* _Application Server_: Python Setuptools (`setup.py` y `requeriments.txt`)
+* _Application Server_: Python Setuptools (`setup.py` y `requirements.txt`)
 
 
 ### Despliegue en la Nube

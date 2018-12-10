@@ -113,7 +113,7 @@ paths:
       tags:
         - user
       summary: Modify user profile
-      description: Modifies current user profile
+      description: Modifies current user profile.
       operationId: modifyProfile
       consumes:
         - application/json
@@ -125,7 +125,7 @@ paths:
           description: user object
           required: true
           schema:
-            $ref: '#/definitions/UserRegisterInput'
+            $ref: '#/definitions/UserModifyInput'
       responses:
         '200':
           description: successful operation
@@ -672,7 +672,7 @@ definitions:
     properties:
       idToken:
         type: string
-  UserRegisterInput:
+  UserModifyInput:
     type: object
     properties:
       name:
@@ -691,6 +691,14 @@ definitions:
         type: string
       location:
         $ref: '#/definitions/Location'
+  UserRegisterInput:
+    allOf:
+      - $ref: '#/definitions/UserModifyInput'
+    type: object
+    properties:
+      uid:
+        type: string
+
   User:
     allOf:
       - $ref: '#/definitions/UserRegisterInput'

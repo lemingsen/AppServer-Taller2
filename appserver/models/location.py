@@ -35,3 +35,9 @@ class LocationSchema(Schema):
     def make_location(self, data):
         """Deserializes data into a Location object"""
         return Location(data['longitude'], data['latitude'])
+
+
+class LocationModifySchema(Schema):
+    """LocationModifySchema"""
+    longitude = fields.Float(required=True)
+    latitude = fields.Float(required=True)

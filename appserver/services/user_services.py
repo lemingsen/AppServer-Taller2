@@ -7,6 +7,7 @@ from appserver.services.exceptions import NotFoundError, DataExistsError
 from appserver.utils.firebase import Firebase
 from appserver.data.user_mapper import UserMapper
 from appserver.models.user import UserSchema
+from appserver.models.user import UserModifySchema
 
 
 class UserService:
@@ -45,7 +46,8 @@ class UserService:
         return cls.schema.dump(user)
 
     @classmethod
-    def modify_profile(cls, uid, user):
+    def modify_profile(cls, uid, modified_fields):
         """Modify profile services: returns"""
-        user = UserMapper.modify({"uid": uid}, cls.schema.load(user))
-        return cls.schema.dump(user)
+        user = UserMapper.find_one_and_update({"uid": uid},
+                                              {'$set': UserModifySchema().load(modified_fields)})
+        return user

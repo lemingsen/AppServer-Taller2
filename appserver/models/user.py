@@ -4,6 +4,7 @@ from marshmallow import Schema, fields, post_load, validate
 from appserver.utils.mongo import ObjectId
 from appserver.models.base import BaseModel
 from appserver.models.location import LocationSchema
+from appserver.models.location import LocationModifySchema
 # pylint: disable=R0903,R0201,E1101,W0201
 
 
@@ -37,13 +38,25 @@ class UserMetadataSchema(Schema):
         return UserMetadata(**data)
 
 
+class UserModifySchema(Schema):
+    """UserModifySchema"""
+    name = fields.Str(validate=validate.Length(
+        min=1, error="User name cannot be empty."))
+    surname = fields.Str(validate=validate.Length(
+        min=1, error="User surname cannot be empty."))
+    location = fields.Nested(LocationModifySchema)
+    email = fields.Email()
+    facebook = fields.Str()
+    google = fields.Str()
+    photo = fields.URL()
+
+
 class User(BaseModel):
     """User"""
 
     def __init__(self, **kwargs):
         self.member_since = None
         self.last_login = None
-        self.member_since = None
         self.points = 0
         self.metadata = None
         super().__init__()
