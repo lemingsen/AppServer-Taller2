@@ -685,8 +685,6 @@ definitions:
         type: string
       facebook:
         type: string
-      uid:
-        type: string
       photo:
         type: string
       location:
@@ -698,7 +696,6 @@ definitions:
     properties:
       uid:
         type: string
-
   User:
     allOf:
       - $ref: '#/definitions/UserRegisterInput'
