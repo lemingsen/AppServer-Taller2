@@ -8,6 +8,7 @@ from appserver.services.exceptions import NotFoundError, NotEnoughUnitsError, Fo
 from appserver.services.shared_server_services import SharedServer
 from appserver.data.user_mapper import UserMapper
 from appserver.services.user_scoring import UserScoring
+from appserver.models.order import EstimateShippingInputDataSchema
 
 
 class OrderServices:
@@ -22,6 +23,9 @@ class OrderServices:
         buyer = cls._get_user(buyer_uid)
         seller = cls._get_user(product.seller)
         order.prepare(product, buyer, seller)
+        if order.has_to_be_shipped:
+            order.shipping_cost = \
+                SharedServer().get_delivery_estimate(product, order.units, buyer)
         cls._validate_order(order, product)
         cls._update_product(order, product)
         order.tracking_number = SharedServer().new_tracking()
@@ -42,11 +46,14 @@ class OrderServices:
         return cls.schema.dump(order)
 
     @classmethod
-    def estimate_shipping_cost(cls, tracking_number):
+    def estimate_shipping_cost(cls, uid, estimate_data):
         """Estimates order shipping cost"""
-        order = cls._get_order(tracking_number)
-        buyer = cls._get_user(order.buyer)
-        shipping_cost = SharedServer().get_delivery_estimate(order, buyer)
+        estimate_info = EstimateShippingInputDataSchema().load(estimate_data)
+        product = ProductMapper.get_by_id(estimate_info.product_id)
+        if product is None:
+            raise NotFoundError("Product not found.")
+        buyer = cls._get_user(uid)
+        shipping_cost = SharedServer().get_delivery_estimate(product, estimate_info.units, buyer)
         return shipping_cost
 
     @classmethod
@@ -90,10 +97,13 @@ class OrderServices:
         missing_delivery = ['PAGO ACEPTADO', 'ENVIO EN PROGRESO',
                             'PENDIENTE DE ENVIO', 'ENVIO CANCELADO']
         shared_server = SharedServer()
+        previous_status = order.status
         if order.status in missing_payment:
             shared_server.update_payment_status(order)
         if order.status in missing_delivery:
             shared_server.update_tracking_status(order)
+        if order.status != previous_status:
+            OrderMapper.update_status(order)
 
     @classmethod
     def _get_order(cls, tracking_number):
@@ -106,6 +116,8 @@ class OrderServices:
     def _validate_order(cls, order, product):
         if order.buyer == product.seller:
             raise ForbiddenError("User cannot buy his own products.")
+        if order.shipping_cost < 0:
+            raise ForbiddenError("Order can't be delivered.")
         cls._validate_product_has_payment_method(
             order.payment_info, product.payment_methods)
 

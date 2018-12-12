@@ -1,12 +1,10 @@
 """Shared Server Services"""
 import os
 import json
-from datetime import datetime
 from functools import wraps
 from werkzeug.exceptions import BadGateway
 import requests
 from marshmallow import Schema, fields, post_load
-
 from appserver.services.exceptions import ExpiredTokenError
 from appserver.models.payment_method import PaymentMethodSchema
 from appserver.models.order import PaymentInfoSchema
@@ -142,8 +140,7 @@ class SharedServer:
             if tracking_list:
                 tracking_last_update = tracking_list[-1]
             status = tracking_last_update['status']
-            order.last_status_update = datetime.now()
-            # order.last_status_update = tracking_last_update['updateat']
+            order.last_status_update = tracking_last_update['updateat']
             order.status = tracking_status[status]
         else:
             raise BadGateway()
@@ -166,24 +163,26 @@ class SharedServer:
             if payment_list:
                 payment_last_update = payment_list[-1]
             status = payment_last_update['status']
-            order.last_status_update = datetime.now()
-            # order.last_status_update = payment_last_update['updateat']
+            order.last_status_update = payment_last_update['updateat']
             order.status = payment_status[status]
         else:
             raise BadGateway()
 
     @refresh_token
-    def get_delivery_estimate(self, order, buyer):
-        """Returns a shipping cost estimation for an order from shared server"""
+    def get_delivery_estimate(self, product, units, buyer):
+        """Returns a shipping cost estimation for an order from shared server. If
+        the order can't be delivered returns cost -1"""
+        cost = -1
+        total = product.price * units
         url = os.environ['SHARED_SERVER_URI'] + '/deliveries/estimate'
         header = {'Authorization': 'Bearer ' + self.auth_token}
         payload = {
-            "ammount": order.units,
-            "distance": order.product_location.distance_to(order.buyer_location),
+            "ammount": total,
+            "distance": product.location.distance_to(buyer.location),
             "user": {
                 "email": buyer.email,
                 "points": buyer.points,
-                "deliveries": buyer.purchases
+                "deliveries": buyer.metadata.purchases
             }
         }
         response = requests.post(url, headers=header, json=payload)
@@ -191,7 +190,8 @@ class SharedServer:
             raise ExpiredTokenError()
         if response.status_code == 201:
             delivery_estimate = response.json()
-            cost = delivery_estimate['cost']
+            if delivery_estimate['isAbleToDeliver']:
+                cost = delivery_estimate['cost']
         else:
             raise BadGateway()
         return cost

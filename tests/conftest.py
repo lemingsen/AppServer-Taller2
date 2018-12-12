@@ -40,7 +40,8 @@ class OrderData(Data):
                 "card_number": "1234-1234-1234-1234",
                 "expiration_date": "11/22",
                 "security_code": "123"
-            }
+            },
+            "has_to_be_shipped": False
         }
 
         self.invalid_input_order = {
@@ -52,7 +53,8 @@ class OrderData(Data):
                 "card_number": "1234-1234-1234-1234",
                 "expiration_date": "11/22",
                 "security_code": "123"
-            }
+            },
+            "has_to_be_shipped": False
         }
 
         self.negative_units_input_order = {
@@ -64,7 +66,8 @@ class OrderData(Data):
                 "card_number": "1234-1234-1234-1234",
                 "expiration_date": "11/22",
                 "security_code": "123"
-            }
+            },
+            "has_to_be_shipped": False
         }
 
         self.input_order_with_9_units = {
@@ -76,7 +79,8 @@ class OrderData(Data):
                 "expiration_date": "01/22"
             },
             "units": 9,
-            "product_id": "5bd7b28bc9133f00087dd8e8"
+            "product_id": "5bd7b28bc9133f00087dd8e8",
+            "has_to_be_shipped": False
         }
 
 

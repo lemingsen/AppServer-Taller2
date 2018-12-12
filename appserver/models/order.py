@@ -1,9 +1,28 @@
 """Order model"""
+import bson
 from marshmallow import Schema, fields, post_load, validates, ValidationError, validate
 from appserver.utils.mongo import ObjectId
 from appserver.models.base import BaseModel
 from appserver.models.location import LocationSchema
 # pylint: disable=R0903,R0201,C0103,R0902
+
+
+class EstimateShippingInputData:
+    """EstimateInputData"""
+    def __init__(self, product_id, units):
+        self.product_id = bson.ObjectId(product_id)
+        self.units = units
+
+
+class EstimateShippingInputDataSchema(Schema):
+    """"EstimateShippingInput schema"""
+    product_id = ObjectId(required=True)
+    units = fields.Int(required=True)
+
+    @post_load
+    def make_estimate_input_data(self, data):
+        """Maskes an EstimateInputData object from a dict"""
+        return EstimateShippingInputData(data['product_id'], data['units'])
 
 
 class OrderUserInfo:
@@ -78,6 +97,9 @@ class Order(BaseModel):
         self.product_name = None
         self.units = None
         self.status = None
+        self.shipping_cost = 0
+        self.has_to_be_shipped = None
+        self.products_total = 0
         super().__init__()
         for key, value in kwargs.items():
             setattr(self, key, value)
@@ -88,10 +110,11 @@ class Order(BaseModel):
         self.seller = seller.uid
         self.buyer_info = OrderUserInfo(buyer.username, buyer.email)
         self.seller_info = OrderUserInfo(seller.username, seller.email)
-        self.total = product.price * self.units
         self.buyer_location = buyer.location
         self.product_location = product.location
         self.product_name = product.name
+        self.products_total = product.price * self.units
+        self.total = self.products_total + self.shipping_cost
         self.status = 'COMPRA REALIZADA'
 
 
@@ -114,8 +137,11 @@ class OrderSchema(Schema):
     total = fields.Float()
     tracking_number = fields.Int()
     status = fields.Str()
-    last_status_update = fields.DateTime()
+    last_status_update = fields.Str()
     rate = fields.Str()
+    has_to_be_shipped = fields.Bool(required=True)
+    shipping_cost = fields.Float()
+    products_total = fields.Float()
 
     @validates('units')
     def validate_units(self, value):

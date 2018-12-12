@@ -495,7 +495,7 @@ paths:
         parameters:
           - in: body
             name: body
-            description: category
+            description: order
             required: true
             schema:
               $ref: '#/definitions/OrderInput'
@@ -512,6 +512,8 @@ paths:
             description: product not found
           '422':
             description: invalid token payload
+          '502':
+            description: bad gateway
   /orders/sales:
     get:
       security:
@@ -580,26 +582,31 @@ paths:
             description: order not found.
           '422':
             description: invalid token payload
-  /orders/shipping/estimate/{tracking_number}:
-    get:
+          '502':
+            description: bad gateway
+  /orders/shipping/estimate:
+    post:
       security:
         - Bearer: []
       tags:
         - orders
       summary: Gets an estimated shipping cost
-      description: Gets an estimated shipping cost for the order
+      description: Gets an estimated shipping cost for the order. If order cannot be delivered returns -1.
       operationId: getShippingEstimate
+      consumes:
+        - application/json
       produces:
         - application/json
       parameters:
-        - name: tracking_number
-          in: path
-          description: order tracking_number
+        - in: body
+          name: body
+          description: order
           required: true
-          type: integer
+          schema:
+            $ref: '#/definitions/ShippingEstimateInput'
       responses:
           '200':
-            description: successful operation
+            description: Successful operation. If order cannot be delivered returns -1 as estimated cost.
             schema:
               $ref: '#/definitions/ShippingEstimateCostOutput'
           '401':
@@ -608,6 +615,8 @@ paths:
             description: order not found.
           '422':
             description: invalid token payload
+          '502':
+            description: bad gateway
   /orders/ratings/{tracking_number}:
     post:
         security:
@@ -863,6 +872,8 @@ definitions:
         type: string
       units:
         type: integer
+      has_to_be_shipped:
+        type: boolean
       payment_info:
         $ref: '#/definitions/PaymentInfo'
   Order:
@@ -878,8 +889,16 @@ definitions:
         type: string
       status:
         type: string
+      last_status_update:
+        type: string
       tracking_number:
         type: integer
+      products_total:
+        type: number
+        format: float
+      shipping_cost:
+        type: number
+        format: float
       total:
         type: number
         format: float
@@ -937,6 +956,13 @@ definitions:
     type: array
     items:
       $ref: '#/definitions/PaymentMethod'
+  ShippingEstimateInput:
+    type: object
+    properties:
+      product_id:
+        type: string
+      units:
+        type: integer
   ShippingEstimateCostOutput:
     type: object
     properties:

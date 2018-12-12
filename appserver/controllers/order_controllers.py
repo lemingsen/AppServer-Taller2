@@ -30,13 +30,17 @@ def track_order(tracking_number):
     return jsonify(order), 200
 
 
-@api_bp.route('/orders/shipping/estimate/<int:tracking_number>', methods=['GET'])
+@api_bp.route('/orders/shipping/estimate', methods=['POST'])
 @fresh_jwt_required
-def estimate_order_shipping_cost(tracking_number):
+def estimate_order_shipping_cost():
     """Permite saber, con un margen de error, el costo de un
      envío antes de realizarlo. Este servicio será una
       fachada de uno proporcionado por el Shared Server."""
-    cost = OrderServices.estimate_shipping_cost(tracking_number)
+    uid = get_jwt_identity()
+    if not request.is_json:
+        abort(400)
+    estimate_data = request.get_json()
+    cost = OrderServices.estimate_shipping_cost(uid, estimate_data)
     return jsonify(estimated_cost=cost), 200
 
 

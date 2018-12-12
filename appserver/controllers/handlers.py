@@ -1,6 +1,6 @@
 """Error handlers"""
 from werkzeug.exceptions import BadRequest, Conflict, Unauthorized,\
-    NotFound, Forbidden, UnprocessableEntity
+    NotFound, Forbidden, UnprocessableEntity, BadGateway
 from marshmallow import ValidationError
 from flask import jsonify
 from firebase_admin.auth import AuthError
@@ -54,3 +54,8 @@ def forbidden_error_handler(error):
 def not_enough_units_error_handler(error):
     """Error handler para compras sin recursos"""
     return jsonify(error=UnprocessableEntity.description, message=error.message), 422
+
+@api_bp.app_errorhandler(BadGateway)
+def bad_gateway_error_handler(error):
+    """Error handler para errores de conexión con el shared server"""
+    return jsonify(error=BadGateway.description), 502
