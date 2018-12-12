@@ -32,7 +32,7 @@ def track_order(tracking_number):
 
 @api_bp.route('/orders/shipping/estimate', methods=['POST'])
 @fresh_jwt_required
-def estimate_order_shipping_cost():
+def estimate_shipping_cost():
     """Permite saber, con un margen de error, el costo de un
      envío antes de realizarlo. Este servicio será una
       fachada de uno proporcionado por el Shared Server."""

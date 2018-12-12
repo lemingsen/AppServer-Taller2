@@ -3,6 +3,8 @@ import appserver
 from appserver.config import TestingConfig
 from appserver.models.product import ProductSchema
 from appserver.models.payment_method import PaymentMethodSchema
+from appserver.models.order import OrderSchema
+from appserver.models.user import UserSchema
 
 
 class Data:
@@ -30,6 +32,27 @@ class Data:
 class OrderData(Data):
     def __init__(self):
         Data.__init__(self)
+
+        self.estimate_shipping_input_data = {
+            "product_id": "5bd7b28bc9133f00087dd8e8",
+            "units": 1
+        }
+
+        self.positive_rating = {
+            "rate": "POSITIVE"
+        }
+
+        self.neutral_rating = {
+            "rate": "NEUTRAL"
+        }
+
+        self.negative_rating = {
+            "rate": "NEGATIVE"
+        }
+
+        self.invalid_rating = {
+            "rate": "MUY BUENO"
+        }
 
         self.valid_input_order = {
             "product_id": "5bd7b28bc9133f00087dd8e8",
@@ -83,6 +106,169 @@ class OrderData(Data):
             "has_to_be_shipped": False
         }
 
+        self.order_with_delivery_and_not_shipped = {
+            "_id": "5c107700e3c00c56a904cb9b",
+            "buyer": "YmjgZM06jVWrbGnOuUfTItMMZx22",
+            "buyer_info": {
+                "email": "lucas@gmail.com",
+                "username": "Lucas"
+            },
+            "buyer_location": {
+                "latitude": -34.6,
+                "longitude": -58.5
+            },
+            "has_to_be_shipped": True,
+            "payment_info": {
+                "card_number": "1234-1322-1223-1223",
+                "cardholder_name": "Pepe Gutierrez",
+                "expiration_date": "01/22",
+                "payment_method": "Mastercard",
+                "security_code": "123"
+            },
+            "product_id": "5bd7b28bc9133f00087dd8e8",
+            "product_location": {
+                "latitude": -34.558499,
+                "longitude": -58.466767
+            },
+            "product_name": "Placa de video ATI 5750",
+            "products_total": 450000,
+            "seller": "YmjgZM06yVWrbGnuUfTIo9MZx28",
+            "seller_info": {
+                "email": "lucas@gmail.com",
+                "username": "Lucas Hemmingsen"
+            },
+            "shipping_cost": 1000,
+            "status": "PAGO ACEPTADO",
+            "total": 451000,
+            "tracking_number": 148,
+            "units": 15
+        }
+
+        self.order_with_delivery_and_shipped = {
+            "_id": "5c107700e3c00c56a904cb9b",
+            "buyer": "YmjgZM06jVWrbGnOuUfTItMMZx22",
+            "buyer_info": {
+                "email": "lucas@gmail.com",
+                "username": "Lucas"
+            },
+            "buyer_location": {
+                "latitude": -34.6,
+                "longitude": -58.5
+            },
+            "has_to_be_shipped": True,
+            "payment_info": {
+                "card_number": "1234-1322-1223-1223",
+                "cardholder_name": "Pepe Gutierrez",
+                "expiration_date": "01/22",
+                "payment_method": "Mastercard",
+                "security_code": "123"
+            },
+            "product_id": "5bd7b28bc9133f00087dd8e8",
+            "product_location": {
+                "latitude": -34.558499,
+                "longitude": -58.466767
+            },
+            "product_name": "Placa de video ATI 5750",
+            "products_total": 450000,
+            "seller": "YmjgZM06yVWrbGnuUfTIo9MZx28",
+            "seller_info": {
+                "email": "lucas@gmail.com",
+                "username": "Lucas Hemmingsen"
+            },
+            "shipping_cost": 1000,
+            "status": "ENVIO REALIZADO",
+            "total": 451000,
+            "tracking_number": 148,
+            "units": 15
+        }
+
+        self.order_without_delivery_and_not_payed = {
+            "_id": "5c107700e3c00c56a904cb9b",
+            "buyer": "YmjgZM06jVWrbGnOuUfTItMMZx22",
+            "buyer_info": {
+                "email": "lucas@gmail.com",
+                "username": "Lucas"
+            },
+            "buyer_location": {
+                "latitude": -34.6,
+                "longitude": -58.5
+            },
+            "has_to_be_shipped": False,
+            "payment_info": {
+                "card_number": "1234-1322-1223-1223",
+                "cardholder_name": "Pepe Gutierrez",
+                "expiration_date": "01/22",
+                "payment_method": "Mastercard",
+                "security_code": "123"
+            },
+            "product_id": "5bd7b28bc9133f00087dd8e8",
+            "product_location": {
+                "latitude": -34.558499,
+                "longitude": -58.466767
+            },
+            "product_name": "Placa de video ATI 5750",
+            "products_total": 450000,
+            "seller": "YmjgZM06yVWrbGnuUfTIo9MZx28",
+            "seller_info": {
+                "email": "lucas@gmail.com",
+                "username": "Lucas Hemmingsen"
+            },
+            "shipping_cost": 1000,
+            "status": "PAGO PENDIENTE DE PROCESO",
+            "total": 451000,
+            "tracking_number": 148,
+            "units": 15
+        }
+
+        self.order_without_delivery_and_payed = {
+            "_id": "5c107700e3c00c56a904cb9b",
+            "buyer": "YmjgZM06jVWrbGnOuUfTItMMZx22",
+            "buyer_info": {
+                "email": "lucas@gmail.com",
+                "username": "Lucas"
+            },
+            "buyer_location": {
+                "latitude": -34.6,
+                "longitude": -58.5
+            },
+            "has_to_be_shipped": False,
+            "payment_info": {
+                "card_number": "1234-1322-1223-1223",
+                "cardholder_name": "Pepe Gutierrez",
+                "expiration_date": "01/22",
+                "payment_method": "Mastercard",
+                "security_code": "123"
+            },
+            "product_id": "5bd7b28bc9133f00087dd8e8",
+            "product_location": {
+                "latitude": -34.558499,
+                "longitude": -58.466767
+            },
+            "product_name": "Placa de video ATI 5750",
+            "products_total": 450000,
+            "seller": "YmjgZM06yVWrbGnuUfTIo9MZx28",
+            "seller_info": {
+                "email": "lucas@gmail.com",
+                "username": "Lucas Hemmingsen"
+            },
+            "shipping_cost": 1000,
+            "status": "PAGO ACEPTADO",
+            "total": 451000,
+            "tracking_number": 148,
+            "units": 15
+        }
+
+    def get_order_with_delivery_and_not_shipped(self):
+        return OrderSchema().load(self.order_with_delivery_and_not_shipped)
+
+    def get_order_with_delivery_and_shipped(self):
+        return OrderSchema().load(self.order_with_delivery_and_shipped)
+
+    def get_order_without_delivery_and_not_payed(self):
+        return OrderSchema().load(self.order_without_delivery_and_not_payed)
+
+    def get_order_without_delivery_and_payed(self):
+        return OrderSchema().load(self.order_without_delivery_and_payed)
 
 
 class ProductData(Data):
@@ -380,6 +566,10 @@ class UserData(Data):
             "surname": "Apellido",
             "age": 28
         }
+
+    def get_valid_user(self):
+        return UserSchema().load(self.valid_user)
+
 
 
 @pytest.fixture
