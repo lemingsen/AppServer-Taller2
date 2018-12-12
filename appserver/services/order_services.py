@@ -41,7 +41,8 @@ class OrderServices:
         order = cls._get_order(tracking_number)
         if order.buyer != buyer_uid:
             raise ForbiddenError("Order does not belong to user")
-        if order.status != 'ENVIO REALIZADO':
+        if (order.status != 'ENVIO REALIZADO' and order.has_to_be_shipped)\
+                or (order.status != 'PAGO ACEPTADO' and not order.has_to_be_shipped):
             cls._update_tracking_status(order)
         return cls.schema.dump(order)
 
@@ -81,8 +82,9 @@ class OrderServices:
         order = cls._get_order(tracking_number)
         if order.buyer != uid:
             raise ForbiddenError("You can only rate your own purchases.")
-        if order.status != 'ENVIO REALIZADO':
-            raise ForbiddenError("Cannot rate purchase until order is delivered.")
+        if (order.status != 'ENVIO REALIZADO' and order.has_to_be_shipped) or \
+                (order.status != 'PAGO ACEPTADO' and not order.has_to_be_shipped):
+            raise ForbiddenError("Cannot rate purchase until order is completed.")
         rating = review_dict.get('rate')
         if rating is None:
             raise ValidationError("Purchase not rated")
@@ -100,7 +102,7 @@ class OrderServices:
         previous_status = order.status
         if order.status in missing_payment:
             shared_server.update_payment_status(order)
-        if order.status in missing_delivery:
+        if order.has_to_be_shipped and (order.status in missing_delivery):
             shared_server.update_tracking_status(order)
         if order.status != previous_status:
             OrderMapper.update_status(order)
