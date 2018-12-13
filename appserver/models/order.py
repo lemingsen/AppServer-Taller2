@@ -1,4 +1,5 @@
 """Order model"""
+from datetime import datetime
 import bson
 from marshmallow import Schema, fields, post_load, validates, ValidationError, validate
 from appserver.utils.mongo import ObjectId
@@ -100,6 +101,7 @@ class Order(BaseModel):
         self.shipping_cost = 0
         self.has_to_be_shipped = None
         self.products_total = 0
+        self.last_status_update = None
         super().__init__()
         for key, value in kwargs.items():
             setattr(self, key, value)
@@ -115,6 +117,7 @@ class Order(BaseModel):
         self.product_name = product.name
         self.products_total = product.price * self.units
         self.total = self.products_total + self.shipping_cost
+        self.last_status_update = str(datetime.now())
         self.status = 'COMPRA REALIZADA'
 
 

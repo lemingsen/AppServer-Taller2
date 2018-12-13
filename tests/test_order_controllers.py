@@ -6,6 +6,8 @@ import appserver.services.shared_server_services
 import appserver.services.user_scoring
 import json
 import flask_jwt_extended
+import requests
+from tests.conftest import ResponseSharedServerMock
 
 
 def test_new_order_if_no_body_payload_returns_400_response(client, order_data):
@@ -150,4 +152,17 @@ def test_if_order_has_not_to_be_delivered_can_rate_when_is_payed(order_get_one_m
     assert response.status_code == 200
 
 
+@patch.object(appserver.data.order_mapper.OrderMapper, 'update_status')
+@patch.object(requests, 'get')
+@patch.object(flask_jwt_extended, 'get_jwt_identity')
+@patch.object(appserver.data.order_mapper.OrderMapper, 'get_one')
+def test_track_order_status_changes_from_compra_realizada_to_envio_realizado(order_mapper_get_one_mock, uid_mock, request_get_mock, order_mapper_update_status_mock, client, order_data):
+    order_mapper_update_status_mock.return_value = None
+    uid_mock.return_value = order_data.get_order_with_compra_realizada_status().buyer
+    appserver.services.shared_server_services.SharedServer.auth_token = 'sadasdasd'
+    request_get_mock.side_effect = [order_data.response_shared_server_pago_confirmado(), order_data.response_shared_server_envio_entregado()]
+    order_mapper_get_one_mock.return_value = order_data.get_order_with_compra_realizada_status()
 
+    response = client.get('/orders/tracking/45',
+                          headers=order_data.valid_token_header())
+    assert response.get_json()['status'] == 'ENVIO REALIZADO'
