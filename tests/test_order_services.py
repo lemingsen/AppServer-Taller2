@@ -62,28 +62,5 @@ def test_get_purchases_if_no_orders_returns_empty_list(get_many_mock, user_data)
     assert not OrderServices.get_purchases(user_data.uid)
 
 
-def test_rate_purchase_cannot_rate_order_if_not_delivered_if_it_has_shipment():
-    pass
-
-
-def test_rate_purchase_cannot_rate_order_if_not_payed_if_it_has_no_shipment():
-    pass
-
-
-def test_rate_if_wrong_status_sent_raises_validation_error():
-    pass
-
-
-def test_if_user_tries_to_rate_an_order_of_another_user_raise_forbidden_error():
-    pass
-
-
-def test_estimate_shipping_cost_if_product_does_not_exist_raises_not_found_error():
-    pass
-
-
-def test_track_order_if_user_tracks_another_user_order_raises_forbidden_error():
-    pass
-
 
 
