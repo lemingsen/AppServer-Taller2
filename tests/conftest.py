@@ -123,8 +123,8 @@ class OrderData(Data):
                 "username": "Lucas"
             },
             "buyer_location": {
-                "latitude": -34.6,
-                "longitude": -58.5
+                "y": -34.6,
+                "x": -58.5
             },
             "has_to_be_shipped": True,
             "payment_info": {
@@ -136,8 +136,8 @@ class OrderData(Data):
             },
             "product_id": "5bd7b28bc9133f00087dd8e8",
             "product_location": {
-                "latitude": -34.558499,
-                "longitude": -58.466767
+                "y": -34.558499,
+                "x": -58.466767
             },
             "product_name": "Placa de video ATI 5750",
             "products_total": 450000,
@@ -161,8 +161,8 @@ class OrderData(Data):
                 "username": "Lucas"
             },
             "buyer_location": {
-                "latitude": -34.6,
-                "longitude": -58.5
+                "y": -34.6,
+                "x": -58.5
             },
             "has_to_be_shipped": True,
             "payment_info": {
@@ -174,8 +174,8 @@ class OrderData(Data):
             },
             "product_id": "5bd7b28bc9133f00087dd8e8",
             "product_location": {
-                "latitude": -34.558499,
-                "longitude": -58.466767
+                "y": -34.558499,
+                "x": -58.466767
             },
             "product_name": "Placa de video ATI 5750",
             "products_total": 450000,
@@ -199,8 +199,8 @@ class OrderData(Data):
                 "username": "Lucas"
             },
             "buyer_location": {
-                "latitude": -34.6,
-                "longitude": -58.5
+                "y": -34.6,
+                "x": -58.5
             },
             "has_to_be_shipped": False,
             "payment_info": {
@@ -212,8 +212,8 @@ class OrderData(Data):
             },
             "product_id": "5bd7b28bc9133f00087dd8e8",
             "product_location": {
-                "latitude": -34.558499,
-                "longitude": -58.466767
+                "y": -34.558499,
+                "x": -58.466767
             },
             "product_name": "Placa de video ATI 5750",
             "products_total": 450000,
@@ -237,8 +237,8 @@ class OrderData(Data):
                 "username": "Lucas"
             },
             "buyer_location": {
-                "latitude": -34.6,
-                "longitude": -58.5
+                "y": -34.6,
+                "x": -58.5
             },
             "has_to_be_shipped": False,
             "payment_info": {
@@ -250,8 +250,8 @@ class OrderData(Data):
             },
             "product_id": "5bd7b28bc9133f00087dd8e8",
             "product_location": {
-                "latitude": -34.558499,
-                "longitude": -58.466767
+                "y": -34.558499,
+                "x": -58.466767
             },
             "product_name": "Placa de video ATI 5750",
             "products_total": 450000,
@@ -275,8 +275,8 @@ class OrderData(Data):
                 "username": "Lucas"
             },
             "buyer_location": {
-                "latitude": -34.6,
-                "longitude": -58.5
+                "y": -34.6,
+                "x": -58.5
             },
             "has_to_be_shipped": True,
             "last_status_update": "2018-12-13T03:42:03.802Z",
@@ -289,8 +289,8 @@ class OrderData(Data):
             },
             "product_id": "5bd7b28bc9133f00087dd8e8",
             "product_location": {
-                "latitude": -34.558499,
-                "longitude": -58.466767
+                "y": -34.558499,
+                "x": -58.466767
             },
             "product_name": "Placa de video ATI 5750",
             "products_total": 450000,
@@ -314,8 +314,8 @@ class OrderData(Data):
                 "username": "Lucas"
             },
             "buyer_location": {
-                "latitude": -34.6,
-                "longitude": -58.5
+                "y": -34.6,
+                "x": -58.5
             },
             "has_to_be_shipped": False,
             "last_status_update": "2018-12-13T03:42:03.802Z",
@@ -328,8 +328,8 @@ class OrderData(Data):
             },
             "product_id": "5bd7b28bc9133f00087dd8e8",
             "product_location": {
-                "latitude": -34.558499,
-                "longitude": -58.466767
+                "y": -34.558499,
+                "x": -58.466767
             },
             "product_name": "Placa de video ATI 5750",
             "products_total": 450000,
@@ -418,8 +418,8 @@ class ProductData(Data):
             ],
             "description": "Placa de video para gamers",
             "location": {
-                "longitude": -58.466767,
-                "latitude": -34.558499
+                "x": -58.466767,
+                "y": -34.558499
             },
             "units": 3
         }
@@ -433,8 +433,8 @@ class ProductData(Data):
             ],
             "description": "Mesa Cuadrada",
             "location": {
-                "longitude": 25.2084,
-                "latitude": 55.2719
+                "x": 25.2084,
+                "y": 55.2719
             },
             "name": "Mesa",
             "payment_methods": [
@@ -496,8 +496,8 @@ class ProductData(Data):
             ],
             "description": "Placa de video para gamers",
             "location": {
-                "longitude": -58.466767,
-                "latitude": -34.558499
+                "x": -58.466767,
+                "y": -34.558499
             },
             "units": 3
         }
@@ -534,8 +534,8 @@ class ProductData(Data):
                 "description": "Esta taza la usó Nahue Sosa en Certant. Los cubiertos van de regalo.",
                 "distance": 1624,
                 "location": {
-                    "latitude": -34.573817,
-                    "longitude": -58.442484
+                    "y": -34.573817,
+                    "x": -58.442484
                 },
                 "name": "Taza usada por Sosa",
                 "payment_methods": [
@@ -578,8 +578,8 @@ class ProductData(Data):
                 "description": "Zapatillas para tirar facha",
                 "distance": 1150,
                 "location": {
-                    "latitude": -34.562851,
-                    "longitude": -58.465306
+                    "y": -34.562851,
+                    "x": -58.465306
                 },
                 "name": "Nike Zapatillas hombre",
                 "payment_methods": [
@@ -681,8 +681,8 @@ class UserData(Data):
             "surname": "Apellido",
             "name": "Nombre",
             "location": {
-                "longitude": -58.482608,
-                "latitude": -34.5831
+                "x": -58.482608,
+                "y": -34.5831
             },
             "points": 106,
             "purchases": 15
