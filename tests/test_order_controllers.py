@@ -96,9 +96,9 @@ def test_estimate_shipping_cost_if_delivery_can_be_done_returns_cost(get_deliver
 
 @patch.object(flask_jwt_extended, 'get_jwt_identity')
 @patch.object(appserver.data.order_mapper.OrderMapper, 'get_one')
-def test_if_order_has_to_be_delivered_cannot_rate_if_not_delivered(order_get_one_mock, uid_mock, client, order_data):
+def test_if_order_has_to_be_delivered_cannot_rate_if_not_delivered(order_find_one_mock, uid_mock, client, order_data):
     uid_mock.return_value = order_data.get_order_with_delivery_and_not_shipped().buyer
-    order_get_one_mock.return_value = order_data.get_order_with_delivery_and_not_shipped()
+    order_find_one_mock.return_value = order_data.get_order_with_delivery_and_not_shipped()
     response = client.post('/orders/ratings/45',
                            headers=order_data.valid_token_header(),
                            data=json.dumps(order_data.positive_rating),

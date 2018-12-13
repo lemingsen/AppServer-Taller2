@@ -27,6 +27,14 @@ def test_get_products_with_token_returns_200_response(get_products_mock, client,
     assert response.status_code == 200
 
 
+@patch.object(appserver.data.product_mapper.ProductMapper, 'aggregate')
+def test_get_products_with_filters_returns_200_response(product_aggregate_mock, client, product_data):
+    product_aggregate_mock.return_value = product_data.get_several_valid_products()
+    response = client.get('/products' + product_data.filter_parameters,
+                          headers=product_data.valid_token_header())
+    assert response.status_code == 200
+
+
 def test_get_product_without_token_returns_401_response(client):
     response = client.get('/products/512')
     assert response.status_code == 401

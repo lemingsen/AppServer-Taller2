@@ -24,6 +24,12 @@ class BaseMapper:
         return ret
 
     @classmethod
+    def aggregate(cls, pipeline):
+        """Realiza un aggregate con el pipeline enviado"""
+        documents = mongo.db[cls.collection].aggregate(pipeline)
+        return documents
+
+    @classmethod
     def exists(cls, filters):
         """Busca un documento con los filtros pasados, si encuentra uno
         devuelve True, de lo contrario False"""

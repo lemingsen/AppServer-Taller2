@@ -275,8 +275,11 @@ class ProductData(Data):
     def __init__(self):
         Data.__init__(self)
         self.product_id = "5bbe37a1e3c00c493839d19e"
+
         self.question_id = "5bbe37a1e3c00d493439d19e"
+
         self.category_id = "5bbe37a1e3c00d493439d19e"
+
         self.valid_product = {
             "_id": "5bd7b28bc9133f00087dd8e8",
             "name": "Placa de video ATI 5750",
@@ -422,72 +425,89 @@ class ProductData(Data):
 
         self.several_valid_products = [
             {
-                "_id": "5bbe37a1e3c00c493839d19e",
+                "_id": "5bf59134e356e90009194e27",
                 "categories": [
-                    "mesa",
-                    "usado",
-                    "rectangular"
+                    "usado"
                 ],
-                "description": "Mesa rectangular",
+                "description": "Esta taza la usó Nahue Sosa en Certant. Los cubiertos van de regalo.",
+                "distance": 1624,
                 "location": {
-                    "longitude": 25.2084,
-                    "latitude": 55.2719
+                    "latitude": -34.573817,
+                    "longitude": -58.442484
                 },
-                "name": "Mesa",
+                "name": "Taza usada por Sosa",
                 "payment_methods": [
                     {
-                        "name": "visa",
-                        "type": 1,
-                        "image": "http://visa.com.ar/image.jpg"
+                        "image": "http://soloefectivo.com.ar/image.jpg",
+                        "name": "Efectivo",
+                        "type": 0
                     },
                     {
-                        "name": "amex",
-                        "type": 1,
-                        "image": "http://amex.com.ar/image.jpg"
+                        "image": "https://firebasestorage.googleapis.com/v0/b/comprameli-49a1b.appspot.com/o/images%2Fpayments%2Fvisa.png?alt=media&token=fed5389f-a966-4f22-82e9-0181784667a7",
+                        "name": "Visa",
+                        "type": 1
+                    },
+                    {
+                        "image": "https://firebasestorage.googleapis.com/v0/b/comprameli-49a1b.appspot.com/o/images%2Fpayments%2Famex.png?alt=media&token=70c950b6-a60e-4bc3-85ee-fb8cb5d4b82b",
+                        "name": "American Express",
+                        "type": 1
+                    },
+                    {
+                        "image": "https://firebasestorage.googleapis.com/v0/b/comprameli-49a1b.appspot.com/o/images%2Fpayments%2Fmastercard.png?alt=media&token=0deb3fdc-db7b-464a-9f0a-f7c4126808f6",
+                        "name": "Mastercard",
+                        "type": 1
                     }
                 ],
                 "pictures": [
-                    "https://www.mesas.com/1.jpg",
-                    "https://www.mesas.com/2.jpg",
-                    "https://www.mesas.com/3.jpg"
+                    "https://firebasestorage.googleapis.com/v0/b/comprameli-49a1b.appspot.com/o/images%2F4R9CaLC1YeXab0EXvyGRBxbAXkn2%2Fproducts%2F2018-11-21_14-08-53%2F0.png?alt=media&token=4e10bf0d-fdc8-4432-a0e7-94d21c009cbe"
                 ],
-                "price": 543.32,
-                "published": "2018-10-10 14:32:17.671122",
-                "seller": "YmjgZM06jVWrbGnOuUfTItMMZx22",
-                "units": 12
+                "points": 299,
+                "price": 200,
+                "published": "2018-11-21 17:09:08.229369",
+                "questions": [],
+                "seller": "4R9CaLC1YeXab0EXvyGRBxbAXkn2",
+                "units": 1
             },
             {
-                "_id": "5bbe3a84e3c00c4c29ee6150",
+                "_id": "5bd7ca97829cd3000917094b",
                 "categories": [
-                    "mesa",
-                    "usado",
-                    "rectangular"
+                    "ropa"
                 ],
-                "description": "Mesa Cuadrada",
+                "description": "Zapatillas para tirar facha",
+                "distance": 1150,
                 "location": {
-                    "longitude": 25.2084,
-                    "latitude": 55.2719
+                    "latitude": -34.562851,
+                    "longitude": -58.465306
                 },
-                "name": "Mesa",
+                "name": "Nike Zapatillas hombre",
                 "payment_methods": [
                     {
-                        "name": "visa",
-                        "type": 1,
-                        "image": "http://visa.com.ar/image.jpg"
+                        "image": "http://soloefectivo.com.ar/image.jpg",
+                        "name": "Efectivo",
+                        "type": 0
                     },
                     {
-                        "name": "amex",
-                        "type": 1,
-                        "image": "http://amex.com.ar/image.jpg"
+                        "image": "https://firebasestorage.googleapis.com/v0/b/comprameli-49a1b.appspot.com/o/images%2Fpayments%2Fvisa.png?alt=media&token=fed5389f-a966-4f22-82e9-0181784667a7",
+                        "name": "Visa",
+                        "type": 1
+                    },
+                    {
+                        "image": "https://firebasestorage.googleapis.com/v0/b/comprameli-49a1b.appspot.com/o/images%2Fpayments%2Famex.png?alt=media&token=70c950b6-a60e-4bc3-85ee-fb8cb5d4b82b",
+                        "name": "American Express",
+                        "type": 1
+                    },
+                    {
+                        "image": "https://firebasestorage.googleapis.com/v0/b/comprameli-49a1b.appspot.com/o/images%2Fpayments%2Fmastercard.png?alt=media&token=0deb3fdc-db7b-464a-9f0a-f7c4126808f6",
+                        "name": "Mastercard",
+                        "type": 1
                     }
                 ],
                 "pictures": [
-                    "https://www.mesas.com/1.jpg",
-                    "https://www.mesas.com/2.jpg",
-                    "https://www.mesas.com/3.jpg"
+                    "http://www.eszapatillacorrer.es/media/catalog/product/cache/1/small_image/210x/9df78eab33525d08d6e5fb8d27136e95/T/h/TheaMen10.jpg"
                 ],
-                "price": 543.32,
-                "published": "2018-10-10 14:44:36.583794",
+                "points": 197,
+                "price": 1041,
+                "published": "2018-10-30 03:05:59.820454",
                 "seller": "YmjgZM06jVWrbGnOuUfTItMMZx22",
                 "units": 12
             }
@@ -505,8 +525,16 @@ class ProductData(Data):
             "name": ""
         }
 
+        self.filter_parameters = "?seller=YmjgZM06jVWrbGnOuUfTItMMZx22&payment_methods=Visa&text=zapatillas&max_distance=150000&units=10&max_price=11000&longitude=-58.460110&latitude=-34.572260&categories=autos&min_distance=20000"
+
     def get_products_return_value(self):
         return self.several_valid_products
+
+    def get_several_valid_products(self):
+        products = []
+        for product in self.several_valid_products:
+            products.append(ProductSchema().load(product))
+        return products
 
     def get_product_with_3_units(self):
         schema = ProductSchema()

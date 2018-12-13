@@ -1,7 +1,6 @@
 """product models"""
 from appserver.models.product import ProductSchema
 from appserver.data.base_mapper import BaseMapper
-from appserver.app import mongo
 # pylint: disable=R0903
 
 
@@ -15,7 +14,7 @@ class ProductMapper(BaseMapper):
         """Queries the product collection with the filters sent"""
         query_builder = ProductsQueryBuilder(filters)
         query = query_builder.get_pipeline()
-        documents = mongo.db[cls.collection].aggregate(query)
+        documents = cls.aggregate(query)
         return documents
 
     @classmethod
