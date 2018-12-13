@@ -115,12 +115,3 @@ def test_delete_category_if_category_not_found_raises_not_found_error(exists_moc
     exists_mock.return_value = False
     with pytest.raises(NotFoundError):
         ProductsService.delete_category(product_data.category_id)
-
-
-def test_add_answer_if_user_who_answers_question_is_not_product_owner_raises_forbidden_error():
-    pass
-
-
-def test_add_answer_if_trying_to_add_more_than_one_answer_raises_forbidden_error():
-    pass
-

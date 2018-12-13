@@ -306,6 +306,45 @@ class OrderData(Data):
             "units": 15
         }
 
+        self.order_with_pago_aceptado_status_and_without_shipping = {
+            "_id": "5c11d50be3c00c726b93d977",
+            "buyer": "YmjgZM06jVWrbGnOuUfTItMMZx22",
+            "buyer_info": {
+                "email": "lucas@gmail.com",
+                "username": "Lucas"
+            },
+            "buyer_location": {
+                "latitude": -34.6,
+                "longitude": -58.5
+            },
+            "has_to_be_shipped": False,
+            "last_status_update": "2018-12-13T03:42:03.802Z",
+            "payment_info": {
+                "card_number": "1234-1322-1223-1223",
+                "cardholder_name": "Pepe Gutierrez",
+                "expiration_date": "01/22",
+                "payment_method": "Mastercard",
+                "security_code": "123"
+            },
+            "product_id": "5bd7b28bc9133f00087dd8e8",
+            "product_location": {
+                "latitude": -34.558499,
+                "longitude": -58.466767
+            },
+            "product_name": "Placa de video ATI 5750",
+            "products_total": 450000,
+            "seller": "YmjgZM06yVWrbGnuUfTIo9MZx28",
+            "seller_info": {
+                "email": "lucas@gmail.com",
+                "username": "Lucas Hemmingsen"
+            },
+            "shipping_cost": 82.93,
+            "status": "PAGO ACEPTADO",
+            "total": 450000,
+            "tracking_number": 152,
+            "units": 15
+        }
+
     def get_order_with_delivery_and_not_shipped(self):
         return OrderSchema().load(self.order_with_delivery_and_not_shipped)
 
@@ -320,6 +359,9 @@ class OrderData(Data):
 
     def get_order_with_compra_realizada_status(self):
         return OrderSchema().load(self.order_with_compra_realizada_status)
+
+    def get_order_with_pago_aceptado_status_and_without_shipping(self):
+        return OrderSchema().load(self.order_with_pago_aceptado_status_and_without_shipping)
 
     def response_shared_server_pago_confirmado(self):
         return ResponseSharedServerMock(200, [{'status': 'CONFIRMADO',

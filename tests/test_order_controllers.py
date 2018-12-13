@@ -7,7 +7,6 @@ import appserver.services.user_scoring
 import json
 import flask_jwt_extended
 import requests
-from tests.conftest import ResponseSharedServerMock
 
 
 def test_new_order_if_no_body_payload_returns_400_response(client, order_data):
@@ -166,3 +165,11 @@ def test_track_order_status_changes_from_compra_realizada_to_envio_realizado(ord
     response = client.get('/orders/tracking/45',
                           headers=order_data.valid_token_header())
     assert response.get_json()['status'] == 'ENVIO REALIZADO'
+
+
+@patch.object(appserver.data.order_mapper.OrderMapper, 'get_one')
+def test_track_order_if_status_is_pago_realizado_and_order_has_not_to_be_shipped_order_mantains_status(order_mapper_get_one_mock, client, order_data):
+    order_mapper_get_one_mock.return_value = order_data.get_order_with_pago_aceptado_status_and_without_shipping()
+    response = client.get('/orders/tracking/45',
+                          headers=order_data.valid_token_header())
+    assert response.get_json()['status'] == 'PAGO ACEPTADO'
